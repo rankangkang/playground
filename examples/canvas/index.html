@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>canvas</title>
+  </head>
+  <body>
+    <script type="module">
+      import {
+        drawRect,
+        drawTriangle,
+        drawSmile,
+        drawCircles,
+        drawQuadra,
+        drawBezier,
+        drawGame,
+        drawWithPath2D,
+        drawSwatches,
+        drawLines,
+        drawGradient,
+        drawPattern,
+        drawTextShadow,
+        drawImage,
+        drawSolarSystem,
+        drawPanorama
+      } from './main.js'
+      const canvas = createCanvasElement('canvas')
+      const rect = createCanvasElement('rect')
+      const tri = createCanvasElement('tri')
+      const smile = createCanvasElement('smile')
+      const circles = createCanvasElement('circles')
+      const quadra = createCanvasElement('quadra')
+      const bezier = createCanvasElement('bezier')
+      const game = createCanvasElement('game')
+      const path2d = createCanvasElement('path2d')
+      const swatches = createCanvasElement('swatches')
+      const lines = createCanvasElement('lines')
+      const gradient = createCanvasElement('gradient')
+      const pattern = createCanvasElement('pattern')
+      const textShadow = createCanvasElement('textShadow')
+      const image = createCanvasElement('image')
+      const solarSystem = createCanvasElement('solarSystem', { width: '300px', height: '300px' })
+      const panorama = createCanvasElement('panorama', { width: '800px', height: '200px' })
+
+      if (canvas.getContext) {
+        drawRect(rect)
+        drawTriangle(tri)
+        drawSmile(smile)
+        drawCircles(circles)
+        drawQuadra(quadra)
+        drawBezier(bezier)
+        drawGame(game)
+        drawWithPath2D(path2d)
+        drawSwatches(swatches)
+        drawLines(lines)
+        drawGradient(gradient)
+        drawPattern(pattern)
+        drawTextShadow(textShadow)
+        drawImage(image)
+        drawSolarSystem(solarSystem)
+        drawPanorama(panorama)
+      }
+
+      function createCanvasElement(id, props) {
+        const el = document.createElement('canvas')
+        el.setAttribute('id', id)
+        if (props) {
+          Object.keys(props).forEach((key) => {
+            el.setAttribute(key, props[key])
+          })
+        }
+        document.documentElement.appendChild(el)
+        return el
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="box">防抖处理：<input type="text" id="name" name="name" /></div>
+
+    <script type="module">
+      import { debounce } from './index.js'
+      window.addEventListener('load', () => {
+        // 模仿一段ajax请求
+        function ajax(value) {
+          console.log('ajax request: ' + value + ', time: ' + new Date())
+        }
+
+        const inputBox = document.getElementById('name')
+        const run = debounce(
+          (e) => {
+            ajax(e.target.value)
+          },
+          { delay: 1000, immediate: true },
+        )
+        inputBox.addEventListener('keyup', run)
+      })
+    </script>
+  </body>
+</html>

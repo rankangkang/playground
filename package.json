@@ -1,0 +1,46 @@
+{
+  "name": "playground",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "examples/*"
+    ]
+  },
+  "scripts": {
+    "lint": "eslint ./. --ext .js,.jsx,.ts,.tsx,.mjs --fix",
+    "prepare": "husky install",
+    "pretty": "prettier --write \"**/*.{json,md}\""
+  },
+  "lint-staged": {
+    "*.{js,jsx,cjs,mjs,ts,tsx,mts}": [
+      "eslint --fix"
+    ],
+    "*.{json,jsonc,md,mdx,html}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@cmkk/eslint-config-lib": "^0.0.2",
+    "@cmkk/prettier-config": "^0.0.2",
+    "@commitlint/config-conventional": "^17.7.0",
+    "@types/node": "^20.4.9",
+    "@vitejs/plugin-react": "^4.0.3",
+    "commitlint": "^17.7.1",
+    "eslint": "^8.38.0",
+    "husky": "^8.0.3",
+    "json": "^11.0.0",
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.0.3",
+    "pretty-quick": "3.1.3",
+    "rimraf": "^5.0.1",
+    "typescript": "^4.9.5",
+    "vite": "^4.4.5",
+    "vite-plugin-dts": "^3.5.1",
+    "vitest": "^0.33.0"
+  },
+  "dependencies": {
+    "koa": "^2.14.2"
+  }
+}

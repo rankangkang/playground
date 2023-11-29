@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>普通 ellipsis</h1>
+    <div class="ellipsis">
+      <span
+        >测试代码\n\nu的比赛的撒雕塑dhyusahdas dsahyudsa dsahudsa sdabduyas dasbdusyad ashbduys
+        jedjd shu dsuauuuuuuus suuuudha dsauhubn bnubus budsa hudefhaubfasbsabkdnasidsau</span
+      >
+    </div>
+    <style>
+      .ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+
+    <h1>中间省略 ellipsis</h1>
+    <div id="ellipsis"></div>
+    <script type="module">
+      import { ellipsisText } from './main.js'
+      const container = document.querySelector('#ellipsis')
+
+      function processText() {
+        const containerWidth = container.clientWidth
+        const text =
+          '测试代码u的比赛的撒雕塑dhyusahdasdsahyudsadsahudsasdabduyas dasbdusyad ashbduys jedjd shu dsuauuuuuuus suuuudha dsauhubn bnubus budsa hudefhaubfasbsabkdnasidsau.docx'
+        const nextText = ellipsisText(text, containerWidth, {
+          fontSize: 16,
+          fontFamily: 'Microsoft YaHei',
+        })
+        container.innerHTML = nextText
+      }
+
+      processText()
+      window.addEventListener('resize', processText)
+    </script>
+
+    <h1>二分容器,中间省略 ellipsis</h1>
+    <div class="ellipsis2">
+      <span class="prefix"> </span>
+      <span class="suffix"> </span>
+    </div>
+    <style>
+      .ellipsis2 {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow: hidden;
+      }
+      .ellipsis2>.prefix {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: clip;
+        text-overflow: ellipsis;
+      }
+      .ellipsis2>.suffix {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        direction: rtl;
+      }
+    </style>
+    <script type="module">
+      const text =
+        '测试代码u的比赛的撒雕塑dhyusahdasdsahyudsadsahudsasdabduyas dasbdusyad ashbduys jedjd shudsuauuuuuuus ［s］uuuudha dsauhubn bnubus budsa hudefhaubfasbsabk（d）nasi[ds](au).docx'
+      const prefixText = text.slice(0, Math.floor(text.length / 2))
+      const suffixText = text.slice(Math.floor(text.length / 2))
+      const prefix = document.querySelector('.ellipsis2 .prefix')
+      const suffix = document.querySelector('.ellipsis2 .suffix')
+      prefix.innerHTML = prefixText
+      suffix.innerHTML = suffixText
+    </script>
+  </body>
+</html>

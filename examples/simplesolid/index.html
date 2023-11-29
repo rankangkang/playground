@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SolidJS</title>
+</head>
+<body>
+  <h1>打开控制台查看输出</h1>
+  <h2 id="count">0</h2>
+  <h2 id="sum">0</h2>
+  <button id="btn" onclick="javascript:increment">增加1</button>
+  <script src="./solid.js"></script>
+  <script>
+    const [count, setCount] = createSignal(0);
+    const sum = createMemo(() => count() + 10)
+    const increment = () => {
+      console.log('increment')
+      setCount(count() + 1)
+    };
+    createEffect(() => {
+      const c = count()
+      console.log('count:', c)
+      document.querySelector('#count').innerHTML = c
+    })
+    createEffect(() => {
+      const s = sum()
+      console.log('sum:', s)
+      document.querySelector('#sum').innerHTML = s
+    })
+    window.increment = increment
+    document.querySelector('#btn').addEventListener('click', increment)
+  </script>
+</body>
+</html>

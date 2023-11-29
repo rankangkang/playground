@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>underscope</title>
+  </head>
+  <body>
+    <div class="box">underscore 实现：<input type="text" id="name" name="name" /></div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/underscore.js/1.13.6/underscore-min.js"></script>
+    <script>
+      window.addEventListener('load', () => {
+        // 模仿一段ajax请求
+        function ajax(value) {
+          console.log('ajax request: ' + value + ', time: ' + new Date())
+        }
+
+        const inputBox = document.getElementById('name')
+        const run = _.debounce(
+          (e) => {
+            ajax(e.target.value)
+          },
+          1000,
+          true,
+        )
+        inputBox.addEventListener('keyup', run)
+      })
+    </script>
+  </body>
+</html>
