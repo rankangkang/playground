@@ -38,7 +38,7 @@ export class SliceUploader {
       const start = i * chunkSize
       const end = Math.min(start + chunkSize, file.size)
       const slice = file.slice(start, end)
-      this.__chunks.push({ index: i, chunk: slice })
+      this.__chunks.push({ index: i, chunk: slice, loaded: 0 })
     }
   }
 
@@ -65,28 +65,37 @@ export class SliceUploader {
    * @param {Chunk} chunk
    * @param {} uploader
    */
-  async uploadChunk(chunk, url) {
+  async uploadChunk(chunk, url, onProgress) {
     const fd = new FormData()
     fd.set('uploadId', this.__uploadId)
     fd.set('index', chunk.index)
     fd.set('hash', chunk.hash)
     fd.set('chunk', chunk.chunk)
+    const reporter = () => {
+      return this.progress
+    }
     return requestFormData({
       url,
       data: fd,
       onProgress({ loaded, total }) {
         chunk.loaded = loaded
+        onProgress?.(reporter())
       },
     })
   }
 
   // 并发上传所有切片
-  upload() {
+  upload(onProgress) {
+    if (!onProgress) {
+      onProgress = (progress) => {
+        console.log('percentage:', progress)
+      }
+    }
     const reqs = this.__chunks.map((chunk) => {
       return async () => {
         // 加入上传中池子
         this.__uploading.set(chunk.index, chunk)
-        const res = this.uploadChunk(chunk, '/chunk')
+        const res = this.uploadChunk(chunk, '/chunk', onProgress)
         // 移除上传中池子
         this.__uploading.clear(chunk.index)
         // 添加至上传完成的池子
@@ -94,7 +103,10 @@ export class SliceUploader {
         return res
       }
     })
-    return concurrentRun(reqs, this.__config.concurrency, true)
+    return concurrentRun(reqs, this.__config.concurrency, {
+      returnWhileReject: true,
+      logger: false
+    })
   }
 
   async merge() {
@@ -112,9 +124,10 @@ export class SliceUploader {
   // 计算 progress
   get progress() {
     const uploaded = this.__chunks.reduce((total, chunk) => {
-      return total + chunk.loaded
+      return total + (chunk.loaded || 0)
     }, 0)
-    return Number.prototype.toFixed.call((uploaded / this.__file.size) * 100, 2)
+    const percentage = Number.prototype.toFixed.call((Number(uploaded) / this.__file.size) * 100, 2)
+    return percentage > 100 ? 100 : percentage
   }
 }
 
@@ -127,7 +140,7 @@ function requestFormData(options = {}) {
         resolve(xhr.responseText)
       }
     })
-    xhr.addEventListener('progress', (e) => {
+    xhr.upload.addEventListener('progress', (e) => {
       // 调用 onProgress 并将数据传递给它
       onProgress?.({
         loaded: e.loaded,

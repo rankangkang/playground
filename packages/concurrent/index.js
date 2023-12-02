@@ -5,8 +5,12 @@ function convertNumberKeyMapToArray(map) {
     .map(([_, value]) => value)
 }
 
-export function concurrentRun(promiseCreators, concurrency = 1, returnWhileReject = false) {
+export function concurrentRun(promiseCreators, concurrency = 1, options = {}) {
   let runningCount = 0
+  let { returnWhileReject, logger } = Object.assign({ returnWhileReject: false, logger: console.log }, options)
+  if (!logger) {
+    logger = undefined
+  }
   const waitPool = promiseCreators.map((item, idx) => ({ fn: item, index: idx }))
   const results = new Map()
   let resolveFn
@@ -18,13 +22,13 @@ export function concurrentRun(promiseCreators, concurrency = 1, returnWhileRejec
     fn()
       .then((res) => {
         const result = { status: 'fulfilled', data: res }
-        console.log(result)
+        logger?.(index, result)
         results.set(index, result)
       })
       .catch((err) => {
         isRejected = true
         const reason = { status: 'rejected', error: err }
-        console.log(reason)
+        logger?.(index, reason)
         results.set(index, reason)
       })
       .finally(() => {
