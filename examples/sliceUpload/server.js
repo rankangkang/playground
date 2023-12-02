@@ -4,10 +4,13 @@ import { randomUUID } from 'node:crypto'
 import http from 'node:http'
 import fse from 'fs-extra'
 import formidable from 'formidable'
+import { mergeSlices } from './sliceMerge.js'
 
 // esm 模块下使用 __dirname 与 __pathname
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+
+const TMP_PATH = path.join(__dirname, 'tmp')
 
 /** @type {Map<string, { uploadId: string, hash: string, fileName: string }>} */
 const db = new Map()
@@ -19,6 +22,14 @@ const app = http.createServer(async (req, res) => {
     const index = await fse.readFile(path.join(__dirname, 'index.html'))
     res.writeHead(200, { 'Content-Type': 'text/html' })
     res.end(index.toString())
+    return
+  }
+
+  if (req.url.endsWith('.js')) {
+    const js = await fse.readFile(path.join(__dirname, req.url))
+    res.writeHead(200, { 'Content-Type': 'text/javascript' })
+    res.end(js.toString())
+    return
   }
 
   await json(req, res)
@@ -29,7 +40,7 @@ const app = http.createServer(async (req, res) => {
     } else if (req.url === '/chunk') {
       console.log('chunk')
       await handleChunk(req, res)
-    } else if (req.url === 'merge') {
+    } else if (req.url === '/merge') {
       await handleMerge(req, res)
     }
   }
@@ -92,7 +103,7 @@ async function handlePrepare(req, res) {
   // 获取 uploadId
   const uploadId = randomUUID()
   db.set(uploadId, { uploadId, hash: '', fileName: req.body.fileName })
-  await fse.mkdirp(path.join(__dirname, 'tmp', uploadId))
+  await fse.mkdirp(path.join(TMP_PATH, uploadId))
   res.statusCode = 200
   res.setHeader('Content-Type', 'application/json')
   res.end(
@@ -119,7 +130,7 @@ async function handleChunk(req, res) {
     return
   }
 
-  const fielTmpName = path.join(__dirname, 'tmp', uploadId, index)
+  const fielTmpName = path.join(TMP_PATH, uploadId, index)
   const writeStream = fse.createWriteStream(fielTmpName)
   const readStream = fse.createReadStream(chunk.filepath)
   readStream.pipe(writeStream)
@@ -134,6 +145,23 @@ async function handleChunk(req, res) {
  */
 async function handleMerge(req, res) {
   // 合并切片
+  const uploadId = req.body.uploadId
+  const config = db.get(uploadId)
+  if (!config) {
+    res.writeHead(403)
+    res.end('参数错误')
+    return
+  }
+
+  const targetFolder = path.join(TMP_PATH, uploadId)
+  const dstFileName = config.fileName
+  const dstFilePath = await mergeSlices(targetFolder, dstFileName)
+  res.writeHead(200)
+  res.end(
+    JSON.stringify({
+      filePath: dstFilePath,
+    }),
+  )
 }
 
 app.listen(3030, () => {
