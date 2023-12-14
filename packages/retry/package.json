@@ -6,7 +6,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "exports": {
-    "import": "./indexjs",
+    "import": "./index.js",
     "types": "./index.d.ts"
   },
   "scripts": {
