@@ -1,16 +1,16 @@
 {
-  "name": "@pg/concurrent",
+  "name": "@pg/retry",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "types": "index.d.ts",
   "exports": {
     "import": "./indexjs",
     "types": "./index.d.ts"
   },
-  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./index.spec.js"
   },
   "keywords": [],
   "author": "",

@@ -5,9 +5,13 @@ function convertNumberKeyMapToArray(map) {
     .map(([_, value]) => value)
 }
 
+/** @type {typeof import("./index.d.ts").concurrentRun} */
 export function concurrentRun(promiseCreators, concurrency = 1, options = {}) {
   let runningCount = 0
-  let { returnWhileReject, logger } = Object.assign({ returnWhileReject: false, logger: console.log }, options)
+  let { returnWhileReject, logger } = Object.assign(
+    { returnWhileReject: false, logger: console.log },
+    options,
+  )
   if (!logger) {
     logger = undefined
   }

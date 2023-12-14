@@ -66,12 +66,12 @@ importers:
 
   examples/sliceUpload:
     dependencies:
+      '@pg/concurrent':
+        specifier: workspace:^
+        version: link:../../packages/concurrent
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
-      concurrent:
-        specifier: workspace:^
-        version: link:../../packages/concurrent
       formidable:
         specifier: ^3.5.1
         version: 3.5.1
@@ -80,6 +80,8 @@ importers:
         version: 11.2.0
 
   packages/concurrent: {}
+
+  packages/retry: {}
 
 packages:
 

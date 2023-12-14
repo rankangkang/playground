@@ -54,5 +54,7 @@ class P {
     // }
   }
 
-  catch(onRejected) {}
+  catch(onRejected) {
+    // TODO
+  }
 }

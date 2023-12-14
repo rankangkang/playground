@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/fs-extra": "^11.0.4",
-    "concurrent": "workspace:^",
+    "@pg/concurrent": "workspace:^",
     "formidable": "^3.5.1",
     "fs-extra": "^11.2.0"
   }

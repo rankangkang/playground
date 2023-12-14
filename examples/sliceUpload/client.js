@@ -31,7 +31,7 @@ async function handleUpload(file) {
   const uploader = new SliceUploader(file, { concurrency: 3 })
   await uploader.prepare()
   await uploader.upload((p) => {
-    pEl.innerHTML = p + "%"
+    pEl.innerHTML = p + '%'
   })
   if (window.confirm('所有分片已上传成功，是否要合并？')) {
     await uploader.merge()

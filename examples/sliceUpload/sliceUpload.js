@@ -1,4 +1,4 @@
-import concurrentRun from './node_modules/concurrent/index.js'
+import concurrentRun from './node_modules/@pg/concurrent/index.js'
 
 /**
  * @typedef {{ chunk: number; concurrency: number }} Config
@@ -105,7 +105,7 @@ export class SliceUploader {
     })
     return concurrentRun(reqs, this.__config.concurrency, {
       returnWhileReject: true,
-      logger: false
+      logger: false,
     })
   }
 
