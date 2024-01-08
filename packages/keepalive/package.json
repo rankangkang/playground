@@ -1,0 +1,32 @@
+{
+  "name": "@pg/keepalive",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./lib/keepalive.js",
+  "types": "./lib/keepalive.d.ts",
+  "exports": {
+    "import": "./lib/keepalive.mjs",
+    "types": "./lib/keepalive.d.ts"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0",
+    "react-router-dom": ">=6.8.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.11"
+  },
+  "dependencies": {
+    "vite-plugin-dts": "^3.5.1"
+  }
+}
