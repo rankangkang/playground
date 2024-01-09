@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react'
 // import './App.css'
-import { AliveScope, KeepAlive } from '@pg/keepalive'
+import { createVisibleAlive, createDomAlive } from '@pg/keepalive'
+
+const { AliveScope: AliveScopeVisible, KeepAlive: KeepAliveVisible } = createVisibleAlive()
+const { AliveScope: AliveScopeDom, KeepAlive: KeepAliveDom } = createDomAlive()
 
 function App() {
   const [d1, setD1] = useState<boolean>(true)
+  const [d2, setD2] = useState<boolean>(true)
 
   return (
-    <AliveScope>
-      helloworld
-      <h1>helloworld</h1>
+    <>
+    <AliveScopeVisible>
+      <h1>keepalive visible</h1>
       <button
         onClick={() => {
           setD1((d) => {
@@ -19,11 +23,30 @@ function App() {
         switch with keep alive
       </button>
       {d1 && (
-        <KeepAlive id="count">
+        <KeepAliveVisible id="count">
           <Count />
-        </KeepAlive>
+        </KeepAliveVisible>
       )}
-    </AliveScope>
+    </AliveScopeVisible>
+    
+    <AliveScopeDom>
+      <h1>keepalive dom</h1>
+      <button
+        onClick={() => {
+          setD2((d) => {
+            return !d
+          })
+        }}
+      >
+        switch with keep alive
+      </button>
+      {
+        d2 && <KeepAliveDom id="count">
+          <Count />
+        </KeepAliveDom>
+      }
+    </AliveScopeDom>
+    </>
   )
 }
 

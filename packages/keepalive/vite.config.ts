@@ -14,10 +14,10 @@ export default defineConfig({
   build: {
     outDir: 'lib',
     lib: {
-      entry: path.join(__dirname, 'src', 'keepalive.tsx'),
+      entry: path.join(__dirname, 'src', 'index.ts'),
       name: '@pg/keepalive',
       formats: ['es', 'cjs', 'umd'],
-      fileName: 'keepalive',
+      fileName: 'index',
     },
     rollupOptions: {
       external: ['react', 'react-dom', 'react-dom/client'],

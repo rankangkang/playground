@@ -2,11 +2,11 @@
   "name": "@pg/keepalive",
   "version": "1.0.0",
   "description": "",
-  "main": "./lib/keepalive.js",
-  "types": "./lib/keepalive.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "exports": {
-    "import": "./lib/keepalive.mjs",
-    "types": "./lib/keepalive.d.ts"
+    "import": "./lib/index.mjs",
+    "types": "./lib/index.d.ts"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
