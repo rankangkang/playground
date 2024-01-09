@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import './App.css'
 import { AliveScope, KeepAlive } from '@pg/keepalive'
 
@@ -12,7 +12,6 @@ function App() {
       <button
         onClick={() => {
           setD1((d) => {
-            console.log(d)
             return !d
           })
         }}
@@ -30,6 +29,13 @@ function App() {
 
 function Count() {
   const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    console.log('mount')
+    return () => {
+      console.log('unmount')
+    }
+  }, [])
 
   return (
     <div className="count">

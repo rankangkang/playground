@@ -30,6 +30,7 @@ function CacheComponent({
   })
   const activatedRef = useRef(false)
   activatedRef.current = activatedRef.current || active
+  
   useLayoutEffect(() => {
     const keepAliveDiv = renderDiv.current
     if (active) {
