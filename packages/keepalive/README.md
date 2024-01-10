@@ -1,9 +1,13 @@
-# keep-alive
+# keepalive
 
-- 提供 createKeepAlive 方法
-  - 创建一个作用域，内部维护 context
-  - 返回 Provider、use 钩子、KeepAlive 组件
-- 导出 createKeepAlive 创建的默认结构，可直接使用
+核心内容：将 children 抽离，渲染到一个不会被卸载的组件内。
 
-- context 维护元素节点，当前展示节点等信息
-- keepalive 通过 context 获取当前展示节点，匹配到的进行展示，未匹配到的隐藏
+## visible-alive
+
+通过 css display 属性控制元素显隐，达到组件不卸载的效果
+会打乱 react 层级，context 上下文，合成事件冒泡会存在问题（因为元素实际上是渲染在 Provider 下而非 KeepAlive 下）
+
+## dom-alive
+
+通过操作 dom 实现组件不卸载的作用
+通过 Provider 渲染 ReactNode 到真实 element 上，keep-alive 渲染时，将 element （append）到
