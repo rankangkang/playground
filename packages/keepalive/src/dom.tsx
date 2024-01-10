@@ -13,6 +13,7 @@ import React, {
 type ID = string | number
 type ContextType = {
   regist: (id: ID, node: ReactNode) => Promise<HTMLElement>
+  drop: (id: ID) => void
 }
 
 type AliveScopeProps = {
@@ -25,13 +26,14 @@ type KeepAliveProps = {
 }
 
 export function createDomAlive() {
-  const Context = createContext<ContextType>({
+  const CONTEXT = createContext<ContextType>({
     regist(id, node) {
       return Promise.resolve(document.body)
     },
+    drop(id) {},
   })
 
-  return { AliveScope, KeepAlive }
+  return { AliveScope, KeepAlive, useAliveController }
 
   // 缓存的虚拟DOM元素会储存在AliveScope 组件中，所以它不能被卸载
   function AliveScope(props: AliveScopeProps) {
@@ -58,8 +60,17 @@ export function createDomAlive() {
       [ref],
     )
 
+    const drop = useCallback((id: ID) => {
+      // 移除存储的状态
+      setState((state) => {
+        delete state[id]
+        delete ref.current[id]
+        return { ...state }
+      })
+    }, [])
+
     return (
-      <Context.Provider value={{ regist }}>
+      <CONTEXT.Provider value={{ regist, drop }}>
         {props.children}
         {/* 这里react对KeepAlive组件的children进行渲染，渲染完成后会被appendChild移动至其真实需要渲染的位置 */}
         <div className="alive-scope">
@@ -76,12 +87,12 @@ export function createDomAlive() {
             </div>
           ))}
         </div>
-      </Context.Provider>
+      </CONTEXT.Provider>
     )
   }
 
   function KeepAlive(props: KeepAliveProps) {
-    const { regist } = useContext(Context)
+    const { regist } = useContext(CONTEXT)
 
     const ref = useRef<HTMLElement>()
 
@@ -101,5 +112,12 @@ export function createDomAlive() {
 
     // keep-alive 渲染时，将 alive-root 中的节点 append 到 keep-alive 下
     return <div className="keep-alive" ref={(node) => (ref.current = node!)} />
+  }
+
+  function useAliveController() {
+    const { drop } = useContext(CONTEXT)
+    return {
+      dropScope: drop,
+    }
   }
 }

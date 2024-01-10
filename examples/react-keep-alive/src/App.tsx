@@ -3,11 +3,12 @@ import { useEffect, useState } from 'react'
 import { createVisibleAlive, createDomAlive } from '@pg/keepalive'
 
 const { AliveScope: AliveScopeVisible, KeepAlive: KeepAliveVisible } = createVisibleAlive()
-const { AliveScope: AliveScopeDom, KeepAlive: KeepAliveDom } = createDomAlive()
+const { AliveScope: AliveScopeDom, KeepAlive: KeepAliveDom, useAliveController: useAliveControllerDom } = createDomAlive()
 
 function App() {
   const [d1, setD1] = useState<boolean>(true)
   const [d2, setD2] = useState<boolean>(true)
+  const { dropScope } = useAliveControllerDom()
 
   return (
     <>
@@ -40,6 +41,10 @@ function App() {
       >
         switch with keep alive
       </button>
+      <button onClick={() => {
+        dropScope("count")
+        console.log("dropped scope: count")
+      }}>drop scope</button>
       {
         d2 && <KeepAliveDom id="count">
           <Count />
