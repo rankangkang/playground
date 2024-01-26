@@ -30,6 +30,9 @@ export const createSignal = (value) => {
   return [getter, setter]
 }
 
+/**
+ * @type {import("./types")["createEffect"]}
+ */
 export const createEffect = (effect) => {
   const execute = () => {
     observers.push(execute)
@@ -42,4 +45,17 @@ export const createEffect = (effect) => {
   }
 
   execute()
+}
+
+/**
+ * @type {import("./types")["createMemo"]}
+ */
+export const createMemo = (memo) => {
+  const [_memo, _setMemo] = createSignal()
+
+  createEffect(() => {
+    _setMemo(memo())
+  })
+
+  return _memo
 }

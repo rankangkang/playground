@@ -1,4 +1,4 @@
-import { createSignal, createEffect } from './index.js'
+import { createSignal, createEffect, createMemo } from './index.js'
 
 const [getCount, setCount] = createSignal(0)
 
@@ -31,3 +31,21 @@ createEffect(() => {
 setName('ll')
 
 setTimeout(() => setName('kk'), 5000)
+
+const fibonacci= (n) => {
+  if (n <= 2) {
+    return n
+  }
+
+  return fibonacci(n-1) + fibonacci(n-2)
+}
+
+const memoFibGetter = createMemo(() => {
+  console.log('run fib')
+  // 记忆返回值
+  return fibonacci(10)
+})
+
+new Array(10).fill(0).forEach(() => {
+  console.log(memoFibGetter())
+})
