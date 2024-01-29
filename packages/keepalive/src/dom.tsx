@@ -1,18 +1,18 @@
-import React, {
+import {
   createContext,
   useState,
-  useEffect,
   useLayoutEffect,
   useRef,
   useContext,
-  useMemo,
   useCallback,
   ReactNode,
+  useEffect,
 } from 'react'
 
 type ID = string | number
 type ContextType = {
   regist: (id: ID, node: ReactNode) => Promise<HTMLElement>
+  unregist: (node: HTMLElement) => void
   drop: (id: ID) => void
 }
 
@@ -31,6 +31,7 @@ export function createDomAlive() {
       return Promise.resolve(document.body)
     },
     drop(id) {},
+    unregist(node) {},
   })
 
   return { AliveScope, KeepAlive, useAliveController }
@@ -42,6 +43,8 @@ export function createDomAlive() {
 
     // ref只创建一次，用来存储子组件渲染后的实例
     const ref = useRef<Record<ID, HTMLElement>>({})
+    // 容器根节点
+    const rootRef = useRef<HTMLElement>()
 
     const regist = useCallback(
       (id: ID, children: ReactNode) =>
@@ -60,20 +63,34 @@ export function createDomAlive() {
       [ref],
     )
 
+    // unmount 时将移出的元素 append 回来
+    const unregist = useCallback((node: any) => {
+      try {
+        rootRef.current!.appendChild(node)
+      } catch (error) {
+        console.log(error)
+      }
+    }, [])
+
     const drop = useCallback((id: ID) => {
-      // 移除存储的状态
       setState((state) => {
         delete state[id]
-        delete ref.current[id]
         return { ...state }
       })
+      setTimeout(() => delete ref.current[id])
     }, [])
 
     return (
-      <CONTEXT.Provider value={{ regist, drop }}>
+      <CONTEXT.Provider value={{ regist, drop, unregist }}>
         {props.children}
         {/* 这里react对KeepAlive组件的children进行渲染，渲染完成后会被appendChild移动至其真实需要渲染的位置 */}
-        <div className="alive-scope">
+        <div
+          className="alive-scope"
+          style={{ display: 'none' }}
+          ref={(e) => {
+            rootRef.current = e!
+          }}
+        >
           {Object.values(state).map(({ id, children }) => (
             <div
               className="keeper"
@@ -92,15 +109,17 @@ export function createDomAlive() {
   }
 
   function KeepAlive(props: KeepAliveProps) {
-    const { regist } = useContext(CONTEXT)
+    const { regist, unregist } = useContext(CONTEXT)
 
     const ref = useRef<HTMLElement>()
+    const realContentRef = useRef<any>()
 
     useLayoutEffect(() => {
       const init = async ({ id, children }: KeepAliveProps) => {
         // 通过 keep 函数将 KeepAlive 中的信息传递给父组件 AliveScope 处理
         // AliveScope 帮助渲染 children，并将渲染后的实例 dom realContent 返回
         const realContent = await regist(id, children)
+        realContentRef.current = realContent
         // 将渲染后的 realContent 移动到 KeepAlive 中展示
         if (ref.current && realContent) {
           // # core: 直接 append element，将会将对应 element 从原有位置移动至其父元素下
@@ -108,7 +127,18 @@ export function createDomAlive() {
         }
       }
       init(props)
-    }, [props, regist])
+    }, [])
+
+    useEffect(() => {
+      // 卸载
+      return () => {
+        if (realContentRef.current) {
+          try {
+            unregist(realContentRef.current)
+          } catch (error) {}
+        }
+      }
+    }, [])
 
     // keep-alive 渲染时，将 alive-root 中的节点 append 到 keep-alive 下
     return <div className="keep-alive" ref={(node) => (ref.current = node!)} />

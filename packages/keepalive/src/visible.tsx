@@ -34,12 +34,9 @@ type KeepAliveProps = {
 export function createVisibleAlive() {
   const CONTEXT = createContext<ContextType>({
     regist(id, children) {
-      console.log(id, children)
     },
     activate(id) {
-      console.log('active', id)
       return () => {
-        console.log('deactive', id)
       }
     },
   })

@@ -11,3 +11,8 @@
 
 通过操作 dom 实现组件不卸载的作用
 通过 Provider 渲染 ReactNode 到真实 element 上，keep-alive 渲染时，将 element （append）到
+
+keepalive 挂载时，将渲染在 scope 中的元素移动至 keepalive 下指定位置
+keepalive 卸载时，将元素移回 scope
+
+移除指定项缓存时，将 state 中存储的元素移除即可。

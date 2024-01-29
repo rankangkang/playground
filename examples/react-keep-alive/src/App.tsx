@@ -7,8 +7,6 @@ const { AliveScope: AliveScopeDom, KeepAlive: KeepAliveDom, useAliveController: 
 
 function App() {
   const [d1, setD1] = useState<boolean>(true)
-  const [d2, setD2] = useState<boolean>(true)
-  const { dropScope } = useAliveControllerDom()
 
   return (
     <>
@@ -31,26 +29,35 @@ function App() {
     </AliveScopeVisible>
     
     <AliveScopeDom>
-      <h1>keepalive dom</h1>
-      <button
-        onClick={() => {
-          setD2((d) => {
-            return !d
-          })
-        }}
-      >
-        switch with keep alive
-      </button>
-      <button onClick={() => {
-        dropScope("count")
-        console.log("dropped scope: count")
-      }}>drop scope</button>
-      {
-        d2 && <KeepAliveDom id="count">
-          <Count />
-        </KeepAliveDom>
-      }
+      <DomCount />
     </AliveScopeDom>
+    </>
+  )
+}
+
+function DomCount() {
+  const [d2, setD2] = useState<boolean>(true)
+  const { dropScope } = useAliveControllerDom()
+  return (
+    <>
+    <h1>keepalive dom</h1>
+    <button
+      onClick={() => {
+        setD2((d) => {
+          return !d
+        })
+      }}
+    >
+      switch with keep alive
+    </button>
+    <button onClick={() => {
+      dropScope("count")
+    }}>drop scope</button>
+    {
+      d2 && <KeepAliveDom id="count">
+        <Count />
+      </KeepAliveDom>
+    }
     </>
   )
 }
