@@ -9,11 +9,18 @@ import {
   useEffect,
 } from 'react'
 
+enum AliveStatus {
+  ACTIVE = 'active',
+  UNACTIVE = 'unactive',
+}
+
 type ID = string | number
+
 type ContextType = {
-  regist: (id: ID, node: ReactNode) => Promise<HTMLElement>
-  unregist: (node: HTMLElement) => void
+  register: (id: ID, node: ReactNode) => Promise<HTMLElement>
+  unregister: (id: ID) => void
   drop: (id: ID) => void
+  dropAll: () => void
 }
 
 type AliveScopeProps = {
@@ -25,13 +32,14 @@ type KeepAliveProps = {
   id: ID
 }
 
-export function createDomAlive() {
+export function createKeepAlive() {
   const CONTEXT = createContext<ContextType>({
-    regist(id, node) {
+    register() {
       return Promise.resolve(document.body)
     },
-    drop(id) {},
-    unregist(node) {},
+    drop() {},
+    unregister() {},
+    dropAll() {},
   })
 
   return { AliveScope, KeepAlive, useAliveController }
@@ -39,51 +47,80 @@ export function createDomAlive() {
   // 缓存的虚拟DOM元素会储存在AliveScope 组件中，所以它不能被卸载
   function AliveScope(props: AliveScopeProps) {
     // state用来存储keepalive组件的id与其children
-    const [state, setState] = useState<Record<ID, { id: ID; children: ReactNode }>>({})
+    const [state, setState] = useState<
+      Record<ID, { id: ID; children: ReactNode; status: AliveStatus }>
+    >({})
 
     // ref只创建一次，用来存储子组件渲染后的实例
-    const ref = useRef<Record<ID, HTMLElement>>({})
+    const nodes = useRef<Record<ID, HTMLElement>>({})
     // 容器根节点
     const rootRef = useRef<HTMLElement>()
 
-    const regist = useCallback(
+    const register = useCallback(
       (id: ID, children: ReactNode) =>
         new Promise<HTMLElement>((resolve) => {
-          // 存储KeepAlive中的id与children对应关系，用于在AliveScope中渲染
           setState((state) => ({
             ...state,
-            [id]: { id, children },
+            [id]: { id, children, status: AliveStatus.ACTIVE },
           }))
-          // 将渲染后的实例dom ref[id]返回KeepAlive中，便于其移动到真实需要展示的位置
           setTimeout(() => {
-            // 需要等待setState渲染完拿到实例返回给子组件。
-            resolve(ref.current[id] as HTMLElement)
+            resolve(nodes.current[id] as HTMLElement)
           })
         }),
-      [ref],
+      [],
     )
 
     // unmount 时将移出的元素 append 回来
-    const unregist = useCallback((node: any) => {
-      try {
-        rootRef.current!.appendChild(node)
-      } catch (error) {
-        console.log(error)
-      }
+    const unregister = useCallback((id: ID) => {
+      return new Promise((resolve => {
+        try {
+          setState((state) => {
+            const nextState = { ...state }
+            if (nextState[id]) {
+              nextState[id].status = AliveStatus.UNACTIVE
+            }
+            return nextState
+          })
+
+          setTimeout(() => {
+            const node = nodes.current[id]
+            if (node) {
+              rootRef.current!.appendChild(node)
+            }
+
+            resolve(undefined)
+          })
+        } catch (error) {
+          console.error(error)
+        }
+      }))
     }, [])
 
     const drop = useCallback((id: ID) => {
       setState((state) => {
-        delete state[id]
+        if (state[id] && state[id].status === AliveStatus.UNACTIVE) {
+          delete state[id]
+          setTimeout(() => delete nodes.current[id])
+        }
         return { ...state }
       })
-      setTimeout(() => delete ref.current[id])
+    }, [])
+
+    const dropAll = useCallback(() => {
+      setState((state) => {
+        Object.keys(state).forEach((id) => {
+          if (state[id] && state[id].status === AliveStatus.UNACTIVE) {
+            delete state[id]
+            setTimeout(() => delete nodes.current[id])
+          }
+        })
+        return { ...state }
+      })
     }, [])
 
     return (
-      <CONTEXT.Provider value={{ regist, drop, unregist }}>
+      <CONTEXT.Provider value={{ register, unregister, drop, dropAll }}>
         {props.children}
-        {/* 这里react对KeepAlive组件的children进行渲染，渲染完成后会被appendChild移动至其真实需要渲染的位置 */}
         <div
           className="alive-scope"
           style={{ display: 'none' }}
@@ -97,7 +134,7 @@ export function createDomAlive() {
               id={String(id)}
               key={id}
               ref={(node) => {
-                ref.current[id] = node!
+                nodes.current[id] = node!
               }}
             >
               {children}
@@ -109,7 +146,7 @@ export function createDomAlive() {
   }
 
   function KeepAlive(props: KeepAliveProps) {
-    const { regist, unregist } = useContext(CONTEXT)
+    const { register, unregister } = useContext(CONTEXT)
 
     const ref = useRef<HTMLElement>()
     const realContentRef = useRef<any>()
@@ -118,7 +155,7 @@ export function createDomAlive() {
       const init = async ({ id, children }: KeepAliveProps) => {
         // 通过 keep 函数将 KeepAlive 中的信息传递给父组件 AliveScope 处理
         // AliveScope 帮助渲染 children，并将渲染后的实例 dom realContent 返回
-        const realContent = await regist(id, children)
+        const realContent = await register(id, children)
         realContentRef.current = realContent
         // 将渲染后的 realContent 移动到 KeepAlive 中展示
         if (ref.current && realContent) {
@@ -134,7 +171,7 @@ export function createDomAlive() {
       return () => {
         if (realContentRef.current) {
           try {
-            unregist(realContentRef.current)
+            unregister(props.id)
           } catch (error) {}
         }
       }
@@ -145,9 +182,10 @@ export function createDomAlive() {
   }
 
   function useAliveController() {
-    const { drop } = useContext(CONTEXT)
+    const { drop, dropAll } = useContext(CONTEXT)
     return {
       dropScope: drop,
+      dropAllScope: dropAll,
     }
   }
 }

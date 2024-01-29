@@ -1,80 +1,75 @@
-import { useEffect, useState } from 'react'
-// import './App.css'
-import { createVisibleAlive, createDomAlive } from '@pg/keepalive'
-
-const { AliveScope: AliveScopeVisible, KeepAlive: KeepAliveVisible } = createVisibleAlive()
-const { AliveScope: AliveScopeDom, KeepAlive: KeepAliveDom, useAliveController: useAliveControllerDom } = createDomAlive()
+import { useState } from 'react'
+import { AliveScope, KeepAlive, useAliveController } from '@pg/keepalive'
 
 function App() {
-  const [d1, setD1] = useState<boolean>(true)
+  return (
+    <AliveScope>
+      <Playground />
+    </AliveScope>
+  )
+}
+
+function Playground() {
+  const [domCounts, setDomCounts] = useState<number[]>([])
+  const { dropAllScope } = useAliveController()
 
   return (
     <>
-    <AliveScopeVisible>
-      <h1>keepalive visible</h1>
       <button
         onClick={() => {
-          setD1((d) => {
+          setDomCounts([...domCounts, Date.now()])
+        }}
+      >
+        新增 dom count 组件
+      </button>
+      <button onClick={() => {
+        dropAllScope()
+      }} style={{ margin: 12 }}>drop all</button>
+      <br />
+      {domCounts.map((dc) => {
+        return <DomCount id={dc} />
+      })}
+    </>
+  )
+}
+
+function DomCount(props: { id: number | string }) {
+  const [d, setD] = useState<boolean>(true)
+  const { dropScope } = useAliveController()
+
+  return (
+    <div style={{ border: '1px solid #fff', borderRadius: 5, margin: "16px 0" }}>
+      <button
+        onClick={() => {
+          setD((d) => {
             return !d
           })
         }}
       >
         switch with keep alive
       </button>
-      {d1 && (
-        <KeepAliveVisible id="count">
+      <button
+        onClick={() => {
+          dropScope(props.id)
+        }}
+      >
+        drop scope {props.id}
+      </button>
+      {d && (
+        <KeepAlive id={props.id}>
           <Count />
-        </KeepAliveVisible>
+        </KeepAlive>
       )}
-    </AliveScopeVisible>
-    
-    <AliveScopeDom>
-      <DomCount />
-    </AliveScopeDom>
-    </>
-  )
-}
-
-function DomCount() {
-  const [d2, setD2] = useState<boolean>(true)
-  const { dropScope } = useAliveControllerDom()
-  return (
-    <>
-    <h1>keepalive dom</h1>
-    <button
-      onClick={() => {
-        setD2((d) => {
-          return !d
-        })
-      }}
-    >
-      switch with keep alive
-    </button>
-    <button onClick={() => {
-      dropScope("count")
-    }}>drop scope</button>
-    {
-      d2 && <KeepAliveDom id="count">
-        <Count />
-      </KeepAliveDom>
-    }
-    </>
+    </div>
   )
 }
 
 function Count() {
   const [count, setCount] = useState(0)
 
-  useEffect(() => {
-    console.log('mount')
-    return () => {
-      console.log('unmount')
-    }
-  }, [])
-
   return (
     <div className="count">
-      <p>count: {count}</p>
+      <div style={{ padding: 12 }}>count: {count}</div>
       <button
         onClick={() => {
           setCount((c) => c - 1)

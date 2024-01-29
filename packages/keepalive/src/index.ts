@@ -1,3 +1,10 @@
-export * from './dom'
-export * from './visible'
-export * from './offscreen'
+import { createKeepAlive } from './core'
+
+const { AliveScope, KeepAlive, useAliveController } = createKeepAlive()
+
+export {
+  createKeepAlive,
+  AliveScope,
+  KeepAlive,
+  useAliveController
+}

@@ -1,18 +1,13 @@
-# keepalive
+# keepalive 实现原理
 
-核心内容：将 children 抽离，渲染到一个不会被卸载的组件内。
+核心原理：将组件渲染到一个不会被卸载的地方，从而达到状态保持的目的。
 
-## visible-alive
+## 实现原理
 
-通过 css display 属性控制元素显隐，达到组件不卸载的效果
-会打乱 react 层级，context 上下文，合成事件冒泡会存在问题（因为元素实际上是渲染在 Provider 下而非 KeepAlive 下）
+1. 将组件渲染到一个不会被卸载的地方，通常为所有需要缓存的组件的父级组件，我们称之为 scope，如 ReactRouter 外
+2. 组件 dom 结构渲染完成后，将 dom 移动到其正确的层次结构，并在组件卸载时移回 scope
 
-## dom-alive
+## 参考文档
 
-通过操作 dom 实现组件不卸载的作用
-通过 Provider 渲染 ReactNode 到真实 element 上，keep-alive 渲染时，将 element （append）到
-
-keepalive 挂载时，将渲染在 scope 中的元素移动至 keepalive 下指定位置
-keepalive 卸载时，将元素移回 scope
-
-移除指定项缓存时，将 state 中存储的元素移除即可。
+- <https://github.com/CJY0208/react-activation>
+- <https://juejin.cn/post/7122617883837857806>

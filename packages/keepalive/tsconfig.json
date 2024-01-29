@@ -17,5 +17,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["./src", "keepalive-for-react"]
+  "include": ["./src", "offscreen.tsx"]
 }
