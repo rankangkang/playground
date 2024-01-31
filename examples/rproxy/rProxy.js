@@ -11,7 +11,6 @@ function rProxy(target, handler) {
     proxySubProp(target)
     // 返回 proxy 对象
     // 深度优先 proxy 对象
-    console.log('proxy', target)
     return new Proxy(target, handler)
   }
 

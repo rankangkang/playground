@@ -7,7 +7,6 @@ function isProxy(target) {
 function proxyObject(target) {
   if (typeof target === 'object' && target !== null) {
     if (!isProxy(target)) {
-      console.log('proxy', target)
       return new Proxy(target, handler)
     }
   }
