@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS demo</title>
+</head>
+<body>
+  <h1>css grid: grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))</h1>
+  <div class="grid">
+    <div class="grid-child"></div>
+    <div class="grid-child"></div>
+    <div class="grid-child"></div>
+    <div class="grid-child"></div>
+    <div class="grid-child"></div>
+    <div class="grid-child"></div>
+    <div class="grid-child"></div>
+    <div class="grid-child"></div>
+  </div>
+  <style type="text/css">
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
+      counter-reset: div-grid-child;
+    }
+    .grid-child {
+      height: 64px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .grid-child::after {
+      counter-increment: div-grid-child;
+      content: counter(div-grid-child)
+    }
+  </style>
+  <hr />
+
+</body>
+</html>
