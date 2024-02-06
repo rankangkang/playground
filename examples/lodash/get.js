@@ -1,5 +1,14 @@
-function get(obj, chainProp) {
-  const chains = chainProp.split('.')
+/**
+ * lodash.get
+ * @param {any} obj 
+ * @param {string} prop 
+ * @returns 
+ */
+function get(obj, prop) {
+  const chains = prop
+    .replace(/\[/g, ".")
+    .replace(/\]/g, "")
+    .split(".")
   try {
     return chains.reduce((result, prop) => {
       return result[prop]
@@ -9,4 +18,14 @@ function get(obj, chainProp) {
   }
 }
 
-console.log(get({ a: { b: { c: 123 } } }, 'a.b.c'))
+const obj = {
+  a: {
+    b: [
+      {
+        c: 123
+      }
+    ]
+  }
+}
+
+console.log(get(obj, 'a.b[0].c'))
