@@ -81,17 +81,51 @@ QuickSort.divide = function (arr, l, r) {
   return i + 1
 }
 
+/**
+ * c 风格的快排
+ * @param {number[]} arr 
+ * @param {number} l 
+ * @param {number} r 
+ */
+QuickSort.prototype.cLike = function (arr, l = 0, r = arr.length - 1) {
+  if (l >= r) {
+    return
+  }
+
+  // 右移一位，近似于除二；右移运算的优先级低于 +-
+  let i = l - 1, j = r + 1, x = arr[l + r >> 1]
+  while(i < j) {
+    do i++; while (arr[i] < x);
+    do j--; while (arr[j] > x);
+    if (i < j) {
+      // 交换
+      [arr[i], arr[j]] = [arr[j], arr[i]]
+    }
+  }
+
+  this.cLike(arr, l, j)
+  this.cLike(arr, j + 1, r)
+}
+
 const quickSort = new QuickSort()
 
 const arr = new Array(1000).fill(0).map(() => {
   return Math.ceil(Math.random() * 100)
 })
+
+const arr2 = [...arr]
+
 console.time('quick-sort non-in-place')
 let sorted = quickSort.nonInPlace(arr)
 console.timeEnd('quick-sort non-in-place')
-console.log(sorted)
+// console.log(sorted)
 
 console.time('quick-sort in-place')
 quickSort.inPlace(arr)
 console.timeEnd('quick-sort in-place')
-console.log(arr)
+// console.log(arr)
+
+console.time('quick-sort cLike')
+quickSort.cLike(arr2)
+console.timeLog('quick-sort cLike')
+// console.log(arr2)
