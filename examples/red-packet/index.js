@@ -56,3 +56,55 @@ for(let i = 0; i < 10; i++) {
 console.log(p.qiang())
 console.log(p.packets)
 console.log(p.packets.reduce((res, m) => res + Number(m), 0))
+
+
+class RedPacketBinary {
+  constructor(total, nums) {
+    if (nums * 0.01 > total) {
+      throw "invalid red pocket"
+    }
+
+    this._money = total
+    this._packetCount = nums
+    this._remain = total
+    this._count = nums
+    this._packets = []
+  }
+
+  get packets() {
+    return this._packets
+  }
+
+  qiang() {
+    if (this._count <= 0) {
+      return undefined
+    }
+
+    if (this._count === 1) {
+      this._count --
+      const m = this._remain
+      this._packets.push(m)
+      this._remain = 0
+      return m
+    }
+
+    // 二倍平均数，可保证每次抢到的数目相近
+    const average = (this._remain / this._count) * 2
+    const cGet = Number((Math.random() * average).toFixed(2))
+    this._packets.push(cGet)
+    this._remain -= cGet
+    this._count--
+    return cGet
+  }
+}
+
+console.log('二倍平均数法')
+const p2 = new RedPacketBinary(10, 10)
+
+for(let i = 0; i < 10; i++) {
+  console.log(p2.qiang())
+}
+
+console.log(p2.qiang())
+console.log(p2.packets)
+console.log(p2.packets.reduce((res, m) => res + Number(m), 0))
