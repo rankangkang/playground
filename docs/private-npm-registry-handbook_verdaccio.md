@@ -500,3 +500,96 @@ interface IPluginAuth<T> extends IPlugin<T> {
   apiJWTmiddleware?(helpers: any): Function;
 }
 ```
+
+#### theme 插件
+
+verdaccio 官方提供了一个默认的 ui 插件 `@verdaccio/theme-ui`，当未配置 theme 配置时，verdaccio 将使用默认的主题插件。
+
+verdaccio 的 theme 插件包结构需满足以下要求：
+
+```json
+{
+  "name": "verdaccio-theme-xxxx", // 插件名称必须以 verdaccio-theme- 开头
+  "version": "1.0.0",
+  "description": "my custom user interface",
+  "main": "index.js", // 入口文件
+}
+```
+
+其中，入口文件需要默认导出一个方法，结构如下：
+
+```js
+module.exports = () => {
+  return {
+    // location of the static files, webpack output
+    staticPath: path.join(__dirname, 'static'),
+    // webpack manifest json file
+    manifest: require('./static/manifest.json'),
+    // main manifest files to be loaded
+    manifestFiles: {
+      js: ['runtime.js', 'vendors.js', 'main.js'],
+    },
+  };
+};
+```
+
+为什么需要导出这样的结构？我们对照 [`@verdaccio/theme-ui` 源码](https://github.com/verdaccio/verdaccio/tree/master/packages/plugins/ui-theme)一看便知。
+
+是因为默认的 theme 插件使用 react 编写，且使用 webpack 构建，这么一看就清晰明了了。
+
+如果你需要自定义 verdaccio 主题样式，而配置文件中的 web 配置又不能满足需求时，你可能就需要开发自己的 theme 插件了。不管你的插件使用什么框架构建（react或vue或其他），入口导出必须满足上述结构且正确，否则插件便不能被正确加载。
+
+你可以在[这里](https://verdaccio.org/docs/plugin-theme/#build-structure)看到更加详细的信息。
+
+##### theme 插件配置注入
+
+web 配置会注入到 `window.__VERDACCIO_BASENAME_UI_OPTIONS` 对象中，改对象在浏览器全局上下文中可被访问到。
+
+在插件 react 应用组件中可通过 `@verdaccio/components-ui` 导出的 `useConfig` 钩子获取。
+
+> 注意：仅 web 配置项的配置会注入到 `window.__VERDACCIO_BASENAME_UI_OPTIONS` 对象中，theme 配置无法从该对象获取。
+
+假如有以下配置
+
+```yaml
+web:
+  foo: webfoo
+  bar: webbar
+
+theme:
+  webui:
+    foo: foo
+    bar: bar
+```
+
+在 `window.__VERDACCIO_BASENAME_UI_OPTIONS` 仅能访问到 web 配置项注入的配置：
+
+```js
+console.log(window.__VERDACCIO_BASENAME_UI_OPTIONS)
+// 输出如下：
+{
+  // ...
+  "foo": "webfoo",
+  "bar": "webbar"
+}
+```
+
+theme 插件自己的配置无法在前端获取，配置文件中传入的 theme 配置无法传递到前端页面（官网说可以，实际上是不行的）。
+
+若 theme 插件需要配置，可尝试将主题配置配置 web 配置项下：
+
+```yaml
+web:
+  # ...
+  # 以下配置可以通过 window.__VERDACCIO_BASENAME_UI_OPTIONS.webui 访问
+  webui: # webui theme 配置
+    foo: foo
+    bar: bar
+
+theme:
+  webui:
+    # 以下配置在前端应用中无法访问到
+    foo: foo
+    bar: bar
+```
+
