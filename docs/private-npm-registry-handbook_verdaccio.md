@@ -592,4 +592,3 @@ theme:
     foo: foo
     bar: bar
 ```
-
