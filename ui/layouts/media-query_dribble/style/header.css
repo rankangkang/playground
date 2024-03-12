@@ -1,0 +1,274 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0 24px;
+  background: #fff;
+  border-bottom: .5px solid #f3f3f4;
+}
+
+.container {
+  display: flex;
+  /* height: 100%; */
+  position: relative;
+}
+
+.desktop-logo {
+  width: 76px;
+  display: inline-block;
+  /* line-height: 80px; */
+  vertical-align: middle;
+  margin-right: 12px;
+  cursor: pointer;
+}
+
+.mobile-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  width: 76px;
+  line-height: 60px;
+  cursor: pointer;
+}
+
+.nav {
+  padding: 0;
+  margin: 0;
+  display: inline-flex;
+  height: 100%;
+  flex: 1;
+}
+
+.nav-btn {
+  width: 20px;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.nav-back-btn {
+  width: 20px;
+  vertical-align: middle;
+  cursor: pointer;
+  display: none;
+}
+
+.nav-back-btn img {
+  max-width: 20px;
+  max-height: 20px;
+}
+
+.nav-item {
+  list-style: none;
+  line-height: 80px;
+  padding: 0 12px;
+  font-size: 14px;
+  color: #6e6d7a;
+  font-weight: 500;
+  cursor: pointer;
+  position: relative;
+}
+
+.hover-nav {
+  margin: 0;
+  padding: 16px 22px;
+  position: absolute;
+  display: none;
+  background: #ffffff;
+  top: 70px;
+  left: -20px;
+  box-shadow: inset 0px -1px 0px #f3f3f4;
+  box-shadow: 0px 10px 70px rgb(0 0 0 / 15%);
+  border-radius: 8px;
+  flex-direction: column;
+}
+
+.hover-nav-item {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border-radius: 8px;
+  height: 72px;
+  width: 356px;
+  box-sizing: border-box;
+}
+
+.hover-nav-item:hover {
+  background: #fef6f9;
+}
+
+.hover-nav-dropdown-icon {
+  width: 30px;
+  height: 30px;
+  padding-right: 16px;
+}
+
+.hover-nav-dropdown-icon-next {
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  color: #ea4c89;
+  opacity: 0;
+  transition: transform 200ms ease-in, opacity 200ms ease-in, -webkit-transform 200ms ease-in;
+}
+
+.hover-nav-item:hover .hover-nav-dropdown-icon-next {
+  opacity: 1;
+}
+
+.hover-nav-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 40px;
+}
+.hover-nav-item-info  .hover-nav-item-title {
+  height: 20px;
+  display: flex;
+  line-height: 20px;
+  font-size: 18px;
+}
+.hover-nav-item-info  .hover-nav-item-desc {
+  height: 16px;
+  line-height: 16px;
+  font-size: 13px;
+  margin-top: 4px;
+  color: #0D0C22;
+}
+.nav-item:hover {
+  color: #f082ac;
+}
+
+.nav-item:hover .hover-nav {
+  display: flex;
+}
+
+.sign-buttons {
+  display: inline-flex;
+  float: right;
+  height: 100%;
+  font-size: 13px;
+  justify-content: center;
+  align-items: center;
+  color: #6e6d71;
+}
+
+.search {
+  width: 18px;
+  height: 18px;
+  vertical-align: middle;
+}
+
+.search img {
+  width: 100%;
+}
+
+.sign-in-button {
+  width: 50px;
+  height: 20px;
+  padding: 10px 16px;
+  color: #6e6d7a;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.sign-up-button {
+  width: 50px;
+  height: 20px;
+  padding: 10px 15px;
+  background: #ea4c89;
+  color: #fff;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.task-menu {
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 61px;
+  right: 0;
+  height: calc(100vh - 60px);
+  z-index: 10;
+  background: #fff;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.nav-search {
+  height: 40px;
+  margin: auto;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: #f3f3f4;
+  padding: 10px 15px;
+  line-height: 20px;
+  border: .5px solid #e0e0e0;
+  /* box-shadow: 0 0 1px rgba(0, 0, 0, .3); */
+  display: flex;
+  margin: 0 12px 12px;
+}
+
+.nav-search input {
+  outline: none;
+  background: transparent;
+  border: none;
+  height: 20px;
+  padding-left: 8px;
+  flex: 1;
+  color: #0d0c22;
+  font: 400 13.3333px Arial;
+}
+
+@media screen and (max-width: 919px) {
+  .desktop {
+    display: none;
+  }
+  .mobile {
+    height: 60px;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  body {
+    padding-top: 60px;
+  }
+
+  .nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .nav-item {
+    font-size: 16px;
+    font-weight: 600;
+    height: 60px;
+    line-height: 60px;
+  }
+}
+
+@media screen and (min-width: 920px) {
+  .header {
+    position: static;
+  }
+  .mobile {
+    display: none;
+  }
+  .desktop {
+    height: 80px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .task-menu {
+    display: none;
+  }
+}

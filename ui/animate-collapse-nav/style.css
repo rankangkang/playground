@@ -1,0 +1,75 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5290f9;
+}
+
+.navbar {
+  /* flex与inline-flex两者都是使子元素们弹性布局，但是如果是flex，父元素的尺寸不由子元素尺寸动态调整，不设置时默认是100%，而inline-flex则会使父元素尺寸跟随子元素们的尺寸动态调整。 */
+  display: inline-flex;
+  border-radius: 3px;
+  box-shadow: 0 1px 8px 0 rgba(0 0 0 / .5);
+  padding: 18px;
+  background-color: #fff;
+}
+
+.nav {
+  width: 300px;
+  overflow: hidden;
+  transition: width .3s linear;
+}
+
+.nav.collapsed {
+  width: 0;
+  opacity: 0;
+  transition: all .3s linear;
+}
+
+.nav>ul {
+  display: flex;
+  list-style: none;
+}
+
+.nav_item {
+  padding: 0 12px;
+}
+
+.nav_btn {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+.nav_btn>.line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 2px;
+  background-color: #5290f9;
+  transition: all .3s linear;
+}
+
+.nav_btn>.line:first-child {
+  transform: translate(-50%, -50%) rotate(135deg);
+}
+
+.nav_btn>.line:last-child {
+  transform: translate(-50%, -50%) rotate(-135deg);
+}
+
+.navbar.collapsed .nav_btn>.line:first-child {
+  transform: translate(-50%, -5px) rotate(0);
+}
+
+.navbar.collapsed .nav_btn>.line:last-child {
+  transform: translate(-50%, 5px) rotate(0);
+}

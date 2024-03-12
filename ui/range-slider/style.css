@@ -1,0 +1,110 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  font-family: 'Lato', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+}
+
+h2 {
+  position: absolute;
+  top: 10px;
+  color: #444;
+}
+
+.range-slider {
+  position: relative;
+}
+
+.range-slider>input[type='range'] {
+  width: 300px;
+  margin: 18px 0;
+  -webkit-appearance: none;
+}
+
+.range-slider>input[type='range']:focus {
+  outline: none;
+}
+
+.range-slider>input[type='range'] + label {
+  background-color: #fff;
+  position: absolute;
+  min-width: 80px;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 24px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Chrome & Safari */
+.range-slider>input[type='range']::-webkit-slider-runnable-track {
+  background: #5ae;
+  border-radius: 5px;
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+}
+
+.range-slider>input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 28px;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #5ae;
+  margin-top: -4px;
+  cursor: pointer;
+}
+
+/* Firefox */
+.range-slider>input[type='range']::-moz-range-track {
+  background: #5ae;
+  border-radius: 4px;
+  width: 100%;
+  height: 13px;
+  cursor: pointer;
+}
+
+.range-slider>input[type='range']::-moz-range-thumb {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid #5ae;
+  margin-top: -7px;
+  cursor: pointer;
+}
+
+/* IE */
+.range-slider>input[type='range']::-ms-track {
+  background: #5ae;
+  border-radius: 4px;
+  width: 100%;
+  height: 13px;
+  cursor: pointer;
+}
+
+.range-slider>input[type='range']::-ms-thumb {
+  -webkit-appearance: none;
+  height: 24px;
+  width: 24px;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid #5ae;
+  margin-top: -7px;
+  cursor: pointer;
+}

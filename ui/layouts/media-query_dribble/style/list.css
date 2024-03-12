@@ -1,0 +1,68 @@
+.list {
+  display: grid;
+  grid-gap: 36px;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0 32px;
+  margin-top: 32px;
+}
+
+.list-item {
+  list-style: none;
+}
+
+.cover {
+  border-radius: 8px;
+  overflow: hidden;
+  /* margin-bottom: 10px; */
+}
+
+.cover img {
+  max-width: 100%;
+}
+
+.info{
+  display: inline-flex;
+  width: 100%;
+}
+
+.info .avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.info .name {
+  flex: 1;
+}
+
+.info .popularity {
+  width: 120px;
+  display: inline-flex;
+  align-items: center;
+  float: right;
+}
+
+.popularity .like, .popularity .view  {
+  width: 60px;
+  height: 14px;
+  font-size: 12px;
+  
+}
+
+.like img, .view img {
+  display: inline;
+  height: 14px;
+}
+
+@media screen and (min-width: 1366px) {
+  .list {
+    padding: 0 72px;
+  }
+}
+
+
+
