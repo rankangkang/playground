@@ -1,0 +1,79 @@
+.put-main {
+  width: 960px;
+  margin: 0 auto;
+  margin-top: 40px;
+  padding: 12px 12px;
+}
+
+.form-item {
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.form-item label {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 13px;
+  color: #333333;
+}
+
+.form-item input {
+  display: inline-block;
+  width: 220px;
+  border: 1px solid #D9D9D9;
+  padding: 8px;
+  color: #333333;
+  transition: all .3s ease-in-out;
+}
+
+.form-item textarea {
+  width: 690px;
+  padding: 8px;
+  border: 1px solid #D9D9D9;
+  display: block;
+  color: #333333;
+  transition: all .3s ease-in-out;
+}
+
+.form-item .tips {
+  font-size: 13px;
+  color: #999;
+  background-color: #f6f6f6;
+}
+
+.form-item .err {
+  color: #900;
+}
+
+.form span {
+  display: inline;
+}
+
+.form-item input:hover, .form-item textarea:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .1) inset;
+}
+
+.submit-btn {
+  width: 52px;
+  height: 18px;
+  padding: 7px 12px;
+  box-sizing: content-box;
+  font-size: 13px;
+  background: #ff0033;
+  color: #fff;
+  border: none;
+  margin-top: 12px;
+  transition: all .3s ease-in-out;
+}
+
+.submit-btn:hover {
+  background: #cc0033;
+}
+
+.put-done {
+  width: 960px;
+  margin: 0 auto;
+  margin-top: 40px;
+  padding: 12px;
+  /* display: none; */
+}

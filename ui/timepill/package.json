@@ -1,0 +1,16 @@
+{
+  "name": "react-template",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "type": "module",
+  "devDependencies": {
+    "@types/react": "^17.0.5",
+    "@types/react-dom": "^17.0.3",
+    "live-server": "^1.2.2"
+  },
+  "scripts": {
+    "preserve": "rm -rf dist && npx tsc",
+    "serve": "npx live-server --entry-file=index.html"
+  }
+}

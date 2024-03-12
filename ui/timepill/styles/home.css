@@ -1,0 +1,38 @@
+.home-main {
+  width: 400px;
+  margin: 60px auto;
+}
+
+.home-title {
+  text-align: center;
+  font-weight: 500;
+}
+
+.home-nav {
+  margin: auto;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  color: #333333;
+}
+
+.home-nav-item {
+  text-align: center;
+}
+
+.home-nav-item:hover {
+  color: #ff0033;
+}
+
+.home-nav-item h1 {
+  font-weight: 500;
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.home-footer {
+  margin: 24px auto;
+  text-align: center;
+  font-size: 13px;
+  color: #999999;
+}
