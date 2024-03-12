@@ -6,3 +6,5 @@ export interface IPill {
   tip: string,
   key: string
 }
+
+export type NavigateFn = (path: string) => void

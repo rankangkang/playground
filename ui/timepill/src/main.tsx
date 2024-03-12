@@ -1,10 +1,13 @@
 import Home from './components/Home.js'
 import PutPage from './components/put/PutPage.js'
 import OpenPage from './components/open/OpenPage.js'
+import { Context } from './context.js'
+
 interface State {
   route: string
   rootPath: string
 }
+
 class App extends React.Component<any, State> {
   state: State = {
     // 使用hash路由模式在页面刷新时获取hash值，以此来匹配组件，可实现路由效果
@@ -12,24 +15,30 @@ class App extends React.Component<any, State> {
     rootPath: 'index.html',
   }
 
+  contextValue = {
+    navigate(to: string) {
+      location.hash = to
+    },
+  }
+
   render() {
     let component
     switch (this.state.route) {
       case '/home':
-        component = <Home route={this.handleRouteChange} />
+        component = <Home />
         break
       case '/put':
-        component = <PutPage route={this.handleRouteChange} />
+        component = <PutPage />
         break
       case '/open':
-        component = <OpenPage route={this.handleRouteChange} />
+        component = <OpenPage />
         break
     }
-    return <div className="wrapper">{component}</div>
-  }
-
-  handleRouteChange = (to: string) => {
-    location.hash = to
+    return (
+      <div className="wrapper">
+        <Context.Provider value={this.contextValue}>{component}</Context.Provider>
+      </div>
+    )
   }
 
   componentDidMount() {

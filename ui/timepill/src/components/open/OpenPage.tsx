@@ -1,10 +1,11 @@
-import { IPill } from '../../types'
+import { IPill, NavigateFn } from '../../types'
 import Header from '../header/Header.js'
 import { getRemainning, stringToDate } from '../../utils/format.js'
 import { getPill } from '../../utils/store.js'
 import NoSUchKey from './NoSuchKey.js'
 import OpenInfo from './OpenInfo.js'
 import OpenTip from './OpenTip.js'
+import { Context } from '../../context.js'
 
 interface State {
   flag: number
@@ -13,11 +14,10 @@ interface State {
 }
 
 interface Props {
-  route: Function,
-  path?: string
+  navigate: NavigateFn
 }
 
-export default class OpenPage extends React.Component<Props, State> {
+class OpenPage extends React.Component<Props, State> {
   state: State = {
     // 此处利用flag来分辨当前页，也可使用同put的方式，更改route时改变url与组件，实现页面路由效果
     flag: 0, // 0: 初始；1：no key；2：未到时间；3：打开
@@ -52,7 +52,7 @@ export default class OpenPage extends React.Component<Props, State> {
     }
     return (
       <React.Fragment>
-        <Header path={'/open'} route={this.props.route} />
+        <Header path="/open" />
         <div className="open-main">
           <div className="open">
             <h1 className="page-title">打开胶囊</h1>
@@ -110,3 +110,7 @@ export default class OpenPage extends React.Component<Props, State> {
     })
   }
 }
+
+export default React.memo(() => (
+  <Context.Consumer>{({ navigate }) => <OpenPage navigate={navigate} />}</Context.Consumer>
+))

@@ -1,14 +1,17 @@
-import { stringToDate, dateToString, getRemainning, secondsToDateString } from '../../utils/format.js'
+import { stringToDate, getRemainning, secondsToDateString } from '../../utils/format.js'
+
 interface Props {
   time: string,
   name: string,
   tip: string
 }
+
 interface State {
   interval: string,
   timer: number,
   date: Date
 }
+
 export default class OpenTip extends React.Component<Props, State> {
   state: State = {
     interval: '',

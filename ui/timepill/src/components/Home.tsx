@@ -1,9 +1,13 @@
 // import '../../../styles/home.css'
+
+import { Context } from '../context.js'
+import { NavigateFn } from '../types.js'
+
 interface Props {
-  route: Function
+  navigate: NavigateFn
 }
 
-export default class Home extends React.Component<Props> {
+class Home extends React.Component<Props> {
   render() {
     return (
       <div className="home-main">
@@ -26,15 +30,20 @@ export default class Home extends React.Component<Props> {
           </li>
         </ul>
         <div className="home-footer">
-          <a href="#i've-no-idea" title="别点，我也不晓得~">什么是时间胶囊？</a>
+          <a href="#i've-no-idea" title="别点，我也不晓得~">
+            什么是时间胶囊？
+          </a>
         </div>
       </div>
     )
   }
 
   handleClick(to) {
-    event.preventDefault();
-    console.log('route change to', to);
-    this.props.route(to);
+    event.preventDefault()
+    this.props.navigate(to)
   }
 }
+
+export default React.memo(() => (
+  <Context.Consumer>{({ navigate }) => <Home navigate={navigate} />}</Context.Consumer>
+))
