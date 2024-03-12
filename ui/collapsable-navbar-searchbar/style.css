@@ -1,3 +1,7 @@
+:root {
+  --btn-height: 40px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,9 +11,19 @@
 body {
   height: 100vh;
   display: flex;
+  flex-direction: column;
+}
+
+.container {
+  flex: 1;
+  display: flex;
   justify-content: center;
   align-items: center;
   background-color: #5290f9;
+}
+
+.container.second {
+  background-color: #775bf0;
 }
 
 .navbar {
@@ -40,12 +54,14 @@ body {
 
 .nav_item {
   padding: 0 12px;
+  cursor: pointer;
 }
 
 .nav_btn {
   position: relative;
   width: 24px;
   height: 24px;
+  cursor: pointer;
 }
 
 .nav_btn>.line {
@@ -72,4 +88,43 @@ body {
 
 .navbar.collapsed .nav_btn>.line:last-child {
   transform: translate(-50%, 5px) rotate(0);
+}
+
+
+/* searchbar */
+
+.searchbar {
+  height: var(--btn-height);
+  border-radius: 2px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 0;
+  width: 0px;
+  transition: all ease-in-out .3s;
+  border: none;
+  outline: none;
+}
+
+.search-input.active {
+  width: 200px;
+  padding: 6px 24px;
+}
+
+.search-btn {
+  height: 100%;
+  display: inline-flex;
+  width: var(--btn-height);
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.search-icon {
+  width: 20px;
+  height: 20px;
+  color: #111;
 }
