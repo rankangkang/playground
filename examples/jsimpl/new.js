@@ -1,9 +1,9 @@
-function _new(cstr, ...args) {
+function _new(ctor, ...args) {
   const obj = new Object()
   // 继承原型
-  obj.__proto__ = cstr.prototype
+  obj.__proto__ = ctor.prototype
   // 继承属性
-  const res = cstr.apply(obj, args)
+  const res = ctor.apply(obj, args)
 
   return typeof res === 'object' ? res : obj
 }

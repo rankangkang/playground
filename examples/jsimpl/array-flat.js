@@ -18,3 +18,20 @@ Array._flat = function(target) {
 const arr = [1, [2, [3, 4, 5, [6,7], 8], 9], 10]
 
 console.log(Array._flat(arr))
+
+Array.__flat = function(target, level) {
+  if (level <= 0) {
+    return target
+  }
+
+  return target.reduce((res, e) => {
+    if (e instanceof Array) {
+      res.push(...Array.__flat(e, level - 1))
+    } else {
+      res.push(e)
+    }
+    return res
+  }, [])
+}
+
+console.log(Array.__flat(arr, 1))
