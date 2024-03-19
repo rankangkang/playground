@@ -187,6 +187,12 @@ importers:
 
   packages/signal: {}
 
+  packages/simple-koa:
+    devDependencies:
+      '@types/node':
+        specifier: ^20.4.9
+        version: 20.4.9
+
   packages/simple-promise: {}
 
   packages/simple-react: {}

@@ -17,6 +17,7 @@ export default class Scheduler {
     const len = this.excutingTasks.push(promiseMaker)
     const index = len - 1
     promiseMaker().then(() => {
+      console.log('end')
       this.excutingTasks.splice(index, 1)
       if (this.waitTasks.length > 0) {
         this.run(this.waitTasks.shift())
