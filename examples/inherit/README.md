@@ -8,7 +8,7 @@
 ```js
 function Parent(name) {
   this.name = name
-  Parent.prototype.greet = function() {
+  Parent.prototype.greet = function () {
     console.log(`hi, I'm ${this.name}`)
   }
 }
@@ -21,7 +21,7 @@ function Child(name, age) {
 // 类式继承：继承方法
 Child.prototype = new Parent()
 
-const c = new Child("kk", 24)
+const c = new Child('kk', 24)
 console.log(c instanceof Parent) // true
 c.greet() // hi, I'm kk
 ```
@@ -32,6 +32,7 @@ c.greet() // hi, I'm kk
 - ...
 
 Child 实例结构为：
+
 > 注：`[[prototype]]` 即为对象的 `__proto__` 属性。实例的 `__proto__` 指向方法的 `prototype`。
 
 ```js
@@ -60,7 +61,7 @@ function prototypical_inherit(obj) {
 
 function Parent(name, age) {
   this.name = name
-  Parent.prototype.greet = function() {
+  Parent.prototype.greet = function () {
     console.log(`hi, I'm ${this.name}`)
   }
 }
@@ -115,7 +116,7 @@ function Parent(name) {
   this.name = name
 }
 
-Parent.prototype.greet = function() {
+Parent.prototype.greet = function () {
   console.log(`hi, I'm ${this.name}`)
 }
 
@@ -124,7 +125,7 @@ function Child(name, age) {
   this.age = age
 }
 
-Child.prototype.sayAge = function() {
+Child.prototype.sayAge = function () {
   console.log(`${this.age}`)
 }
 

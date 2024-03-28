@@ -6,7 +6,7 @@
     "jsx": "react",
     "skipLibCheck": true,
     "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "includes": ["src"]
 }

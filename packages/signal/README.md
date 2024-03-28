@@ -23,7 +23,7 @@ const createSignal = (value) => {
   const setter = (nextValue) => {
     value = nextValue
     // 执行订阅
-    subscribers.forEach(subscriber => subscriber?.())
+    subscribers.forEach((subscriber) => subscriber?.())
   }
 
   return [getter, setter]
@@ -91,9 +91,7 @@ const [getCount, setCount] = createSignal(0)
 createEffect(() => {
   const count = getCount()
   console.log('count', count)
-})
-
-+ setCount(10086)
+}) + setCount(10086)
 ```
 
 接着，我们使用 setter（即 setCount）设置新的 count 值，此时 setter 将会触发注册在 signal subscribers 中的全部 execute 方法。
@@ -106,9 +104,7 @@ createEffect(() => {
   console.log('count', count)
 })
 
-setCount(10086)
-
-+ setTimeout(() => setCount(11), 3000)
+setCount(10086) + setTimeout(() => setCount(11), 3000)
 ```
 
 再次使用 setter 设置新值时，因为 execute 方法已经被注册到 subscribers 中，故会再次被执行。

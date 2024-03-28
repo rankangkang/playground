@@ -21,6 +21,9 @@
       "prettier --write"
     ]
   },
+  "dependencies": {
+    "koa": "^2.14.2"
+  },
   "devDependencies": {
     "@cmkk/eslint-config-lib": "^0.0.2",
     "@cmkk/prettier-config": "^0.0.2",
@@ -39,8 +42,5 @@
     "vite": "^4.4.5",
     "vite-plugin-dts": "^3.5.1",
     "vitest": "^0.33.0"
-  },
-  "dependencies": {
-    "koa": "^2.14.2"
   }
 }

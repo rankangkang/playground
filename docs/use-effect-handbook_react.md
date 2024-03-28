@@ -6,14 +6,14 @@
 
 这很好，但是在当我使用`useEffect`时，总觉得有点不得劲儿，总觉得有些地方很迷惑，比如：
 
-* 如何使用`useEffect`模拟`componentDidMount`生命周期？**🤔**
-* 如何优雅地在`useEffect`内请求数据呢？为什么有时候会出现无限请求的情况？**🤔**
-* 我有必要把所有在effect里用到的数据加到依赖么？**🤔**
-* 我应该把函数当作`useEffect`依赖么？**🤔**
-* 为什么有时候在`useEffect`里拿到了旧的数据？(明我刚刚`setXxx`)**🤔**
-* `useEffect`和`useLayuoutEffect`的相比浏览器渲染的确切执行时机到底是什么？**🤔**
-* effect在什么时间点清理？**🤔**
-* ...
+- 如何使用`useEffect`模拟`componentDidMount`生命周期？**🤔**
+- 如何优雅地在`useEffect`内请求数据呢？为什么有时候会出现无限请求的情况？**🤔**
+- 我有必要把所有在effect里用到的数据加到依赖么？**🤔**
+- 我应该把函数当作`useEffect`依赖么？**🤔**
+- 为什么有时候在`useEffect`里拿到了旧的数据？(明我刚刚`setXxx`)**🤔**
+- `useEffect`和`useLayuoutEffect`的相比浏览器渲染的确切执行时机到底是什么？**🤔**
+- effect在什么时间点清理？**🤔**
+- ...
 
 在很长的一段时间内，我深受以上问题的困扰。在我阅读Dan的[useEffect 完整指南](https://overreacted.io/zh-hans/a-complete-guide-to-useeffect/)后，我不禁惊呼”索嘚斯内~“。
 
@@ -33,11 +33,11 @@
 
 这里的”切片“不同于其他的编程语言中的切片（面向切片编程等）。
 
-*你可以把整个应用想象成一个土豆，react是一把刀，每一次渲染都是刀切割土豆后形成的一片。*
+_你可以把整个应用想象成一个土豆，react是一把刀，每一次渲染都是刀切割土豆后形成的一片。_
 
-> * 每一次渲染都有它自己的props与state
-> * 每一次渲染都有它自己的事件处理函数
-> * 每一次渲染都有它自己的effects
+> - 每一次渲染都有它自己的props与state
+> - 每一次渲染都有它自己的事件处理函数
+> - 每一次渲染都有它自己的effects
 
 Dan的博客中如是说。你可以把props/state、事件处理函数和effects等这些数据，视作土豆片上的物质。当切割（渲染）这个动作完成之后，切片上的所有物质（数据）都已不变。
 
@@ -47,15 +47,13 @@ Dan的博客中如是说。你可以把props/state、事件处理函数和effect
 
 ```jsx
 function Counter() {
-  const [count, setCount] = useState(0); // <--
+  const [count, setCount] = useState(0) // <--
   return (
     <div>
       <p>You clicked {count} times</p> {/* <-- */}
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
-  );
+  )
 }
 ```
 
@@ -75,40 +73,38 @@ const count = 42; // <--
 ```jsx
 // 第一次渲染
 function Counter() {
-  const count = 0; // Returned by useState()
+  const count = 0 // Returned by useState()
   // ...
-  <p>You clicked {count} times</p>
+  ;<p>You clicked {count} times</p>
   // ...
 }
 
 // 点击过后的第二次渲染
 function Counter() {
-  const count = 1; // Returned by useState()
+  const count = 1 // Returned by useState()
   // ...
-  <p>You clicked {count} times</p>
+  ;<p>You clicked {count} times</p>
   // ...
 }
 
 // 再次点击的第三次渲染
 function Counter() {
-  const count = 2; // Returned by useState()
+  const count = 2 // Returned by useState()
   // ...
-  <p>You clicked {count} times</p>
+  ;<p>You clicked {count} times</p>
   // ...
 }
 ```
 
->  **在状态更新的时候，React都会重新渲染组件。每一次渲染都能拿到独立的状态，它们的值是函数中的一个常量，在一次渲染中不可变。**
+> **在状态更新的时候，React都会重新渲染组件。每一次渲染都能拿到独立的状态，它们的值是函数中的一个常量，在一次渲染中不可变。**
 
 所以，`count`就是一个简简单单的、没有做任何数据绑定或监听的数据。
 
 React做的仅仅是在渲染是插入了`count`(作为值)这个数据。当状态改变（`setCount`）时，react会带着改编后的值再次调用组件（将`count`作为值插入）。然后React更新DOM。
 
-> * 任意一次渲染中的数据都不会随着时间改变。
->
-> * 渲染输出的变化是由于组件的一次次调用引起的。
->
-> * 每一次渲染包含的数据独立于其他。
+> - 任意一次渲染中的数据都不会随着时间改变。
+> - 渲染输出的变化是由于组件的一次次调用引起的。
+> - 每一次渲染包含的数据独立于其他。
 
 ---
 
@@ -116,33 +112,29 @@ React做的仅仅是在渲染是插入了`count`(作为值)这个数据。当状
 
 ```jsx
 function Counter() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
 
   function handleAlertClick() {
     setTimeout(() => {
-      alert('You clicked on: ' + count);
-    }, 3000);
+      alert('You clicked on: ' + count)
+    }, 3000)
   }
 
   return (
     <div>
       <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
-      <button onClick={handleAlertClick}>
-        Show alert
-      </button>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+      <button onClick={handleAlertClick}>Show alert</button>
     </div>
-  );
+  )
 }
 ```
 
 以上代码的组件，按照下面的步骤操作：
 
-* 点击`Click me`增加到3
-* 点击`Show alert`
-* 在3s内点击`Click me`增加到5
+- 点击`Click me`增加到3
+- 点击`Show alert`
+- 在3s内点击`Click me`增加到5
 
 那怎么定时器结束后的`alert`会显示几呢？3（点击时状态）还是5（实时状态）？
 
@@ -162,20 +154,20 @@ function Counter() {
 
 ```jsx
 function sayHi(person) {
-  const name = person.name;  
+  const name = person.name
   setTimeout(() => {
-    alert('Hello, ' + name);
-  }, 3000);
+    alert('Hello, ' + name)
+  }, 3000)
 }
 
-let someone = {name: 'Dan'};
-sayHi(someone);
+let someone = { name: 'Dan' }
+sayHi(someone)
 
-someone = {name: 'Yuzhi'};
-sayHi(someone);
+someone = { name: 'Yuzhi' }
+sayHi(someone)
 
-someone = {name: 'Dominic'};
-sayHi(someone);
+someone = { name: 'Dominic' }
+sayHi(someone)
 ```
 
 **在`sayHi`函数中，局部常量`name`会和某次调用中的`person`关联。**因为这个常量是局部的，所以每一次调用都是相互独立的。结果就是，当定时器回调触发的时候，每一个alert都会弹出它拥有的`name`。
@@ -185,36 +177,36 @@ sayHi(someone);
 ```jsx
 // 第一次点击
 function Counter() {
-  const count = 0; // Returned by useState()
+  const count = 0 // Returned by useState()
   // ...
   function handleAlertClick() {
     setTimeout(() => {
-      alert('You clicked on: ' + count);
-    }, 3000);
+      alert('You clicked on: ' + count)
+    }, 3000)
   }
   // ...
 }
 
 // 第二次点击
 function Counter() {
-  const count = 1; // Returned by useState()
+  const count = 1 // Returned by useState()
   // ...
   function handleAlertClick() {
     setTimeout(() => {
-      alert('You clicked on: ' + count);
-    }, 3000);
+      alert('You clicked on: ' + count)
+    }, 3000)
   }
   // ...
 }
 
 // 第三次点击
 function Counter() {
-  const count = 2; // Returned by useState()
+  const count = 2 // Returned by useState()
   // ...
   function handleAlertClick() {
     setTimeout(() => {
-      alert('You clicked on: ' + count);
-    }, 3000);
+      alert('You clicked on: ' + count)
+    }, 3000)
   }
   // ...
 }
@@ -230,11 +222,11 @@ function Counter() {
   // ...
   function handleAlertClick() {
     setTimeout(() => {
-      alert('You clicked on: ' + 0);
-    }, 3000);
+      alert('You clicked on: ' + 0)
+    }, 3000)
   }
   // ...
-  <button onClick={handleAlertClick} /> // The one with 0 inside
+  ;<button onClick={handleAlertClick} /> // The one with 0 inside
   // ...
 }
 
@@ -243,11 +235,11 @@ function Counter() {
   // ...
   function handleAlertClick() {
     setTimeout(() => {
-      alert('You clicked on: ' + 1);
-    }, 3000);
+      alert('You clicked on: ' + 1)
+    }, 3000)
   }
   // ...
-  <button onClick={handleAlertClick} /> // The one with 1 inside
+  ;<button onClick={handleAlertClick} /> // The one with 1 inside
   // ...
 }
 
@@ -256,11 +248,11 @@ function Counter() {
   // ...
   function handleAlertClick() {
     setTimeout(() => {
-      alert('You clicked on: ' + 2);
-    }, 3000);
+      alert('You clicked on: ' + 2)
+    }, 3000)
   }
   // ...
-  <button onClick={handleAlertClick} /> // The one with 2 inside
+  ;<button onClick={handleAlertClick} /> // The one with 2 inside
   // ...
 }
 ```
@@ -270,7 +262,6 @@ function Counter() {
 **在任意一次渲染中，props和state是始终保持不变的。**如果props和state在不同的渲染中是相互独立的，那么使用到它们的任何值也是独立的（包括事件处理函数）。它们都“属于”一次特定的渲染。
 
 > **注**：上文指出，每一次渲染的props与state均是不可变的（他们被const声明为常量），这样使得我们在整个完整的渲染过程中访问到的props与state保持不变（安全）。同时这也意味着在我们**通过`setXxx`修改state时，不推荐直接改变state，而是应该通过生成一个新的对象（`setXxx(newObj)`）修改state**，如此便能保证整个（一次）渲染中的state不会被污染。
-
 
 ---
 
@@ -321,8 +312,8 @@ class组件版本的会显示3还是5呢？去试试吧。
 handleAlertClick = () => {
   const count = this.state.count
   setTimeout(() => {
-    alert('You clicked on: ' + count);
-  }, 3000);
+    alert('You clicked on: ' + count)
+  }, 3000)
 }
 
 // ...
@@ -342,18 +333,16 @@ handleAlertClick = () => {
 
 ```jsx
 function Counter() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
   useEffect(() => {
-    document.title = `You clicked ${count} times`; // <--
-  });
+    document.title = `You clicked ${count} times` // <--
+  })
   return (
     <div>
       <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
     </div>
-  );
+  )
 }
 ```
 
@@ -370,9 +359,9 @@ function Counter() {
   useEffect(
     // Effect function from first render
     () => {
-      document.title = `You clicked ${0} times`;
-    }
-  );
+      document.title = `You clicked ${0} times`
+    },
+  )
   // ...
 }
 
@@ -382,9 +371,9 @@ function Counter() {
   useEffect(
     // Effect function from second render
     () => {
-      document.title = `You clicked ${1} times`;
-    }
-  );
+      document.title = `You clicked ${1} times`
+    },
+  )
   // ...
 }
 
@@ -394,16 +383,16 @@ function Counter() {
   useEffect(
     // Effect function from third render
     () => {
-      document.title = `You clicked ${2} times`;
-    }
-  );
+      document.title = `You clicked ${2} times`
+    },
+  )
   // ..
 }
 ```
 
 React会记住你提供的effect函数，并且会在deps改变且更改作用于DOM并让浏览器绘制屏幕后去调用它。
 
-所以虽然我们说的是一个 *effect*，但其实每次渲染都是一个*不同的函数* — 并且每个effect函数“看到”的props和state都来自于它属于的那次特定渲染。——它们看似是同一个，实则不是。
+所以虽然我们说的是一个 _effect_，但其实每次渲染都是一个*不同的函数* — 并且每个effect函数“看到”的props和state都来自于它属于的那次特定渲染。——它们看似是同一个，实则不是。
 
 > 为了确保我们已经有了扎实的理解，我们再回顾一下第一次的渲染过程：
 >
@@ -416,7 +405,7 @@ React会记住你提供的effect函数，并且会在deps改变且更改作用�
 > - **React:** 好的， 我现在开始运行给我的effect
 >   - 运行 `() => { document.title = 'You clicked 0 times' }`。
 >
-> ------
+> ---
 >
 > 现在我们回顾一下我们点击之后发生了什么：
 >
@@ -465,39 +454,37 @@ useEffect(async () => {
 ```jsx
 useEffect(() => {
   async function getInitData() {
-      const res = await getData()
+    const res = await getData()
   }
-  getInitData()	// 这是被允许的
+  getInitData() // 这是被允许的
 }, [])
 ```
 
 > `[]`表示effect没有使用任何React数据流里的值，因此该effect仅被调用一次是安全的。`[]`同样也是一类常见问题的来源，也即你以为没使用数据流里的值但其实使用了。你需要学习一些策略（主要是`useReducer` 和 `useCallback`）来移除这些effect依赖，而不是错误地忽略它们。
 
-
-
 ### **🤔**为什么有时候会出现无限请求的情况？
 
 这个通常发生于下列情况：
 
-* 你在effect里做数据请求并且没有设置effect依赖参数。
+- 你在effect里做数据请求并且没有设置effect依赖参数。
 
   ```jsx
   useEffect(() => {
     async function getInitData() {
-        const res = await getData()
+      const res = await getData()
     }
     getInitData()
   })
   ```
 
-* 在useEffect内请求数据并以此改变state，同时将state置于useEffect的依赖参数deps内。
+- 在useEffect内请求数据并以此改变state，同时将state置于useEffect的依赖参数deps内。
 
   ```jsx
   const [state, setState] = useState({})
   useEffect(() => {
     async function getInitData() {
       const res = await getData()
-      if(res) {
+      if (res) {
         setState(res)
       }
     }
@@ -536,9 +523,9 @@ Dan如是说，真巧，我也是:smile:。
 
 #### 诚实告知依赖的方法
 
-* **在依赖中包含所有在effect中用到的组件中的值**。
+- **在依赖中包含所有在effect中用到的组件中的值**。
 
-* **修改effect内部的代码以确保它包含的值只会在需要的时候发生变更**
+- **修改effect内部的代码以确保它包含的值只会在需要的时候发生变更**
 
   这个不必多说，懂的都懂。:satisfied:
 
@@ -573,7 +560,7 @@ const [count, setCount] = useState(0)
 
 useEffect(() => {
   const timer = setTimeout(() => {
-    setCount(c => c + 1)
+    setCount((c) => c + 1)
   }, 1000) // 1s 后 count + 1
 }, [])
 
@@ -590,7 +577,7 @@ const [count, setCount] = useState(0)
 
 useEffect(() => {
   const timer = setInterval(() => {
-    setCount(c => c + step)
+    setCount((c) => c + step)
   }, 1000) // 每1s count + step
   return () => clearInterval(timer)
 }, [step])
@@ -606,16 +593,19 @@ useEffect(() => {
 
 ```jsx
 const step = props.step // step来自props
-const reducer = useCallback((state, action) => {
-  switch(action) {
-    case 'add':
-      return state + step
-    case 'dec':
-      return state - step
-    default:
-      return state
-  }
-}, [step])
+const reducer = useCallback(
+  (state, action) => {
+    switch (action) {
+      case 'add':
+        return state + step
+      case 'dec':
+        return state - step
+      default:
+        return state
+    }
+  },
+  [step],
+)
 const [count, dispatch] = useReducer(reducer, 0)
 
 useEffect(() => {
@@ -630,7 +620,7 @@ useEffect(() => {
 
 所以上面例子中不再需要重新订阅定时器。问题解决
 
-<u>*（你可以从依赖中去除`dispatch`, `setState`, 和`useRef`包裹的值因为React会确保它们是静态的。不过你设置了它们作为依赖也没什么问题。）*</u>
+<u>_（你可以从依赖中去除`dispatch`, `setState`, 和`useRef`包裹的值因为React会确保它们是静态的。不过你设置了它们作为依赖也没什么问题。）_</u>
 
 ---
 
@@ -674,20 +664,20 @@ useEffect(() => {
 
 可行的解决方案有一下三个：
 
-* 将仅有某个effect使用的函数移入该effect内
+- 将仅有某个effect使用的函数移入该effect内
 
   ```jsx
   // ...
   useEffect(() => {
     const getData = async () => {
       // 获取数据
-  	}
+    }
     getData()
   }, [getData])
   // ...
   ```
 
-* 将需要逻辑复用的函数用useCallback包裹
+- 将需要逻辑复用的函数用useCallback包裹
 
   `useCallback`本质上是添加了一层依赖检查。它以另一种方式解决了问题 - **我们使函数本身只在需要的时候才改变，而不是去掉对函数的依赖。**
 
@@ -695,26 +685,24 @@ useEffect(() => {
   const getData = useCallback(async () => {
     // 获取数据
   }, [])
-  
+
   useEffect(() => {
     getData()
   }, [getData])
   ```
 
-* 将未使用function组件内的数据的函数移到function外
+- 将未使用function组件内的数据的函数移到function外
 
   ```jsx
   const getData = async () => {
-  	// 获取数据
+    // 获取数据
   }
 
   const Demo = () => {
     useEffect(() => {
       getData()
     }, [])
-    return (
-      <div>{/* code here */}</div>
-    )
+    return <div>{/* code here */}</div>
   }
   ```
 
@@ -760,8 +748,8 @@ useEffect(() => {
 
 我们可以从中提炼出一些信息：
 
-* 赋值给`useEffect`的函数会在组件**渲染到屏幕之后、下一次渲染之前**执行，react将在组件更新前刷新上一轮的effect。
-* `useLayoutEffect`会在所有的DOM变更之后同步调用effect。可以用它来读取DOM并同步触发重渲染。在浏览器绘制之前，`useLayoutEffect`内部的更新计划将被同步刷新。
+- 赋值给`useEffect`的函数会在组件**渲染到屏幕之后、下一次渲染之前**执行，react将在组件更新前刷新上一轮的effect。
+- `useLayoutEffect`会在所有的DOM变更之后同步调用effect。可以用它来读取DOM并同步触发重渲染。在浏览器绘制之前，`useLayoutEffect`内部的更新计划将被同步刷新。
 
 ### **🤔**effect在什么时间点清理？
 
@@ -771,26 +759,26 @@ React官方文档中有解释：
 >
 > ```jsx
 > useEffect(() => {
->   const subscription = props.source.subscribe();
+>   const subscription = props.source.subscribe()
 >   return () => {
 >     // 清除订阅
->     subscription.unsubscribe();
->   };
-> });
+>     subscription.unsubscribe()
+>   }
+> })
 > ```
 >
 > 为防止内存泄漏，清除函数会在组件卸载前执行。另外，如果组件多次渲染（通常如此），则**在执行下一个 effect 之前，上一个 effect 就已被清除**。在上述示例中，意味着组件的每一次更新都会创建新的订阅。
 
 看完，让我们假设：
 
-* 第一次渲染时 `props = { id: 10 }`
-* 第二次渲染时`props = { id: 20 }`
+- 第一次渲染时 `props = { id: 10 }`
+- 第二次渲染时`props = { id: 20 }`
 
 你很有可能认为发生了下面的事：
 
-* React 清除了 `{id: 10}`的effect。
-* React 渲染`{id: 20}`的UI。
-* React 运行`{id: 20}`的effect。
+- React 清除了 `{id: 10}`的effect。
+- React 渲染`{id: 20}`的UI。
+- React 运行`{id: 20}`的effect。
 
 其实，刚看完官方文档的解释的我也是这么认为的😂。
 
@@ -807,13 +795,13 @@ React官方文档中有解释：
 
 这是为什么呢？为什么不能是我们提出的第一种可能呢？如果清除上一次的effect发生在props变成`{id: 20}`之后，那它为什么还能“看到”旧的`{id: 10}`？答案隐藏在前文。
 
-> *组件内的每一个函数（包括事件处理函数，effects，定时器或者API调用等等）会捕获定义它们的那次渲染中的props和state。*
+> _组件内的每一个函数（包括事件处理函数，effects，定时器或者API调用等等）会捕获定义它们的那次渲染中的props和state。_
 
 effect的清除并不会读取最新的props，它只能读取到它那次渲染中的props值。
 
 至于为什么不能是第一种可能，笔者现在还不是很清楚😂。
 
-*（可能是为了避免 <u>effect清除后与再次运行effect之间造成的空挡</u> 可能引发的问题？）*
+_（可能是为了避免 <u>effect清除后与再次运行effect之间造成的空挡</u> 可能引发的问题？）_
 
 ## 写在最后
 
@@ -822,5 +810,6 @@ effect的清除并不会读取最新的props，它只能读取到它那次渲染
 但我还是坚持使用现在这个标题，因为我的确从中领悟到一些之前未曾理解的React Hooks工作原理。
 
 ---
+
 最后，如果你还是看不懂这篇文章，我推荐你去看Dan的[useEffect 完整指南](https://overreacted.io/zh-hans/a-complete-guide-to-useeffect/)，写得非常好。
 希望你也能在看完之后惊呼“索嘚斯内”~~😊

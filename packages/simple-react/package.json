@@ -2,16 +2,16 @@
   "name": "@pg/simple-react",
   "version": "1.0.0",
   "description": "",
-  "main": "simple-react.js",
-  "types": "simple-react.d.ts",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "exports": {
     "import": "./simple-react.js",
     "types": "./simple-react.d.ts"
   },
+  "main": "simple-react.js",
+  "types": "simple-react.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }

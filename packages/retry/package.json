@@ -2,17 +2,17 @@
   "name": "@pg/retry",
   "version": "1.0.0",
   "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "type": "module",
-  "main": "index.js",
-  "types": "index.d.ts",
   "exports": {
     "import": "./index.js",
     "types": "./index.d.ts"
   },
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "node ./index.spec.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }

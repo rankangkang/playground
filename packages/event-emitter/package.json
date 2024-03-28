@@ -2,12 +2,12 @@
   "name": "@pg/event-emitter",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "index.js",
   "scripts": {
     "test": "node ./index.spec.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }

@@ -72,9 +72,6 @@ class P {
           reject(error)
         }
       })
-
-      // TODO: resolve 其返回值
-      // TODO: reject 其返回值
     })
   }
 }
