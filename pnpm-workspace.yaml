@@ -1,4 +1,4 @@
 packages:
-  - 'examples/*'
+  - 'packages/utools/*'
+  - 'packages/frameworks/*'
   - 'packages/*'
-  - 'ui/*'

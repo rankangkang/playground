@@ -72,7 +72,7 @@ export function createKeepAlive() {
 
     // unmount 时将移出的元素 append 回来
     const unregister = useCallback((id: ID) => {
-      return new Promise((resolve => {
+      return new Promise((resolve) => {
         try {
           setState((state) => {
             const nextState = { ...state }
@@ -93,7 +93,7 @@ export function createKeepAlive() {
         } catch (error) {
           console.error(error)
         }
-      }))
+      })
     }, [])
 
     const drop = useCallback((id: ID) => {
