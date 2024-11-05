@@ -60,6 +60,12 @@ importers:
         specifier: ^0.33.0
         version: 0.33.0
 
+  examples/immutable:
+    dependencies:
+      immutable:
+        specifier: ^5.0.0
+        version: 5.0.0
+
   packages/frameworks/simple-koa:
     devDependencies:
       '@types/node':
@@ -3597,6 +3603,10 @@ packages:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
     engines: {node: '>= 4'}
     dev: true
+
+  /immutable@5.0.0:
+    resolution: {integrity: sha512-6ooCHBvtm9B06fFLW2p0VjKVryK20YgWN04Pju2Tq/L6UP4K/vMj4AzsJs9WQy1wiN80oXl3hSS8unYjqA7vOQ==}
+    dev: false
 
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
