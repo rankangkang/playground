@@ -1,10 +1,15 @@
 function _new(ctor, ...args) {
-  const obj = new Object()
-  // 继承原型
-  obj.__proto__ = ctor.prototype
+  /**
+   * 以构造器的原型为原型创建一个对象
+   * 隐含继承原型这一步步骤
+   * @example
+   * obj.__proto__ = ctor.prototype
+   */
+  const obj = Object.create(ctor.prototype)
+
   // 继承属性
   const res = ctor.apply(obj, args)
-
+  // 返回值
   return typeof res === 'object' ? res : obj
 }
 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser render</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="circle transform"></div>
+    <div class="circle position"></div>
+  </div>
+  <button onclick="delay(2000)">同步延时2s</button>
+  <button onclick="checkTransform()">检查 transform 元素信息</button>
+  <style>
+    .container {
+      position: relative;
+      height: 400px;
+    }
+
+    .circle {
+      width: 100px;
+      height: 100px;
+      background-color: #f00;
+      border-radius: 50%;
+    }
+
+    .transform {
+      animation: move-transform 2s infinite alternate;
+    }
+
+    .position {
+      position: absolute;
+      top: 100px;
+      left: 0px;
+      animation: move-position 2s infinite alternate;
+    }
+
+    @keyframes move-transform {
+      to {
+        transform: translate(100px);
+      }
+    }
+
+    @keyframes move-position {
+      to {
+        left: 100px;
+      }
+    }
+  </style>
+  <script>
+    // 通过 transform 移动元素，不会触发重排和重绘
+    // 通过 position 移动元素，会触发重排和重绘
+    const circleTransform = document.querySelector('.circle.transform');
+    const circlePosition  = document.querySelector('.circle.position');
+
+    function delay(time) {
+      const start = Date.now();
+      while (Date.now() - start < time) {}
+    }
+
+    function checkTransform() {
+      console.log('transform 元素信息 getBoundingClientRect：', circleTransform.getBoundingClientRect());
+      console.log('transform 元素信息：', circleTransform.clientHeight, circleTransform.offsetHeight, circleTransform.scrollHeight);
+    }
+  </script>
+</body>
+
+</html>
