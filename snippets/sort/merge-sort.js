@@ -4,6 +4,7 @@
  * @param {number[]} arr
  * @param {number} ll
  * @param {number} rr
+ * @returns {number[]}
  */
 function mergeSort(arr, ll, rr) {
   ll = ll || 0
@@ -24,6 +25,7 @@ function mergeSort(arr, ll, rr) {
  * 归并两个数组，返回一个数组 c
  * @param {number[]} a
  * @param {number[]} b
+ * @returns {number[]}
  */
 mergeSort.merge = function (a, b) {
   let i = 0
