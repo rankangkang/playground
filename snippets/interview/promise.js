@@ -34,8 +34,8 @@ class P {
       typeof onRejectCallback === 'function'
         ? onRejectCallback
         : (r) => {
-            throw r
-          }
+          throw r
+        }
 
     const self = this
     if (self.status === 'fulfilled') {

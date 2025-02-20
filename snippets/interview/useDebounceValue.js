@@ -14,28 +14,3 @@ function useDebounceValue(value, delay = 0) {
 
   return v
 }
-
-// 获取防抖的值，防抖值改变不触发重渲染
-function useDebouncedValue(value, delay) {
-  const [v, setV] = React.useState()
-
-  const run = useMemo(() => {
-    let timer = null
-    let result
-    return function (arg) {
-      clearTimeout(timer)
-
-      timer = setTimeout(() => {
-        result = arg
-      }, delay)
-
-      return result
-    }
-  }, [delay])
-
-  useEffect(() => {
-    setV(run(value))
-  }, [run, value])
-
-  return v
-}
