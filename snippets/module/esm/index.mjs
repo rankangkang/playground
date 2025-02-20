@@ -1,7 +1,7 @@
 import { count, addCount } from './count.mjs'
 
-console.log('index', count) // 0
+console.log('step 1', count) // 0
 
 addCount()
 
-console.log('index', count) // 1
+console.log('step 2', count) // 1
