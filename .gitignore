@@ -1,3 +1,5 @@
 **/node_modules
 **/tmp
 **/.Ds_Store
+drafts/*
+!drafts/.gitkeep
