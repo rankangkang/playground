@@ -45,3 +45,44 @@ const ps = new Array(30)
   .forEach((p) => {
     s.add(p)
   })
+
+
+// 控制并发的调度方法
+async function schedule(concurrency, ...promiseCreators) {
+  const result = [];
+  const promiseCreatorQueue = promiseCreators.map((promiseCreator, index) => ({ promiseCreator, index }));
+  let runningCount = 0;
+
+  let resolve, reject;
+  const resultPromise = new Promise((res, rej) => { resolve = res; reject = rej; });
+
+  function run() {
+    if (runningCount === 0 && promiseCreatorQueue.length === 0) {
+      resolve(result);
+      return;
+    }
+
+    while (runningCount < concurrency && promiseCreatorQueue.length) {
+      const { promiseCreator, index } = promiseCreatorQueue.shift();
+      runningCount++;
+      promiseCreator().then((res) => {
+        result[index] = res;
+        runningCount--;
+        run();
+      }).catch((err) => {
+        reject(err)
+      })
+    }
+  }
+
+  run();
+
+  return resultPromise;
+}
+
+const delay = (time) => new Promise((resolve) => setTimeout(() => resolve(time), time));
+const promiseCreators = new Array(100).fill(0).map((_, index) => () => delay(1000).then(() => {
+  console.log(index)
+}));
+
+schedule(3, ...promiseCreators)
