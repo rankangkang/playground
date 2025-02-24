@@ -155,3 +155,24 @@ function postorderTraversal(btree) {
 console.log('preorder', preorderTraversal(btree))
 console.log('inorder', inorderTraversal(btree))
 console.log('postorder', postorderTraversal(btree))
+
+// 迭代方式实现前序遍历
+// 精髓是遇到根就加入结果，然后将左右节点按顺序压入栈中，保证顺序
+function iteratePreorder(btree) {
+  const stack = [btree];
+  const res = [];
+  while (stack.length) {
+    const top = stack.pop();
+    if (!top) {
+      continue;
+    }
+    res.push(top.value)
+    stack.push(top.right)
+    stack.push(top.left)
+  }
+
+  return res;
+}
+
+console.log('iterate preorder', iteratePreorder(btree))
+
