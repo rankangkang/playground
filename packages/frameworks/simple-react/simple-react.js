@@ -85,20 +85,26 @@ function updateDom(dom, prevProps, nextProps) {
 
 export function createApp() {
   let nextUnitOfWork = null
+  /** current tree 根节点 */
   let currentRoot = null
+  /** workInProgress tree 根节点 */
   let wipRoot = null
   let deletions = null
 
   let wipFiber = null
   let hookIndex = null
 
+  // commitRoot，将 wip tree 设置为 current tree，同时执行 commit 阶段
   function commitRoot() {
     deletions.forEach(commitWork)
     commitWork(wipRoot.child)
+    // wip tree 与 current tree 交替工作，这里将 wip tree 设置为 current tree
     currentRoot = wipRoot
+    // wip 过程完成，置为空，中断 requestIdleCallback(workLoop) 所做的工作
     wipRoot = null
   }
 
+  // 根据 current tree 的 dom 属性，开始更新 dom
   function commitWork(fiber) {
     if (!fiber) {
       return
@@ -169,14 +175,17 @@ export function createApp() {
     }
   }
 
+  // 更新函数组件
   function updateFunctionComponent(fiber) {
     wipFiber = fiber
     hookIndex = 0
     wipFiber.hooks = []
+    // 取得其返回的 element，对 element 进行协调
     const children = [fiber.type(fiber.props)]
     reconcileChildren(fiber, children)
   }
 
+  // 更新 element 节点，即 div、p、span 等
   function updateHostComponent(fiber) {
     if (!fiber.dom) {
       fiber.dom = createDom(fiber)
@@ -184,6 +193,8 @@ export function createApp() {
     reconcileChildren(fiber, fiber.props.children)
   }
 
+  // 协调过程，其实就是 diff 算法，通过 fiber node 与 ReactElement（jsx 描述的 dom 结构）进行比对，找到最小的更新路径
+  // workInProgress tree 其实为 current tree 的 alternate 属性指向的树/节点
   function reconcileChildren(wipFiber, elements) {
     let index = 0
     let oldFiber = wipFiber.alternate && wipFiber.alternate.child
@@ -236,6 +247,7 @@ export function createApp() {
 
   return {
     render(element, container) {
+      // 初始渲染，current tree 为空，创建一个 wip tree 根节点，开始 reconcile 过程构建 wip tree
       wipRoot = {
         dom: container,
         props: {
@@ -250,25 +262,32 @@ export function createApp() {
       requestIdleCallback(workLoop)
     },
     useState(initial) {
+      // current tree fiber hooks
       const oldHook =
         wipFiber.alternate && wipFiber.alternate.hooks && wipFiber.alternate.hooks[hookIndex]
+
       const hook = {
+        // 有值则取值，没有则取初始值
         state: oldHook ? oldHook.state : typeof initial === 'function' ? initial() : initial,
         queue: [],
       }
 
+      // ?? 这一步什么意思？
       const states = oldHook ? oldHook.queue : []
       states.forEach((state) => {
         hook.state = typeof state === 'function' ? state(hook.state) : state
       })
 
       const setState = (state) => {
+        // 把更新值的操作压入队列，后续按顺序更新 state，模拟一次渲染多次 修改 state 的问题？
         hook.queue.push(state)
+        // 更新 workInProgress tree（从 current tree 复制而来）
         wipRoot = {
           dom: currentRoot.dom,
           props: currentRoot.props,
           alternate: currentRoot,
         }
+        // 触发重新渲染（workLoop 一直由 requestIdleCallback 调度着，一帧至少一次）
         nextUnitOfWork = wipRoot
         deletions = []
       }
