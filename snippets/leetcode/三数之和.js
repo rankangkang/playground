@@ -12,12 +12,13 @@ let threeNumSum = function (nums, targetSum = 0) {
   nums = nums.sort((a, b) => a - b)
   // 元素依次选中为信标，再在信标右侧（均比信标大）两端通过夹逼进行选择，直至和为0
   for (let pivot = 0; pivot < nums.length; pivot++) {
+    // 信标大于 0，右侧数据的和不可能还为 0，直接跳过
     if (nums[pivot] > targetSum) {
       break
     }
 
+    // 去重
     if (pivot > 0 && nums[pivot] === nums[pivot - 1]) {
-      // 去重
       continue
     }
 
