@@ -47,3 +47,34 @@ console.timeEnd('climb-stairs');
 console.time('climb-stairs2');
 console.log(solution2(100));
 console.timeEnd('climb-stairs2');
+
+
+/**
+ * solution3
+ */
+const cache = new Map()
+cache.set(1, 1)
+cache.set(2, 2)
+
+const getCache = (key, getValue) => {
+  let val
+  if (!cache.has(key)) {
+    val = getValue()
+    cache.set(key, val)
+  } else {
+    val = cache.get(key)
+  }
+
+  return val
+}
+
+var climbStairs = function (n) {
+  if (cache.has(n)) {
+    return cache.get(n)
+  }
+
+  let sub1 = getCache(n - 1, () => climbStairs(n - 1))
+  let sub2 = getCache(n - 2, () => climbStairs(n - 2))
+
+  return sub1 + sub2
+};
