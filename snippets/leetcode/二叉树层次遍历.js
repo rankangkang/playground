@@ -11,98 +11,27 @@ class TreeNode {
  * @param {TreeNode} root
  * @return {number[][]}
  */
-let levelOrder = function (root) {
-  const q = []
-  const result = []
-  // 根节点入队
-  if (root) {
-    q.push(root)
-  }
-  while (q.length !== 0) {
-    const nextQ = [] // 临时队列，记录下一层级节点
-    const levelR = [] // 临时结果，记录一个层级的遍历结果
+var levelOrder = function (root) {
+  const r = []
+  // 采用队列层次遍历
+  const queue = [root]
 
-    // 清空队列：遍历一个层级的所有节点
-    while (q.length !== 0) {
-      const node = q.shift()
-      levelR.push(node.val)
-      if (node.left) {
-        nextQ.push(node.left)
+  while (queue.length > 0) {
+    const levelSize = queue.length;
+    const levelItem = []
+    for (let i = 0; i < levelSize; i++) {
+      const target = queue.shift()
+      levelItem.push(target.val)
+
+      if (target.left) {
+        queue.push(target.left)
       }
-      if (node.right) {
-        nextQ.push(node.right)
+      if (target.right) {
+        queue.push(target.right)
       }
     }
-
-    q.push(...nextQ)
-    result.push(levelR)
+    r.push(levelItem)
   }
 
-  return result
-}
-
-/**
- * 二叉树层级遍历2
- * @param {TreeNode} root
- * @return {number[][]}
- */
-let levelOrder2 = function (root) {
-  if (!root) {
-    return []
-  }
-  const q = []
-  const result = []
-  // 根节点入队
-  q.push(root)
-  let nextQ = [] // 临时队列，记录下一层级节点
-  let levelR = [] // 临时结果，记录一个层级的遍历结果
-  while (q.length !== 0) {
-    // 清空队列：遍历一个层级的所有节点
-    const node = q.shift()
-    levelR.push(node.val)
-    if (node.left) {
-      nextQ.push(node.left)
-    }
-    if (node.right) {
-      nextQ.push(node.right)
-    }
-
-    if (q.length === 0) {
-      q.push(...nextQ)
-      result.push(levelR)
-      nextQ = []
-      levelR = []
-    }
-  }
-
-  return result
-}
-
-let levelOrder3 = function (root) {
-  if (!root) {
-    return []
-  }
-  const q = []
-  const result = []
-  // 根节点入队
-  q.push(root)
-  while (q.length !== 0) {
-    // 清空队列：遍历一个层级的所有节点
-    let len = q.length
-    for (let i = 0; i < len; i++) {
-      const node = q[i]
-      if (node.left) {
-        q.push(node.left)
-      }
-      if (node.right) {
-        q.push(node.right)
-      }
-    }
-
-    const popNodes = q.splice(0, len)
-    const value = popNodes.map((item) => item.val)
-    result.push(value)
-  }
-
-  return result
-}
+  return r;
+};
