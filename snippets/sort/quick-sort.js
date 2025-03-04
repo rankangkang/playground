@@ -126,6 +126,7 @@ console.timeEnd('quick-sort non-in-place')
 
 console.time('quick-sort in-place')
 quickSort.inPlace(arr)
+console.log(arr)
 console.timeEnd('quick-sort in-place')
 // console.log(arr)
 
