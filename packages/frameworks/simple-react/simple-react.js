@@ -156,6 +156,8 @@ export function createApp() {
     requestIdleCallback(workLoop)
   }
 
+  // 处理 fiber，返回下一个待处理的 fiber
+  // 这里决定了处理顺序：先处理子节点，再处理兄弟节点，最后处理父节点
   function performUnitOfWork(fiber) {
     const isFunctionComponent = fiber.type instanceof Function
     if (isFunctionComponent) {
@@ -272,14 +274,16 @@ export function createApp() {
         queue: [],
       }
 
-      // ?? 这一步什么意思？
-      const states = oldHook ? oldHook.queue : []
-      states.forEach((state) => {
-        hook.state = typeof state === 'function' ? state(hook.state) : state
+      // 上一次更新 比如 setState 这些等等，放入 queue 中，这里从 queue 离取出来，执行更新状态
+      const nextStates = oldHook ? oldHook.queue : []
+      nextStates.forEach((nextState) => {
+        hook.state = typeof nextState === 'function' ? nextState(hook.state) : nextState
       })
 
       const setState = (state) => {
-        // 把更新值的操作压入队列，后续按顺序更新 state，模拟一次渲染多次 修改 state 的问题？
+        // 把更新值的操作压入队列，后续按顺序更新 state，模拟批量更新的情况，如
+        // setState(1)
+        // setSTate(2)
         hook.queue.push(state)
         // 更新 workInProgress tree（从 current tree 复制而来）
         wipRoot = {
@@ -292,6 +296,7 @@ export function createApp() {
         deletions = []
       }
 
+      // 把 hook 放到 当前正在处理的 fiber 的 hooks 下，React 实现的是放到 memorizedState
       wipFiber.hooks.push(hook)
       hookIndex++
       return [hook.state, setState]
