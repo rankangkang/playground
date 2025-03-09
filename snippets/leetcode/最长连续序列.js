@@ -8,26 +8,26 @@
  * @param {number[]} nums
  * @return {number}
  */
-var longestConsecutive = function(nums) {
+let longestConsecutive = function (nums) {
   let res = 0
-  const set = new Set(nums);
+  const set = new Set(nums)
   for (const target of set) {
     if (set.has(target - 1)) {
       // target - 1 存在，则从 target - 1 开始的会更长
-      continue;
+      continue
     }
 
     // 查询 target 开始的连续序列
-    let end = target + 1;
+    let end = target + 1
     while (set.has(end)) {
-      end += 1;
+      end += 1
     }
 
     res = Math.max(res, end - target)
   }
 
-  return res;
-};
+  return res
+}
 
 /**
  * 暴力求解
