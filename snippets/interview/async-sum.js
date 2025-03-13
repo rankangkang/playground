@@ -1,6 +1,5 @@
 /** 腾讯二面面试题 */
 
-
 function asyncAdd(a, b, callback) {
   setTimeout(() => {
     callback(a + b)
@@ -39,12 +38,12 @@ async function sum(...args) {
     return args[0]
   }
 
-  let res = args[0];
+  let res = args[0]
   for (let i = 1; i < args.length; i++) {
-    res = await doAdd(res, args[i]);
+    res = await doAdd(res, args[i])
   }
 
-  return res;
+  return res
 }
 
 // 上面的 promise 版本
@@ -56,7 +55,7 @@ function sumWithoutAsync(...args) {
 
     let resPromise = Promise.resolve(args[0])
     for (let i = 1; i < args.length; i++) {
-      resPromise = resPromise.then(data => {
+      resPromise = resPromise.then((data) => {
         return doAdd(data, args[i])
       })
     }
@@ -67,8 +66,8 @@ function sumWithoutAsync(...args) {
 
 // 可优化的分治版本，用 Promise.all 求和，时间减半
 /**
- * 
- * @param  {...any} args 
+ *
+ * @param  {...any} args
  * @returns {Promise<number>}
  */
 function sumWithDivideAndConquer(...args) {
@@ -81,8 +80,11 @@ function sumWithDivideAndConquer(...args) {
   }
 
   const index = Math.floor(args.length / 2)
-  const rs = Promise.all([sumWithDivideAndConquer(...args.slice(0, index)), sumWithDivideAndConquer(...args.slice(index))])
-  return rs.then(data => {
+  const rs = Promise.all([
+    sumWithDivideAndConquer(...args.slice(0, index)),
+    sumWithDivideAndConquer(...args.slice(index)),
+  ])
+  return rs.then((data) => {
     return doAdd(...data)
   })
 }

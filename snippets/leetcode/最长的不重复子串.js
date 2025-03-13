@@ -75,24 +75,24 @@ console.timeEnd('solution2')
 /**
  * 双指针，左右指针确定范围
  * 区间跟右指针后的第一位比较，若不包含，则右指针向右滑动（不重复子串长度+1），否则移动左指针，继续刚才的价差
- * @param {string} s 
+ * @param {string} s
  */
 function solution3(s) {
   if (s.length <= 1) {
-    return s.length;
+    return s.length
   }
 
-  let r = 0;
+  let r = 0
   // 转数组，方便使用
-  const chars = s.split('');
+  const chars = s.split('')
   for (let i = 0, j = 1; j < s.length; j++) {
     while (chars.slice(i, j).includes(chars[j])) {
-      i++;
+      i++
     }
     r = Math.max(r, j - i + 1)
   }
 
-  return r;
+  return r
 }
 
 console.time('solution3')

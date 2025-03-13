@@ -1,4 +1,5 @@
-html, body{
+html,
+body {
   margin: 0;
   padding: 0;
   background-color: #f3f3f3;
@@ -13,10 +14,11 @@ li {
   list-style: none;
 }
 
-.page-icon {}
+.page-icon {
+}
 
 .section {
-  background: linear-gradient(0.5turn, #f2f2f2,#fafafa);
+  background: linear-gradient(0.5turn, #f2f2f2, #fafafa);
   margin-bottom: 20px;
 }
 
@@ -47,7 +49,8 @@ li {
   text-align: center;
 }
 
-.play-section {}
+.play-section {
+}
 
 .cats {
   display: flex;
@@ -75,7 +78,9 @@ li {
   width: 100%;
 }
 
-.listen-num, .singer, .interval {
+.listen-num,
+.singer,
+.interval {
   color: #999;
   white-space: nowrap;
   overflow: hidden;
@@ -111,7 +116,7 @@ li {
 }
 
 .cover {
-  transition: all .75s;
+  transition: all 0.75s;
   width: 100%;
 }
 
@@ -123,7 +128,7 @@ li {
   bottom: 0;
   background: #000;
   opacity: 0;
-  transition: all .75s;
+  transition: all 0.75s;
 }
 
 .play-icon {
@@ -132,7 +137,7 @@ li {
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 0;
-  transition: all .75s;
+  transition: all 0.75s;
 }
 
 .covers:hover .cover {
@@ -221,7 +226,8 @@ li {
   vertical-align: middle;
 }
 
-.name, .singer {
+.name,
+.singer {
   max-width: 200px;
   overflow: hidden;
   white-space: nowrap;

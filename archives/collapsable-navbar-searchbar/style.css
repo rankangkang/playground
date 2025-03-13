@@ -30,7 +30,7 @@ body {
   /* flex与inline-flex两者都是使子元素们弹性布局，但是如果是flex，父元素的尺寸不由子元素尺寸动态调整，不设置时默认是100%，而inline-flex则会使父元素尺寸跟随子元素们的尺寸动态调整。 */
   display: inline-flex;
   border-radius: 3px;
-  box-shadow: 0 1px 8px 0 rgba(0 0 0 / .5);
+  box-shadow: 0 1px 8px 0 rgba(0 0 0 / 0.5);
   padding: 18px;
   background-color: #fff;
 }
@@ -38,16 +38,16 @@ body {
 .nav {
   width: 300px;
   overflow: hidden;
-  transition: width .3s linear;
+  transition: width 0.3s linear;
 }
 
 .nav.collapsed {
   width: 0;
   opacity: 0;
-  transition: all .3s linear;
+  transition: all 0.3s linear;
 }
 
-.nav>ul {
+.nav > ul {
   display: flex;
   list-style: none;
 }
@@ -64,32 +64,31 @@ body {
   cursor: pointer;
 }
 
-.nav_btn>.line {
+.nav_btn > .line {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 20px;
   height: 2px;
   background-color: #5290f9;
-  transition: all .3s linear;
+  transition: all 0.3s linear;
 }
 
-.nav_btn>.line:first-child {
+.nav_btn > .line:first-child {
   transform: translate(-50%, -50%) rotate(135deg);
 }
 
-.nav_btn>.line:last-child {
+.nav_btn > .line:last-child {
   transform: translate(-50%, -50%) rotate(-135deg);
 }
 
-.navbar.collapsed .nav_btn>.line:first-child {
+.navbar.collapsed .nav_btn > .line:first-child {
   transform: translate(-50%, -5px) rotate(0);
 }
 
-.navbar.collapsed .nav_btn>.line:last-child {
+.navbar.collapsed .nav_btn > .line:last-child {
   transform: translate(-50%, 5px) rotate(0);
 }
-
 
 /* searchbar */
 
@@ -104,7 +103,7 @@ body {
 .search-input {
   padding: 0;
   width: 0px;
-  transition: all ease-in-out .3s;
+  transition: all ease-in-out 0.3s;
   border: none;
   outline: none;
 }

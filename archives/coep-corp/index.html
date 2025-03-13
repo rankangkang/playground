@@ -1,32 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CORP & COEP Demo</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CORP & COEP Demo</title>
-</head>
-
-<body>
-  <h1>CORP & COEP Demo</h1>
-  <p>目前开启了 COEP, 不设置 CORS 的资源应该会被拦截，可通过设置对应的请求头 `Access-Control-Allow-Origin: *` 解决</p>
-  <p>开启跨域隔离，只需开启 `COEP: require-corp` 以及 `COOP: same-origin` 即可</p>
-  <script src="http://localhost:4000/greet-without-cors.js"></script>
-  <script src="http://localhost:4000/greet.js"></script>
-  <button onclick="greet()">greet</button>
-  <script>
-    function greet() {
-      // 尝试通过 JavaScript 加载跨域图片
-      fetch('http://localhost:4000/greet')
-        .then(response => response.blob())
-        .then(blob => {
-          console.log('图片加载成功');
-        })
-        .catch(error => {
-          console.error('图片加载失败:', error);
-        });
-    }
-    console.log('crossOriginIsolated:', window.crossOriginIsolated)
-  </script>
-</body>
+  <body>
+    <h1>CORP & COEP Demo</h1>
+    <p>
+      目前开启了 COEP, 不设置 CORS 的资源应该会被拦截，可通过设置对应的请求头
+      `Access-Control-Allow-Origin: *` 解决
+    </p>
+    <p>开启跨域隔离，只需开启 `COEP: require-corp` 以及 `COOP: same-origin` 即可</p>
+    <script src="http://localhost:4000/greet-without-cors.js"></script>
+    <script src="http://localhost:4000/greet.js"></script>
+    <button onclick="greet()">greet</button>
+    <script>
+      function greet() {
+        // 尝试通过 JavaScript 加载跨域图片
+        fetch('http://localhost:4000/greet')
+          .then((response) => response.blob())
+          .then((blob) => {
+            console.log('图片加载成功')
+          })
+          .catch((error) => {
+            console.error('图片加载失败:', error)
+          })
+      }
+      console.log('crossOriginIsolated:', window.crossOriginIsolated)
+    </script>
+  </body>
 </html>

@@ -5,16 +5,17 @@
  * @param {number[]} nums
  * @return {number}
  */
-var majorityElement = function(nums) {
-  let count = 0, fruit = null;
+let majorityElement = function (nums) {
+  let count = 0
+  let fruit = null
   for (const x of nums) {
     if (count === 0) {
-      fruit = x;
+      fruit = x
     }
 
     // 不相同就消掉，表现为 -1
-    count += (x === fruit) ? 1 : -1;
+    count += x === fruit ? 1 : -1
   }
 
-  return fruit;
-};
+  return fruit
+}

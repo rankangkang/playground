@@ -7,12 +7,13 @@
  * @param {number[]} nums
  * @return {boolean}
  */
-var canJump = function(nums) {
-  let highest = 0, destination = nums.length - 1
+let canJump = function (nums) {
+  let highest = 0
+  let destination = nums.length - 1
   for (let i = 0; i <= highest && highest < destination; i++) {
-      // 跳最大的步数，如果这个点能跳到，那肯定能调到这个点左边的点
-      highest = Math.max(i + nums[i], highest);
+    // 跳最大的步数，如果这个点能跳到，那肯定能调到这个点左边的点
+    highest = Math.max(i + nums[i], highest)
   }
 
-  return highest >= destination;
-};
+  return highest >= destination
+}

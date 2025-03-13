@@ -1,11 +1,11 @@
 const ref = {
   value: 1,
   getValue() {
-    return this.value;
+    return this.value
   },
   inc() {
-    this.value++;
-  }
+    this.value++
+  },
 }
 
-module.exports = ref;
+module.exports = ref

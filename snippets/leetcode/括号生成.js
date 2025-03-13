@@ -2,12 +2,12 @@
  * @param {number} n
  * @return {string[]}
  */
-var generateParenthesis = function (n) {
-  let res = new Set();
+let generateParenthesis = function (n) {
+  let res = new Set()
 
   generate('', n, n)
 
-  return Array.from(res);
+  return Array.from(res)
 
   // 找规律，对生成的括号的每一个字符来看，前面的左括号都大于或等于右括号的数量，相反的方面来说，生成时剩余的左括号数量小于等于右括号数量
   function generate(str, left, right) {
@@ -29,5 +29,4 @@ var generateParenthesis = function (n) {
       generate(str + ')', left, right - 1)
     }
   }
-};
-
+}

@@ -215,9 +215,9 @@ UMD 的核心思路如下：
   typeof exports === 'object' && typeof module !== 'undefined'
     ? (module.exports = factory(require('lodash')))
     : typeof define === 'function' && define.amd
-    ? define(['lodash'], factory)
-    : ((global = typeof globalThis !== 'undefined' ? globalThis : global || self),
-      (global.myBundle = factory(global.lodash)))
+      ? define(['lodash'], factory)
+      : ((global = typeof globalThis !== 'undefined' ? globalThis : global || self),
+        (global.myBundle = factory(global.lodash)))
 })(this, function (lodash) {
   'use strict'
   const result = lodash.every([true, 1, null, 'yes'], Boolean)

@@ -9,8 +9,8 @@
  * @param {number[]} nums
  * @return {number}
  */
-var singleNumber = function (nums) {
-  const set = new Set();
+let singleNumber = function (nums) {
+  const set = new Set()
   for (const x of nums) {
     if (!set.has(x)) {
       set.add(x)
@@ -19,6 +19,6 @@ var singleNumber = function (nums) {
     }
   }
 
-  const first = set.values().next().value;
-  return first;
-};
+  const first = set.values().next().value
+  return first
+}

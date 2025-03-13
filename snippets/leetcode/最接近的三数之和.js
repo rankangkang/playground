@@ -10,29 +10,30 @@
  * @param {number} target
  * @return {number}
  */
-var threeSumClosest = function(nums, target) {
+let threeSumClosest = function (nums, target) {
   nums.sort((a, b) => a - b)
-  let diff = Infinity;
-  let res = 0;
+  let diff = Infinity
+  let res = 0
   for (let i = 0; i < nums.length; i++) {
-      let l = i + 1, r = nums.length - 1
-      while (l < r) {
-          const val = nums[i] + nums[l] + nums[r]
-          const absDiff = Math.abs(target - val)
-          if (absDiff < diff) {
-              diff = absDiff
-              res = val
-          }
-
-          if (val === target) {
-              return target;
-          } else if (val < target) {
-              l++
-          } else {
-              r--
-          }
+    let l = i + 1
+    let r = nums.length - 1
+    while (l < r) {
+      const val = nums[i] + nums[l] + nums[r]
+      const absDiff = Math.abs(target - val)
+      if (absDiff < diff) {
+        diff = absDiff
+        res = val
       }
+
+      if (val === target) {
+        return target
+      } else if (val < target) {
+        l++
+      } else {
+        r--
+      }
+    }
   }
 
-  return res;
-};
+  return res
+}

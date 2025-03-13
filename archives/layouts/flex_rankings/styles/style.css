@@ -1,4 +1,6 @@
-html, body, .page {
+html,
+body,
+.page {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -8,14 +10,14 @@ html, body, .page {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
 }
 
 .top {
   width: 100%;
-  background-color: rgb(212,61,52);
+  background-color: rgb(212, 61, 52);
   padding-top: 10px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, .2);
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .top-title {
@@ -46,7 +48,7 @@ ul {
 .tab {
   flex: 1;
   color: #fff;
-  background-color: #AB312C;
+  background-color: #ab312c;
   height: 40px;
   display: flex;
   justify-content: center;
@@ -64,7 +66,7 @@ ul {
 }
 
 .tab-active {
-  background-color: #BD3630;
+  background-color: #bd3630;
 }
 
 .tab-icon {
@@ -78,8 +80,7 @@ ul {
   height: 40px;
   /* border-top-left-radius: 5px; */
   border-radius: 12px 12px 0 0;
-  background-color: #FFFFFF;
-  
+  background-color: #ffffff;
 }
 
 .cats ul {
@@ -95,7 +96,7 @@ ul {
   width: 52px;
   height: 25px;
   margin: 0 5px 0 5px;
-  background-color: #D43D34;
+  background-color: #d43d34;
   border-radius: 5px;
   color: #fff;
   text-align: center;
@@ -164,14 +165,16 @@ ul {
   justify-content: flex-end;
 }
 
-.item-comments, .item-likes{
+.item-comments,
+.item-likes {
   margin: 0 10px 0 10px;
   font-size: 15px;
   display: inline-flex;
-  color: #B7B7B7;
+  color: #b7b7b7;
 }
 
-.item-comments-icon, .item-likes-icon {
+.item-comments-icon,
+.item-likes-icon {
   width: 15px;
   height: 25px;
   margin: 0 5px 0 5px;

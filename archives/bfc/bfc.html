@@ -1,62 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BFC</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BFC</title>
-</head>
-
-<body>
-  <div class="no-bfc">高50px;外边距50px</div>
-  <div class="no-bfc">高50px;外边距50px</div>
-  <style>
-    /* 可以发现，垂直方向上的编剧被折叠了 */
-    .no-bfc {
-      height: 50px;
-      margin: 50px;
-      background-color: #ccc;
-    }
-  </style>
-
-  <div class="bfc">
+  <body>
     <div class="no-bfc">高50px;外边距50px</div>
-  </div>
-  <div class="bfc">
     <div class="no-bfc">高50px;外边距50px</div>
-  </div>
-  <style>
-    /* 
+    <style>
+      /* 可以发现，垂直方向上的编剧被折叠了 */
+      .no-bfc {
+        height: 50px;
+        margin: 50px;
+        background-color: #ccc;
+      }
+    </style>
+
+    <div class="bfc">
+      <div class="no-bfc">高50px;外边距50px</div>
+    </div>
+    <div class="bfc">
+      <div class="no-bfc">高50px;外边距50px</div>
+    </div>
+    <style>
+      /* 
      * 处于同一个 bfc 块中的相邻元素外边距会发生折叠。
      * 利用 bfc 避免外边距折叠，需要满足以下条件：相邻有边距的元素被不同的 bfc 块包裹
      */
-    .bfc {
-      overflow: hidden;
-    }
-  </style>
-  <div class="float-container">
-    <div class="float">float 元素</div>
-  </div>
-  <div class="float-container">
-    <div class="bfc">
+      .bfc {
+        overflow: hidden;
+      }
+    </style>
+    <div class="float-container">
       <div class="float">float 元素</div>
     </div>
-  </div>
-  <style>
-    .float-container {
-      border: 1px solid #000;
-    }
+    <div class="float-container">
+      <div class="bfc">
+        <div class="float">float 元素</div>
+      </div>
+    </div>
+    <style>
+      .float-container {
+        border: 1px solid #000;
+      }
 
-    .float {
-      float: right;
-      width: 100px;
-      height: 100px;
-      background-color: #ccc;
-    }
+      .float {
+        float: right;
+        width: 100px;
+        height: 100px;
+        background-color: #ccc;
+      }
 
-    /**
+      /**
       bfc 能够包含浮动元素，同理，使用 bfc 元素包裹浮动元素，可以清除浮动（浮动元素不会撑开父元素高度）。
     */
-  </style>
-</body>
+    </style>
+  </body>
 </html>

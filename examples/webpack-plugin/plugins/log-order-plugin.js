@@ -6,7 +6,7 @@ module.exports = class LogOrderPlugin {
   /** @param {import('webpack').Compiler} compiler */
   apply(compiler) {
     compiler.hooks.compilation.tap(this.name, () => {
-      console.log(`[${this.name}] compilation hook triggered`);
+      console.log(`[${this.name}] compilation hook triggered`)
     })
   }
 }

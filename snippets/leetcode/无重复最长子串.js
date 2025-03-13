@@ -4,24 +4,24 @@
  */
 
 /**
- * 
+ *
  * @param {string} s
  * @return {number}
  */
-var lengthOfLongestSubstring = function (s) {
+let lengthOfLongestSubstring = function (s) {
   if (s.length <= 1) {
-    return s.length;
+    return s.length
   }
 
-  let r = 0;
+  let r = 0
   // 转数组，方便使用
-  const chars = s.split('');
+  const chars = s.split('')
   for (let i = 0, j = 1; j < s.length; j++) {
     while (chars.slice(i, j).includes(chars[j])) {
-      i++;
+      i++
     }
     r = Math.max(r, j - i + 1)
   }
 
-  return r;
-};
+  return r
+}

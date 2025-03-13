@@ -1,3 +1,3 @@
 module.exports = {
-  ...require('@cmkk/prettier-config')
+  ...require('@cmkk/prettier-config'),
 }

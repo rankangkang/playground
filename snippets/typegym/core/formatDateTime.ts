@@ -16,18 +16,18 @@ type TimeSS = TimeMM
 export type GenDateUnit<T extends string> = T extends 'YYYY' | 'yyyy'
   ? DateYYYY
   : T extends 'MM' | 'mm'
-  ? DateMM
-  : T extends 'DD' | 'dd'
-  ? DateDD
-  : never
+    ? DateMM
+    : T extends 'DD' | 'dd'
+      ? DateDD
+      : never
 
 export type GenTimeUnit<T extends string> = T extends 'HH' | 'hh'
   ? TimeHH
   : T extends 'MM' | 'mm'
-  ? TimeMM
-  : T extends 'SS' | 'ss'
-  ? TimeSS
-  : never
+    ? TimeMM
+    : T extends 'SS' | 'ss'
+      ? TimeSS
+      : never
 
 export type IsDatePattern<Pattern extends string> =
   Pattern extends `${infer Year}${DateSeprator}${infer Month}${DateSeprator}${infer Day}`
@@ -77,8 +77,9 @@ export type IsDateTimePattern<Pattern extends string> =
     : false
 
 // 一般会报太过复杂
-type FormatDateTime<Pattern extends string> = IsDateTimePattern<Pattern> extends true
-  ? Pattern extends `${infer DatePattern}${MiddleSeprator}${infer TimePattern}`
-    ? `${FormatDate<DatePattern>}${MiddleSeprator}${FormatTime<TimePattern>}`
+type FormatDateTime<Pattern extends string> =
+  IsDateTimePattern<Pattern> extends true
+    ? Pattern extends `${infer DatePattern}${MiddleSeprator}${infer TimePattern}`
+      ? `${FormatDate<DatePattern>}${MiddleSeprator}${FormatTime<TimePattern>}`
+      : never
     : never
-  : never

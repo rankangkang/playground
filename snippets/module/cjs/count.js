@@ -5,4 +5,4 @@ setTimeout(() => {
   console.log('count', count)
 })
 
-module.exports = count;
+module.exports = count

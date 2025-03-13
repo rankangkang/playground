@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+
 const _parser = require('@babel/parser')
 const _traverse = require('@babel/traverse').default
 const { transformFromAst } = require('@babel/core')
@@ -21,7 +22,7 @@ const parser = {
         // 组装依赖的完整路径
         const filepath = './' + path.join(dirname, node.source.value)
         deps[node.source.value] = filepath
-      }
+      },
     })
 
     return deps
@@ -30,26 +31,26 @@ const parser = {
   // 从 ast 获取 code
   getCode: (ast) => {
     const { code } = transformFromAst(ast, null, {
-      presets: ['@babel/preset-env']
+      presets: ['@babel/preset-env'],
     })
-    return code;
-  }
+    return code
+  },
 }
 
 class Compiler {
   constructor(options) {
     // 从配置获取 entry 和 output
     const { entry, output } = options
-    this.entry = entry;
-    this.output = output;
+    this.entry = entry
+    this.output = output
     // module 模块列表
-    this.modules = [];
+    this.modules = []
   }
 
   // 开始编译
   run() {
     const entryInfo = this.build(this.entry)
-    this.modules.push(entryInfo);
+    this.modules.push(entryInfo)
     this.modules.forEach(({ deps }) => {
       // 递归解析出所有依赖项信息
       if (deps) {
@@ -66,8 +67,8 @@ class Compiler {
         ...r,
         [mod.fileName]: {
           deps: mod.deps,
-          code: mod.code
-        }
+          code: mod.code,
+        },
       }
     }, {})
 
@@ -82,7 +83,7 @@ class Compiler {
     return {
       fileName,
       deps,
-      code
+      code,
     }
   }
 
@@ -90,8 +91,7 @@ class Compiler {
   generate(depMap) {
     const filePath = path.join(this.output.path, this.output.filename)
     // magic code，模拟 require 和 exports
-    const bundle =
-      `(function(graph) {
+    const bundle = `(function(graph) {
   function require(module) {
     function localRequire(relativePath) {
       return require(graph[module].deps[relativePath]);
@@ -103,8 +103,8 @@ class Compiler {
     return exports;
   }
   require('${this.entry}');
-})(${JSON.stringify(depMap, null, 2)})`;
-    fs.writeFileSync(filePath, bundle, 'utf-8');
+})(${JSON.stringify(depMap, null, 2)})`
+    fs.writeFileSync(filePath, bundle, 'utf-8')
   }
 }
 

@@ -2,12 +2,12 @@
   "name": "coep-corp",
   "version": "1.0.0",
   "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.js & node resource.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "start": "node main.js & node resource.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
 }

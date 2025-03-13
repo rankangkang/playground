@@ -1,71 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <title>Document</title>
-</head>
-<body>
-  <button id="btn1">按钮1</button>
-  <button id="btn2">按钮2</button>
-  
-  <script>
-    // 异步空闲调度方式
-    function idleSchedule({
-      scheduleTotal,
-      callback,
-      onComplete,
-      name,
-      logs = false,
-    }) {
-      const logName = name ? `「${name}」` : '';
-      const start = Date.now();
-      const dataLength = 4000;
-      let workIndex = 0;
+  <head>
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="btn1">按钮1</button>
+    <button id="btn2">按钮2</button>
 
-      function handleWork() {
-        callback(workIndex);
-        workIndex ++;
-        if (workIndex >= scheduleTotal) {
-          logs && console.log(`${logName}任务调度完成，用时：`, Date.now() - start, 'ms!');
-          onComplete();
-        }
-      }
+    <script>
+      // 异步空闲调度方式
+      function idleSchedule({ scheduleTotal, callback, onComplete, name, logs = false }) {
+        const logName = name ? `「${name}」` : ''
+        const start = Date.now()
+        const dataLength = 4000
+        let workIndex = 0
 
-      function workLoop(deadline) {
-        while (deadline.timeRemaining() > 0 && workIndex < scheduleTotal) {
-          handleWork();
+        function handleWork() {
+          callback(workIndex)
+          workIndex++
+          if (workIndex >= scheduleTotal) {
+            logs && console.log(`${logName}任务调度完成，用时：`, Date.now() - start, 'ms!')
+            onComplete()
+          }
         }
+
+        function workLoop(deadline) {
+          while (deadline.timeRemaining() > 0 && workIndex < scheduleTotal) {
+            handleWork()
+          }
+          if (workIndex < scheduleTotal) {
+            window.requestIdleCallback(workLoop)
+          }
+        }
+
         if (workIndex < scheduleTotal) {
-          window.requestIdleCallback(workLoop);
+          logs && console.log(`${logName}开始在空闲时间调度任务！`)
+          window.requestIdleCallback(workLoop)
+        } else {
+          logs && console.log(`${logName}无可调度任务！`)
+          onComplete()
         }
       }
 
-      if (workIndex < scheduleTotal) {
-        logs && console.log(`${logName}开始在空闲时间调度任务！`);
-        window.requestIdleCallback(workLoop);
-      } else {
-        logs && console.log(`${logName}无可调度任务！`);
-        onComplete();
+      function callback() {
+        for (let j = 0; j < dataLength; j++) {
+          // DOM 操作严重影响程序执行效率
+          const btn1Attr = document.getElementById('btn1').click()
+          const btn2Attr = document.getElementById('btn2').click()
+          const btn3Attr = document.getElementById('btn1').click()
+          const btn4Attr = document.getElementById('btn2').click()
+        }
       }
-    }
 
-    function callback() {
-      for (let j = 0; j < dataLength; j ++) {
-        // DOM 操作严重影响程序执行效率
-        const btn1Attr = document.getElementById('btn1').click();
-        const btn2Attr = document.getElementById('btn2').click();
-        const btn3Attr = document.getElementById('btn1').click();
-        const btn4Attr = document.getElementById('btn2').click();
-      }
-    }
+      let dataLength = 4000
 
-    let dataLength = 4000
-
-    idleSchedule({
-      scheduleTotal: dataLength,
-      callback,
-      onComplete: () => console.log('后续逻辑处理!'),
-      logs: true,
-    });
-  </script>
-</body>
+      idleSchedule({
+        scheduleTotal: dataLength,
+        callback,
+        onComplete: () => console.log('后续逻辑处理!'),
+        logs: true,
+      })
+    </script>
+  </body>
 </html>

@@ -2,10 +2,11 @@ import { IPill, NavigateFn } from '../../types'
 import Header from '../header/Header.js'
 import { getRemainning, stringToDate } from '../../utils/format.js'
 import { getPill } from '../../utils/store.js'
+import { Context } from '../../context.js'
+
 import NoSUchKey from './NoSuchKey.js'
 import OpenInfo from './OpenInfo.js'
 import OpenTip from './OpenTip.js'
-import { Context } from '../../context.js'
 
 interface State {
   flag: number

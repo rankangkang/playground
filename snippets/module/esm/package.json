@@ -2,12 +2,12 @@
   "name": "esm",
   "version": "1.0.0",
   "description": "",
-  "main": "index.mjs",
+  "keywords": [],
+  "license": "ISC",
+  "author": "",
   "type": "module",
+  "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  }
 }

@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   /* height: 100%; */
@@ -13,7 +14,6 @@ html::-webkit-scrollbar {
 .page {
   background-color: #090821;
   box-sizing: border-box;
-  
 }
 
 .section {
@@ -101,7 +101,6 @@ html::-webkit-scrollbar {
   max-height: 100%;
 }
 
-
 /* 轮播图 */
 .carousel {
   position: relative;
@@ -117,7 +116,7 @@ html::-webkit-scrollbar {
   height: 103px;
   width: 2060px;
   position: relative;
-  transition: all .75s;
+  transition: all 0.75s;
   transform: translateX(0px);
   display: inline-flex;
 }
@@ -138,7 +137,7 @@ html::-webkit-scrollbar {
   margin-bottom: 40px;
   box-sizing: border-box;
   /* animation: home-fade .6s ease-in-out 1; */
-  transition: .75s;
+  transition: 0.75s;
 }
 
 .search-tabs {
@@ -196,9 +195,10 @@ html::-webkit-scrollbar {
   background: #0f0f33;
 }
 
-.search:hover .search-bar, .search:hover .search-tabs .tab-active {
+.search:hover .search-bar,
+.search:hover .search-tabs .tab-active {
   border-color: #768cbb;
-  animation: fadein .5s ease-in-out;
+  animation: fadein 0.5s ease-in-out;
 }
 
 @keyframes fadein {
@@ -250,7 +250,7 @@ html::-webkit-scrollbar {
 }
 
 .nav-item {
-  color: rgba(255, 255, 255, .5);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 15px;
   margin: 0 16px;
   cursor: pointer;
@@ -268,9 +268,9 @@ html::-webkit-scrollbar {
 }
 
 .side-nav img {
-  max-height: 27px ;
+  max-height: 27px;
   max-width: 27px;
-  color: rgba(255, 255, 255, .5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .dropdown {

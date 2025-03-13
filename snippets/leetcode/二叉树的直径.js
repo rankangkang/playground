@@ -14,13 +14,13 @@
  * @param {TreeNode} root
  * @return {number}
  */
-var diameterOfBinaryTree = function (root) {
-  let res = 0;
+let diameterOfBinaryTree = function (root) {
+  let res = 0
 
   // 遍历节点
   function traverse(root) {
     if (!root) {
-      return 0;
+      return 0
     }
 
     const left = traverse(root.left)
@@ -35,4 +35,4 @@ var diameterOfBinaryTree = function (root) {
 
   traverse(root)
   return res
-};
+}

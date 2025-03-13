@@ -1,5 +1,5 @@
-const http = require('http');
-const fs = require('fs');
+const http = require('http')
+const fs = require('fs')
 
 const server = http.createServer((req, res) => {
   if (req.url === '/greet.js') {
@@ -21,11 +21,11 @@ const server = http.createServer((req, res) => {
   } else if (req.url === '/greet') {
     res.write('Hello world!')
   } else {
-    res.writeHead(404);
-    res.end('Not found');
+    res.writeHead(404)
+    res.end('Not found')
   }
-});
+})
 
 server.listen(4000, () => {
-  console.log('Resource server running at http://localhost:4000');
-});
+  console.log('Resource server running at http://localhost:4000')
+})

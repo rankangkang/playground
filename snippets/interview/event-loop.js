@@ -1,16 +1,16 @@
-console.log('1');
+console.log('1')
 
 setTimeout(() => {
-  console.log('2');
-}, 0);
+  console.log('2')
+}, 0)
 
 async function asyncFunc() {
-  console.log('3');
-  await Promise.resolve();
-  console.log('4');
+  console.log('3')
+  await Promise.resolve()
+  console.log('4')
   setTimeout(() => {
-    console.log('5');
-  }, 0);
+    console.log('5')
+  }, 0)
 }
 
 // 👆🏻类似于👇🏻
@@ -24,13 +24,12 @@ async function asyncFunc() {
 //   }, 0)
 // })
 
-asyncFunc();
+asyncFunc()
 
 Promise.resolve().then(() => {
-  console.log('6');
-});
+  console.log('6')
+})
 
-console.log('7');
+console.log('7')
 
 // 1, 3, 7, 4, 6, 2, 5
-

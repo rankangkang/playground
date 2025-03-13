@@ -2,26 +2,26 @@
   "name": "playground",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "lint": "eslint ./. --ext .js,.jsx,.ts,.tsx,.mjs --fix",
     "prepare": "husky install",
-    "pretty": "prettier --write \"**/*.{json,md}\""
+    "prettier": "prettier --write ."
   },
   "lint-staged": {
-    "*.{js,jsx,cjs,mjs,ts,tsx,mts}": [
-      "eslint --fix"
+    "**/*.{js,ts,jsx,tsx}": [
+      "eslint --fix",
+      "prettier --write -u"
     ],
-    "*.{json,jsonc,md,mdx,html}": [
-      "prettier --write"
-    ]
+    "!**/*.{js,ts,jsx,tsx}": "prettier --write -u"
   },
   "devDependencies": {
-    "@cmkk/eslint-config-lib": "^0.0.2",
-    "@cmkk/prettier-config": "^0.0.2",
-    "@commitlint/config-conventional": "^17.7.0",
+    "@cmkk/commitlint-config": "^0.1.2",
+    "@cmkk/eslint-config": "^0.1.2",
+    "@cmkk/prettier-config": "^0.1.2",
+    "@commitlint/cli": "^19.0.0",
     "@types/node": "^20.4.9",
     "@vitejs/plugin-react": "^4.0.3",
-    "commitlint": "^17.7.1",
     "eslint": "^8.38.0",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",

@@ -2,9 +2,9 @@
  * @param {number[]} nums
  * @return {number}
  */
-var rob = function (nums) {
+let rob = function (nums) {
   return robTo(nums, nums.length - 1)
-};
+}
 
 function robTo(nums, lastIndex) {
   if (lastIndex <= 0) {

@@ -1,9 +1,10 @@
 import { IPill, NavigateFn } from '../../types'
 import Header from '../header/Header.js'
-import PutMain from './PutMain.js'
-import PutDone from './PutDone.js'
 import { addPill } from '../../utils/store.js'
 import { Context } from '../../context.js'
+
+import PutMain from './PutMain.js'
+import PutDone from './PutDone.js'
 
 interface Props {
   navigate: NavigateFn

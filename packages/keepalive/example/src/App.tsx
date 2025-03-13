@@ -22,12 +22,17 @@ function Playground() {
       >
         新增 dom count 组件
       </button>
-      <button onClick={() => {
-        dropAllScope()
-      }} style={{ margin: 12 }}>drop all</button>
+      <button
+        onClick={() => {
+          dropAllScope()
+        }}
+        style={{ margin: 12 }}
+      >
+        drop all
+      </button>
       <br />
       {domCounts.map((dc) => {
-        return <DomCount id={dc} />
+        return <DomCount key={dc} id={dc} />
       })}
     </>
   )
@@ -38,7 +43,7 @@ function DomCount(props: { id: number | string }) {
   const { dropScope } = useAliveController()
 
   return (
-    <div style={{ border: '1px solid #fff', borderRadius: 5, margin: "16px 0" }}>
+    <div style={{ border: '1px solid #fff', borderRadius: 5, margin: '16px 0' }}>
       <button
         onClick={() => {
           setD((d) => {

@@ -5,7 +5,7 @@
   right: 0;
   height: 40px;
   background-color: #fafafa;
-  background: -webkit-linear-gradient(#FFFFFF,#F2F2F2);
+  background: -webkit-linear-gradient(#ffffff, #f2f2f2);
   /* background-image: linear-gradient(to bottom, #FFFFFF, #F2F2F2); */
   padding: 0 12px;
   box-shadow: 0 1px 5px rgb(0 0 0 / 13%) inset;
@@ -23,7 +23,7 @@
 
 .header-logo {
   padding: 0 20px 0 50px;
-  background-image: url("../img/logo.gif");
+  background-image: url('../img/logo.gif');
   background-size: 44px;
   background-repeat: no-repeat;
   vertical-align: middle;
@@ -43,7 +43,7 @@
   font-weight: 600;
   height: 100%;
   line-height: 40px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .header-nav-item:hover {
@@ -52,6 +52,6 @@
 
 .nav-item-active {
   color: #555555;
-  background: #E5E5E5;
+  background: #e5e5e5;
   box-shadow: 0 1px 5px rgb(0 0 0 / 13%) inset;
 }

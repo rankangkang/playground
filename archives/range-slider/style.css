@@ -26,17 +26,17 @@ h2 {
   position: relative;
 }
 
-.range-slider>input[type='range'] {
+.range-slider > input[type='range'] {
   width: 300px;
   margin: 18px 0;
   -webkit-appearance: none;
 }
 
-.range-slider>input[type='range']:focus {
+.range-slider > input[type='range']:focus {
   outline: none;
 }
 
-.range-slider>input[type='range'] + label {
+.range-slider > input[type='range'] + label {
   background-color: #fff;
   position: absolute;
   min-width: 80px;
@@ -50,7 +50,7 @@ h2 {
 }
 
 /* Chrome & Safari */
-.range-slider>input[type='range']::-webkit-slider-runnable-track {
+.range-slider > input[type='range']::-webkit-slider-runnable-track {
   background: #5ae;
   border-radius: 5px;
   width: 100%;
@@ -58,7 +58,7 @@ h2 {
   cursor: pointer;
 }
 
-.range-slider>input[type='range']::-webkit-slider-thumb {
+.range-slider > input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   height: 20px;
   width: 28px;
@@ -70,7 +70,7 @@ h2 {
 }
 
 /* Firefox */
-.range-slider>input[type='range']::-moz-range-track {
+.range-slider > input[type='range']::-moz-range-track {
   background: #5ae;
   border-radius: 4px;
   width: 100%;
@@ -78,7 +78,7 @@ h2 {
   cursor: pointer;
 }
 
-.range-slider>input[type='range']::-moz-range-thumb {
+.range-slider > input[type='range']::-moz-range-thumb {
   -webkit-appearance: none;
   height: 24px;
   width: 24px;
@@ -90,7 +90,7 @@ h2 {
 }
 
 /* IE */
-.range-slider>input[type='range']::-ms-track {
+.range-slider > input[type='range']::-ms-track {
   background: #5ae;
   border-radius: 4px;
   width: 100%;
@@ -98,7 +98,7 @@ h2 {
   cursor: pointer;
 }
 
-.range-slider>input[type='range']::-ms-thumb {
+.range-slider > input[type='range']::-ms-thumb {
   -webkit-appearance: none;
   height: 24px;
   width: 24px;

@@ -17,11 +17,11 @@ class LinkedNode {
  * 使用双向链表存储队列
  * @param {number} capacity
  */
-var LRUCache = function (capacity) {
-  this.capacity = capacity;
+let LRUCache = function (capacity) {
+  this.capacity = capacity
 
   // 双向链表头部
-  this.head = new LinkedNode();
+  this.head = new LinkedNode()
   this.head.prev = this.head
   this.head.next = this.head
 
@@ -29,11 +29,11 @@ var LRUCache = function (capacity) {
    * @type {Map<any, LinkedNode>}
    */
   this.key2Node = new Map()
-};
+}
 
 /**
  * 移除链表内的一个 node
- * @param {LinkedNode} node 
+ * @param {LinkedNode} node
  */
 LRUCache.prototype.removeLinkedNode = function (node) {
   node.prev.next = node.next
@@ -42,7 +42,7 @@ LRUCache.prototype.removeLinkedNode = function (node) {
 
 /**
  * 插入 node 到链表头部
- * @param {LinkedNode} node 
+ * @param {LinkedNode} node
  */
 LRUCache.prototype.unshiftLinkedNode = function (node) {
   // 查到 head 之后
@@ -56,8 +56,8 @@ LRUCache.prototype.unshiftLinkedNode = function (node) {
 
 /**
  * 获取 key 对应节点，同时将节点移动到头部
- * @param {*} key 
- * @returns 
+ * @param {*} key
+ * @returns
  */
 LRUCache.prototype.getLinkedNode = function (key) {
   if (!this.key2Node.has(key)) {
@@ -71,7 +71,7 @@ LRUCache.prototype.getLinkedNode = function (key) {
   return node
 }
 
-/** 
+/**
  * 获取值
  * @param {number} key
  * @return {number}
@@ -79,11 +79,11 @@ LRUCache.prototype.getLinkedNode = function (key) {
 LRUCache.prototype.get = function (key) {
   const node = this.getLinkedNode(key)
   return node ? node.value : -1
-};
+}
 
-/** 
+/**
  * 设置值
- * @param {number} key 
+ * @param {number} key
  * @param {number} value
  * @return {void}
  */
@@ -92,7 +92,7 @@ LRUCache.prototype.put = function (key, value) {
   if (node) {
     // 值已经存在，更新值
     node.value = value
-    return;
+    return
   }
 
   node = new LinkedNode(key, value)
@@ -106,12 +106,11 @@ LRUCache.prototype.put = function (key, value) {
     this.removeLinkedNode(lastNode)
     this.key2Node.delete(lastNode.key)
   }
-};
+}
 
-/** 
+/**
  * Your LRUCache object will be instantiated and called as such:
  * var obj = new LRUCache(capacity)
  * var param_1 = obj.get(key)
  * obj.put(key,value)
  */
-

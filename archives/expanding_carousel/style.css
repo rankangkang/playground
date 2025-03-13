@@ -27,7 +27,7 @@ h1 {
   flex: 1;
   flex-shrink: 0;
   padding: 12px;
-  transition: all ease-in-out .7s;
+  transition: all ease-in-out 0.7s;
 }
 
 .container .panel h3 {
@@ -60,7 +60,7 @@ h1 {
 
 .main .panel {
   width: 0;
-  transition: all ease-in-out .7s;
+  transition: all ease-in-out 0.7s;
   overflow: hidden;
   border-radius: 5px;
 }

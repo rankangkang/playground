@@ -15,17 +15,17 @@
  * @param {TreeNode} root
  * @return {boolean}
  */
-var isSymmetric = function (root) {
+let isSymmetric = function (root) {
   return compare(root.left, root.right)
-};
+}
 
 function compare(left, right) {
   if (!left && !right) {
-      return true
+    return true
   }
 
   if (!left || !right) {
-      return false
+    return false
   }
 
   const isValEqual = left.val === right.val

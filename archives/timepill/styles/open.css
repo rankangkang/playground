@@ -12,14 +12,14 @@
 
 input {
   width: 220px;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   padding: 8px;
   color: #333333;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 input:hover {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, .1) inset;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) inset;
 }
 
 label {
@@ -38,7 +38,7 @@ label {
   color: #fff;
   border: none;
   margin-top: 12px;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   cursor: pointer;
 }
 
@@ -46,7 +46,8 @@ label {
   background: #cc0033;
 }
 
-.open-content, .open-tip {
+.open-content,
+.open-tip {
   margin-top: 40px;
 }
 
@@ -68,11 +69,11 @@ label {
 
 .open-tip span {
   font-weight: 600;
-} 
+}
 
 .no-such-key {
-  background-color: #F5F5B5;
-  border: 1px solid #DECA7E;
+  background-color: #f5f5b5;
+  border: 1px solid #deca7e;
   padding: 8px;
   width: 400px;
   color: #900;

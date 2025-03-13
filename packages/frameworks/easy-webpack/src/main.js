@@ -1,3 +1,3 @@
-import { greet } from "./greet.js";
+import { greet } from './greet.js'
 
-document.write(greet("World"));
+document.write(greet('World'))

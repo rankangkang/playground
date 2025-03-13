@@ -1,5 +1,5 @@
 // node --harmony argv.js --version --test="a" -h -a name
-console.log(process.argv); 
+console.log(process.argv)
 /**
 [
   '/Users/cmkk/.nvm/versions/node/v18.20.6/bin/node',
@@ -12,5 +12,5 @@ console.log(process.argv);
 ]
  */
 
-console.log(process.execArgv); // [ '--harmony' ]
+console.log(process.execArgv) // [ '--harmony' ]
 console.log(process.argv0) // node

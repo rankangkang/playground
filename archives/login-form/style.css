@@ -31,7 +31,6 @@ h1 {
 }
 
 .form {
-  
 }
 
 .form-item {
@@ -47,13 +46,14 @@ h1 {
   outline: none;
   border: none;
   border-bottom: 1px solid #ffffff;
-  transition: transform .3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   color: #fff;
 }
 
-.form-item input:focus, .form-item input:valid {
+.form-item input:focus,
+.form-item input:valid {
   outline: 0;
-  border-bottom-color:lightblue;
+  border-bottom-color: lightblue;
 }
 
 .form-item input:focus + label,
@@ -68,16 +68,16 @@ h1 {
   left: 0;
   transform: translateY(-50%);
   color: #ffffff;
-  transition: .3s;
+  transition: 0.3s;
 }
 
 .form-item .btn {
   width: 100%;
   height: 50px;
-  color:antiquewhite;
+  color: antiquewhite;
   font-size: 16px;
   background: #85bacc;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   border-radius: 2px;
   border-width: 0;
 }
@@ -97,5 +97,5 @@ h1 {
 }
 
 .text a:visited {
- color: #4682b4;
+  color: #4682b4;
 }

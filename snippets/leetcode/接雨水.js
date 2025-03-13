@@ -8,8 +8,8 @@
  * @param {number[]} heights
  * @return {number}
  */
-var trap = function (heights) {
-  const len = heights.length;
+let trap = function (heights) {
+  const len = heights.length
   const rightMax = []
   const leftMax = []
 
@@ -25,11 +25,11 @@ var trap = function (heights) {
 
   let r = 0
   for (let i = 0; i < len - 1; i++) {
-    const left = leftMax[i];
+    const left = leftMax[i]
     const right = rightMax[i]
-    const bottom = heights[i];
+    const bottom = heights[i]
     r += Math.max(0, (Math.min(left, right) - bottom) * 1)
   }
 
-  return r;
-};
+  return r
+}

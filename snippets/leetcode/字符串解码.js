@@ -10,14 +10,14 @@
  * @param {string} s
  * @return {string}
  */
-var decodeString = function (s) {
+let decodeString = function (s) {
   const repeatStack = []
   const strStack = []
 
   // 字符片段，存储结果
   let snippet = ''
   // 当前的重复次数
-  let repeat = 0;
+  let repeat = 0
   const len = s.length
   for (let i = 0; i < len; i++) {
     const ch = s.charAt(i)
@@ -27,7 +27,7 @@ var decodeString = function (s) {
     } else if (ch === '[') {
       // 遇到左括号，将数字压入 repeatStack
       repeatStack.push(repeat)
-      repeat = 0;
+      repeat = 0
       strStack.push(snippet)
       snippet = ''
     } else if (ch === ']') {
@@ -35,17 +35,17 @@ var decodeString = function (s) {
       const repeatTime = repeatStack.pop()
       // 重复 repeat 遍，追加到 strStack 尾部的内容后
       let tmp = snippet.repeat(repeatTime)
-      snippet = strStack.pop() + tmp;
+      snippet = strStack.pop() + tmp
     } else {
       // 是字母，添加到 snippet 之后
       snippet = snippet + ch
     }
   }
 
-  return snippet;
-};
+  return snippet
+}
 
-console.log(decodeString("3[a]2[bc]"))
+console.log(decodeString('3[a]2[bc]'))
 
 /**
  * 以 `3[abcd]` 来讲：

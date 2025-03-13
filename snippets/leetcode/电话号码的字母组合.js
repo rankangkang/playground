@@ -17,13 +17,13 @@ digitMap.set('9', ['w', 'x', 'y', 'z'])
  * @param {string} digits
  * @return {string[]}
  */
-var letterCombinations = function (digits) {
+let letterCombinations = function (digits) {
   let res = []
-  const len = digits.length;
+  const len = digits.length
   for (let i = 0; i < len; i++) {
     const num = digits[i]
     const chars = digitMap.get(num)
-    const tmp = [];
+    const tmp = []
     if (res.length === 0) {
       chars.forEach((item) => {
         tmp.push(item)
@@ -36,10 +36,10 @@ var letterCombinations = function (digits) {
       })
     }
 
-    res = tmp;
+    res = tmp
   }
 
-  return res;
-};
+  return res
+}
 
-console.log(letterCombinations("23"))
+console.log(letterCombinations('23'))

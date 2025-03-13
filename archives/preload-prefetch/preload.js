@@ -1,5 +1,3 @@
-const preloadContent = 'preloadContent';
+const preloadContent = 'preloadContent'
 
-export {
-  preloadContent,
-}
+export { preloadContent }

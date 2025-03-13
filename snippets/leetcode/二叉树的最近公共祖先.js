@@ -11,7 +11,7 @@
  * @param {TreeNode} q
  * @return {TreeNode}
  */
-var lowestCommonAncestor = function (root, p, q) {
+let lowestCommonAncestor = function (root, p, q) {
   if (root === p || root === q || !root) {
     return root
   }
@@ -28,5 +28,5 @@ var lowestCommonAncestor = function (root, p, q) {
     return root
   }
 
-  return left || right;
-};
+  return left || right
+}

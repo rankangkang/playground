@@ -1,25 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <h1>jsonp 返回</h1>
-  <div id="jsonp"></div>
-  <script>
-    // 被调用的 函数,事先定义
-    function callback(param) {
-      console.log(param)
-      document.querySelector('#jsonp').innerHTML = JSON.stringify(param)
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>jsonp 返回</h1>
+    <div id="jsonp"></div>
+    <script>
+      // 被调用的 函数,事先定义
+      function callback(param) {
+        console.log(param)
+        document.querySelector('#jsonp').innerHTML = JSON.stringify(param)
+      }
 
-    const scriptEl = document.createElement('script')
-    // script 标签能够跨域,设置适合的 searchParams
-    scriptEl.setAttribute('src', 'http://localhost:10010?cb=callback')
-    document.documentElement.appendChild(scriptEl)
-  </script>
-</body>
+      const scriptEl = document.createElement('script')
+      // script 标签能够跨域,设置适合的 searchParams
+      scriptEl.setAttribute('src', 'http://localhost:10010?cb=callback')
+      document.documentElement.appendChild(scriptEl)
+    </script>
+  </body>
 </html>

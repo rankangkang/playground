@@ -13,7 +13,7 @@ body {
   height: 100vh;
   background: #fff;
   transform-origin: top left;
-  transition: transform ease-in-out .7s;
+  transition: transform ease-in-out 0.7s;
   position: relative;
 }
 
@@ -53,7 +53,7 @@ nav {
 nav ul li {
   list-style: circle;
   margin: 36px 0;
-  transition: all ease-in-out .7s;
+  transition: all ease-in-out 0.7s;
 }
 
 nav.active ul li {

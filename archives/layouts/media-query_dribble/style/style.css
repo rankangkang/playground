@@ -1,5 +1,5 @@
 /* import必须在其他之前 */
-@import url("./main.css");
-@import "header.css";
-@import url("./list.css");
-@import url("./footer.css");
+@import url('./main.css');
+@import 'header.css';
+@import url('./list.css');
+@import url('./footer.css');

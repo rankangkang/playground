@@ -1,11 +1,13 @@
+/* eslint-disable */
+// @ts-nocheck
 import {
   ifNameValidate,
   ifEMailValidate,
   ifTimeValidate,
   ifContentValid,
+  dateToString,
 } from '../../utils/format.js'
 import { IPill } from '../../types.js'
-import { dateToString } from '../../utils/format.js'
 
 interface Props {
   addPill: Function

@@ -22,7 +22,7 @@
   max-width: 100%;
 }
 
-.info{
+.info {
   display: inline-flex;
   width: 100%;
 }
@@ -46,14 +46,15 @@
   float: right;
 }
 
-.popularity .like, .popularity .view  {
+.popularity .like,
+.popularity .view {
   width: 60px;
   height: 14px;
   font-size: 12px;
-  
 }
 
-.like img, .view img {
+.like img,
+.view img {
   display: inline;
   height: 14px;
 }
@@ -63,6 +64,3 @@
     padding: 0 72px;
   }
 }
-
-
-

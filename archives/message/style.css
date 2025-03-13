@@ -32,75 +32,86 @@ input:focus::placeholder {
   background: #fff;
   border-radius: 20px;
   display: inline-flex;
-  align-items: center;}
-  .add>input {
-    flex: 1;
-    outline: none;
-    border: none;
-    letter-spacing: 1px;
-    padding: 0 12px;}
-  .add>button {
-    border: none;
-    outline: none;
-    width: auto;
-    background: transparent;
-    cursor: pointer;
-    padding: 0 6px;}
-    .add>button>svg {
-      width: 18px;
-      height: 18px;
-      fill: #333;}
+  align-items: center;
+}
+.add > input {
+  flex: 1;
+  outline: none;
+  border: none;
+  letter-spacing: 1px;
+  padding: 0 12px;
+}
+.add > button {
+  border: none;
+  outline: none;
+  width: auto;
+  background: transparent;
+  cursor: pointer;
+  padding: 0 6px;
+}
+.add > button > svg {
+  width: 18px;
+  height: 18px;
+  fill: #333;
+}
 
 .messages {
   position: fixed;
   top: 12px;
   left: 50%;
-  width: 0;}
-  .msg {
-    display: inline-flex;
-    align-items: center;
-    min-width: 200px;
-    padding: 6px 12px;
-    background: #fff;
-    border-radius: 3px;
-    margin-bottom: 12px;
-    box-shadow: 0 1px 4px 0 rgba(0 0 0 / .5);
-    transform: translateX(-50%);
-    animation: msgFadeIn .3s linear;}
-  .msg.success {
-    border: 1px solid #52b469;
-    color: #52b469;}
-  .msg.danger {
-    border: 1px solid #dd0033;
-    color: #dd0033;}
-  .msg.info {
-    border: 1px solid rebeccapurple;
-    color: rebeccapurple;}
-  .msg>span {
-    text-align: center;
-    padding: 0 12px;
-    flex: 1;
-    font-size: 14px;
+  width: 0;
+}
+.msg {
+  display: inline-flex;
+  align-items: center;
+  min-width: 200px;
+  padding: 6px 12px;
+  background: #fff;
+  border-radius: 3px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px 0 rgba(0 0 0 / 0.5);
+  transform: translateX(-50%);
+  animation: msgFadeIn 0.3s linear;
+}
+.msg.success {
+  border: 1px solid #52b469;
+  color: #52b469;
+}
+.msg.danger {
+  border: 1px solid #dd0033;
+  color: #dd0033;
+}
+.msg.info {
+  border: 1px solid rebeccapurple;
+  color: rebeccapurple;
+}
+.msg > span {
+  text-align: center;
+  padding: 0 12px;
+  flex: 1;
+  font-size: 14px;
+}
+.msg > button {
+  display: flex;
+  border: none;
+  outline: none;
+  width: auto;
+  height: auto;
+  background: transparent;
+  cursor: pointer;
+}
+.msg > button > svg {
+  width: 18px;
+  height: 18px;
+  fill: #333;
+}
+@keyframes msgFadeIn {
+  from {
+    transform: translateX(-50%) translateY(-24px);
+    opacity: 0;
   }
-  .msg>button {
-    display: flex;
-    border: none;
-    outline: none;
-    width: auto;
-    height: auto;
-    background: transparent;
-    cursor: pointer;}
-    .msg>button>svg {
-      width: 18px;
-      height: 18px;
-      fill: #333;}
-  @keyframes msgFadeIn {
-    from {
-      transform: translateX(-50%) translateY(-24px);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
   }
+}

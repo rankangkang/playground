@@ -1,5 +1,3 @@
-const prefetchContent = 'prefetchContent';
+const prefetchContent = 'prefetchContent'
 
-export {
-  prefetchContent,
-}
+export { prefetchContent }

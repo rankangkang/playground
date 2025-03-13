@@ -12,24 +12,24 @@
     <script>
       $('.a').css('width', '100px').css('height', '100px').css('background', 'black')
       $('.a').addClass('test')
-      $('div.test').css({ "borderRadius": "5px" })
+      $('div.test').css({ borderRadius: '5px' })
       $.ajax({
-        url: "http://jsonplaceholder.typicode.com/posts",
-        method: "post",
+        url: 'http://jsonplaceholder.typicode.com/posts',
+        method: 'post',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
         body: {
-          "userId": 1,
-          "title": "test",
-          "body": "hdghdyweugdfwey"
+          userId: 1,
+          title: 'test',
+          body: 'hdghdyweugdfwey',
         },
         onSuccess(text) {
           console.log(text)
         },
         onError() {
           console.log('err')
-        }
+        },
       })
     </script>
   </body>

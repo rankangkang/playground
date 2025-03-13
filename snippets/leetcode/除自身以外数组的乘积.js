@@ -9,29 +9,29 @@
  * @param {number[]} nums
  * @return {number[]}
  */
-var productExceptSelf = function(nums) {
+let productExceptSelf = function (nums) {
   // 前缀集与后缀级
-  const leftSet = [];
-  const rightSet = [];
-  const size = nums.length;
+  const leftSet = []
+  const rightSet = []
+  const size = nums.length
 
   // 取得前缀积
   leftSet[0] = 1
-  for(let i = 1; i < size; i++) {
-      leftSet[i] = leftSet[i - 1] * nums[i - 1]
+  for (let i = 1; i < size; i++) {
+    leftSet[i] = leftSet[i - 1] * nums[i - 1]
   }
 
   // 取得后缀即
-  rightSet[size - 1] = 1;
+  rightSet[size - 1] = 1
   for (let i = size - 2; i >= 0; i--) {
-      rightSet[i] = nums[i + 1] * rightSet[i + 1]
+    rightSet[i] = nums[i + 1] * rightSet[i + 1]
   }
 
   // 计算结果
   const res = []
   for (let i = 0; i < size; i++) {
-      res[i] = leftSet[i] * rightSet[i]
+    res[i] = leftSet[i] * rightSet[i]
   }
 
   return res
-};
+}

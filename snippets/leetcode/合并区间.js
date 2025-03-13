@@ -9,7 +9,7 @@
  * @param {number[][]} intervals
  * @return {number[][]}
  */
-var merge = function (intervals) {
+let merge = function (intervals) {
   intervals.sort((a, b) => a[0] - b[0])
   return intervals.reduce((res, item) => {
     if (!res.length) {
@@ -17,16 +17,16 @@ var merge = function (intervals) {
       return res
     }
 
-    const [start, end] = item;
+    const [start, end] = item
     const [, rEnd] = res[res.length - 1]
     // rStart 肯定小于或等于 start，因为排过序
     if (start <= rEnd) {
       if (end > rEnd) {
-        res[res.length - 1][1] = end;
+        res[res.length - 1][1] = end
       }
     } else {
       res.push(item)
     }
-    return res;
+    return res
   }, [])
-};
+}

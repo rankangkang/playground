@@ -26,5 +26,5 @@ module.exports = {
     new PluginA(), // 先注册 → 先执行
     new PluginB(), // 后注册 → 后执行
   ],
-};
+}
 ```

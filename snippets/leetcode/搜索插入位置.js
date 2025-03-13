@@ -3,11 +3,11 @@
  * @param {number} target
  * @return {number}
  */
-var searchInsert = function (nums, target) {
+let searchInsert = function (nums, target) {
   // 递归二分查找
   function doSearch(start, end) {
     if (start > end) {
-      return start;
+      return start
     }
 
     const mid = Math.floor((start + end) / 2)
@@ -24,15 +24,15 @@ var searchInsert = function (nums, target) {
   }
 
   return doSearch(0, nums.length - 1)
-};
+}
 
 console.log(searchInsert([1, 3, 5, 6], 2))
 
-
 // 迭代的方式，标准二分查找
 function searchInsertIterate(nums, target) {
-  let l = 0, r = nums.length - 1;
-  while(l <= r) {
+  let l = 0
+  let r = nums.length - 1
+  while (l <= r) {
     const mid = Math.floor((l + r) / 2)
     const midNum = nums[mid]
     if (midNum === target) {

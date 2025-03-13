@@ -10,15 +10,15 @@ module.exports = {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name].[hash:8].js',
     clean: true,
-    publicPath: '/'
+    publicPath: '/',
   },
   mode: 'development',
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   devServer: {
     open: true,
-    port: 8081
+    port: 8081,
   },
 
   module: {
@@ -40,19 +40,19 @@ module.exports = {
               ],
               ['@babel/preset-react'],
               ['@babel/preset-typescript'],
-            ]
-          }
-        }
-      }
-    ]
+            ],
+          },
+        },
+      },
+    ],
   },
 
   plugins: [
     new HTMLWebpackPlugin({
-      template: path.resolve(__dirname, '../public/index.html')
+      template: path.resolve(__dirname, '../public/index.html'),
     }),
 
     new LogOrderPlugin('Order1'),
     new LogOrderPlugin('Order2'),
-  ]
+  ],
 }

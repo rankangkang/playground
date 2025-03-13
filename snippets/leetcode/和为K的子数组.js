@@ -10,11 +10,12 @@
  * @param {number} k
  * @return {number}
  */
-var subarraySum = function (nums, k) {
-  let count = 0, len = nums.length;
-  
+let subarraySum = function (nums, k) {
+  let count = 0
+  let len = nums.length
+
   for (let left = 0; left < len; left++) {
-    let sum = 0;
+    let sum = 0
     for (let right = left; right < len; right++) {
       sum += nums[right]
       // // 不能全部保证数组元素为正，所以下面的判断要注释
@@ -27,5 +28,5 @@ var subarraySum = function (nums, k) {
     }
   }
 
-  return count;
-};
+  return count
+}

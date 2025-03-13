@@ -1,70 +1,69 @@
-import React, { useState, useTransition, useEffect } from "react";
-import { flushSync } from 'react-dom';
-import "./style.css";
+import React, { useState, useTransition, useEffect } from 'react'
+import { flushSync } from 'react-dom'
+import './style.css'
 
-import Pythagoras from "./Pythagoras";
+import Pythagoras from './Pythagoras'
 
 function App() {
   const svg = {
     width: 1280,
     height: 600,
-  };
-  const baseWidth = 80;
-  const heightFactor = 0.4;
-  const maxTreeSize = 22;
+  }
+  const baseWidth = 80
+  const heightFactor = 0.4
+  const maxTreeSize = 22
 
   // we split state in two so we can update
   // visuals and inputs separately
-  const [treeSizeInput, setTreeSizeInput] = useState(8);
-  const [treeSize, setTreeSize] = useState(8);
+  const [treeSizeInput, setTreeSizeInput] = useState(8)
+  const [treeSize, setTreeSize] = useState(8)
 
-  const [treeLeanInput, setTreeLeanInput] = useState(0);
-  const [treeLean, setTreeLean] = useState(0);
-  const [isLeaning, startLeaning] = useTransition();
+  const [treeLeanInput, setTreeLeanInput] = useState(0)
+  const [treeLean, setTreeLean] = useState(0)
+  const [isLeaning, startLeaning] = useTransition()
 
-  const [enableStartTransition, setEnableStartTransition] = useState(false);
-  const [enableSlowdown, setEnableSlowdown] = useState(false);
-  const [enableFlushSync, setEnableFlushSync] = useState(false);
+  const [enableStartTransition, setEnableStartTransition] = useState(false)
+  const [enableSlowdown, setEnableSlowdown] = useState(false)
+  const [enableFlushSync, setEnableFlushSync] = useState(false)
 
   // 验证自动批处理
   const [count, setCount] = useState(0)
   const [visible, setVisible] = useState(false)
 
-
   function changeTreeSize(event) {
-    const value = Number(event.target.value);
-    setTreeSizeInput(value); // update input
+    const value = Number(event.target.value)
+    setTreeSizeInput(value) // update input
 
     if (enableStartTransition) {
       // 标记 setTreeSize 为低优先级的更新
       React.startTransition(() => {
-        setTreeSize(value);
-      });
+        setTreeSize(value)
+      })
     } else {
-      setTreeSize(value);
+      setTreeSize(value)
     }
   }
 
   function changeTreeLean(event) {
-    const value = Number(event.target.value);
-    setTreeLeanInput(value); // update input
+    const value = Number(event.target.value)
+    setTreeLeanInput(value) // update input
 
     if (enableStartTransition) {
       // 标记 setTreeLean 为低优先级的更新
       startLeaning(() => {
-        setTreeLean(value);
-      });
+        setTreeLean(value)
+      })
     } else {
-      setTreeLean(value);
+      setTreeLean(value)
     }
   }
 
   function toggleStartTransition(event) {
-    setEnableStartTransition(event.target.checked);
+    setEnableStartTransition(event.target.checked)
   }
 
   function toggleSlowdown(event) {
-    setEnableSlowdown(event.target.checked);
+    setEnableSlowdown(event.target.checked)
   }
 
   const toggleFlushSync = (event) => {
@@ -96,13 +95,13 @@ function App() {
     <div className="App">
       <div
         style={{
-          display: "flex",
+          display: 'flex',
           gap: '20px',
-          flexDirection: "row",
-          padding: '20px 130px'
+          flexDirection: 'row',
+          padding: '20px 130px',
         }}
       >
-        <div style={{ fontWeight: "bold" }}>
+        <div style={{ fontWeight: 'bold' }}>
           <label>
             <input
               type="checkbox"
@@ -115,17 +114,13 @@ function App() {
 
         <div>
           <label>
-            <input
-              type="checkbox"
-              checked={enableSlowdown}
-              onChange={toggleSlowdown}
-            />
+            <input type="checkbox" checked={enableSlowdown} onChange={toggleSlowdown} />
             每个方块延时线程0.1ms
           </label>
         </div>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
         <div style={{ width: 130 }}>
           <label>
             让树变大
@@ -140,8 +135,7 @@ function App() {
             max={maxTreeSize}
             step="1"
             style={{
-              transform: `rotate(-90deg) translate(-${svg.height / 2
-                }px, -90px)`,
+              transform: `rotate(-90deg) translate(-${svg.height / 2}px, -90px)`,
               width: svg.height / 2,
             }}
           />
@@ -150,9 +144,9 @@ function App() {
         <svg
           width={svg.width}
           height={svg.height}
-          className={isLeaning ? "pending" : "done"}
+          className={isLeaning ? 'pending' : 'done'}
           style={{
-            border: "1px solid lightgray",
+            border: '1px solid lightgray',
           }}
         >
           <Pythagoras
@@ -178,15 +172,22 @@ function App() {
             max="0.5"
             step="0.05"
             style={{
-              transform: `rotate(-90deg) translate(-${svg.height / 2
-                }px, -90px)`,
+              transform: `rotate(-90deg) translate(-${svg.height / 2}px, -90px)`,
               width: svg.height / 2,
             }}
           />
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '24px', padding: '0 130px' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          marginTop: '24px',
+          padding: '0 130px',
+        }}
+      >
         <label>
           <input
             type="checkbox"
@@ -196,12 +197,18 @@ function App() {
           />
           enable flushSync
         </label>
-        <button style={{ display: 'block' }} onClick={btnClick} title="打开开发者工具查看控制台内容">点击+1</button>
+        <button
+          style={{ display: 'block' }}
+          onClick={btnClick}
+          title="打开开发者工具查看控制台内容"
+        >
+          点击+1
+        </button>
         <h4>count: {count}</h4>
         <h4>visible: {String(visible)}</h4>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

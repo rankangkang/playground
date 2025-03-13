@@ -8,19 +8,19 @@
  * @param {number[]} temperatures
  * @return {number[]}
  */
-var dailyTemperatures = function (temperatures) {
-  const len = temperatures.length;
-  const res = new Array(len).fill(0);
-  // 存储下标的栈，栈顶到栈底单调递减 
-  const stack = [];
+let dailyTemperatures = function (temperatures) {
+  const len = temperatures.length
+  const res = new Array(len).fill(0)
+  // 存储下标的栈，栈顶到栈底单调递减
+  const stack = []
   for (let i = 0; i < len; i++) {
-    const temperature = temperatures[i];
+    const temperature = temperatures[i]
     while (stack.length > 0 && temperature > temperatures[stack[stack.length - 1]]) {
-      const prevIndex = stack.pop();
-      res[prevIndex] = i - prevIndex;
+      const prevIndex = stack.pop()
+      res[prevIndex] = i - prevIndex
     }
     stack.push(i)
   }
 
-  return res;
-};
+  return res
+}

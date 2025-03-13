@@ -12,16 +12,16 @@ function _debounce(fn, delay = 0) {
 }
 
 function throttle(fn, interval = 0) {
-  let prevTick = null;
-  let res = undefined;
+  let prevTick = null
+  let res
   return function (...args) {
-    const now = Date.now();
+    const now = Date.now()
     if (prevTick === null || now - prevTick >= interval) {
       prevTick = now
-      res = fn.call(this, ...args);
+      res = fn.call(this, ...args)
     }
 
-    return res;
+    return res
   }
 }
 
@@ -57,7 +57,9 @@ function debounce(fn, wait, immediate) {
   }
 }
 
-const run = throttle(() => { console.log('run') }, 1)
+const run = throttle(() => {
+  console.log('run')
+}, 1)
 
 for (let i = 0; i < 10; i++) {
   run()

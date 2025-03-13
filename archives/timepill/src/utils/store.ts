@@ -1,4 +1,5 @@
 import { IPill } from '../types'
+
 import getKey from './key.js'
 
 export function addPill(pill: IPill): string {

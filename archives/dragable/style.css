@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -52,7 +53,7 @@ span {
   height: calc(100% - 40px);
 }
 
-.main>.icon {
+.main > .icon {
   width: 80px;
   height: 80px;
   border-radius: 50%;
