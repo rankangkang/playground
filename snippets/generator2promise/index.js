@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
  *
  * @param {() => Generator} generatorFunction
@@ -32,6 +34,34 @@ function* g() {
   return 'ABC' + b
 }
 
-generator2promise(g).then((d) => {
+generator2promise(g2).then((d) => {
   console.log(d)
 })
+
+/**
+ * simple version
+ * 生成器实现了 iterator，因此可以使用 for of 遍历
+ * @param {GeneratorFunction} g
+ */
+function g2p(g) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const t = g()
+      let lastValue
+      for (const step of t) {
+        lastValue = await step
+      }
+      resolve(lastValue)
+    } catch (error) {
+      reject(error)
+    }
+  })
+}
+
+function* g2() {
+  const a = yield 1
+  const b = yield 2
+  return b + a
+}
+
+g2p(g2)

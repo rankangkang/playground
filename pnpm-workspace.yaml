@@ -3,3 +3,4 @@ packages:
   - 'packages/frameworks/*'
   - 'packages/*'
   - 'examples/*'
+  - 'drafts/*'
