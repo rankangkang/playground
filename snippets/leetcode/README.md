@@ -34,3 +34,20 @@ see 👉🏻 <https://leetcode.cn/problems/restore-ip-addresses/solutions/366627
 示例如:
 
 - [复原 IP 地址](./复原IP地址.js)
+
+## 单调栈
+
+单调栈即满足单调性的栈结构，即栈顶到栈底单调递增或递减。
+通常是在满足栈的单调性情况下，对栈进行操作，在此期间记录结果。
+
+```
+insert x
+while !sta.empty() && sta.top()<x
+    sta.pop()
+sta.push(x)
+```
+
+see 👇🏻
+
+- <https://www.bilibili.com/video/BV1VN411J7S7/?vd_source=65fb9f3843e1bff5d8aa43a2b372abf3>
+- <https://leetcode.cn/discuss/post/3579480/ti-dan-dan-diao-zhan-ju-xing-xi-lie-zi-d-u4hk/>
