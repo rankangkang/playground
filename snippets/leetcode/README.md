@@ -47,7 +47,23 @@ while !sta.empty() && sta.top()<x
 sta.push(x)
 ```
 
+如：
+
+- [每日温度](./每日温度.js)
+- [商品折扣后的最终价格](./商品折扣后的最终价格.js)
+
 see 👇🏻
 
 - <https://www.bilibili.com/video/BV1VN411J7S7/?vd_source=65fb9f3843e1bff5d8aa43a2b372abf3>
 - <https://leetcode.cn/discuss/post/3579480/ti-dan-dan-diao-zhan-ju-xing-xi-lie-zi-d-u4hk/>
+
+## 滑动窗口
+
+滑动窗口分为定长与非定长两种，主要思路都是通过窗口滑动计算，计算下一个窗口的值，这些值与滑入滑出窗口的值有关。
+
+如：
+
+- [无重复字符的最长子串](./无重复最长子串.js)
+- [每个字符最多出现两次的最长子字符串](./每个字符最多出现两次的最长子字符串.js)
+
+see 👉🏻 <https://leetcode.cn/discuss/post/3578981/ti-dan-hua-dong-chuang-kou-ding-chang-bu-rzz7/>
