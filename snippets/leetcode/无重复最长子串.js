@@ -13,15 +13,13 @@ let lengthOfLongestSubstring = function (s) {
     return s.length
   }
 
-  let r = 0
-  // 转数组，方便使用
-  const chars = s.split('')
+  let res = 0
   for (let i = 0, j = 1; j < s.length; j++) {
-    while (chars.slice(i, j).includes(chars[j])) {
+    while (s.slice(i, j).includes(s[j])) {
       i++
     }
-    r = Math.max(r, j - i + 1)
+    res = Math.max(res, j - i + 1)
   }
 
-  return r
+  return res
 }
