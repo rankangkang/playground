@@ -27,6 +27,28 @@ export type Record<K extends keyof any, V> = {
   [P in K]: V
 }
 
-export type Readonly<T extends object> = {
+export type ReadOnlyObject<T extends object> = {
   readonly [P in keyof T]: T[P]
 }
+
+export type ReadOnly<T extends object, K extends keyof T = keyof T> = {
+  readonly [key in K]: T[K]
+} & T
+
+export type Includes<T, K> = K extends T[keyof T] ? true : false
+
+// export type AppendArgs<Func extends (...args: any[]) => any, Args extends any[]> = (...args: [...Parameters<Func>, ...Args]) => ReturnType<Func>
+// 上面的写法也 OK，但不如下面好理解
+export type AppendArgs<Func, Args extends any[]> = Func extends (...args: infer OA) => infer OR
+  ? (...args: [...OA, ...Args]) => OR
+  : never
+// type next = AppendArgs<(a: string) => boolean, [b: boolean]>
+
+export type RequiredProps<T> = keyof T extends infer K
+  ? K extends keyof T
+    ? T[K] extends Required<T>[K]
+      ? K
+      : never
+    : never
+  : never
+// type a = RequiredProps<{ a: string; b?: boolean }>
