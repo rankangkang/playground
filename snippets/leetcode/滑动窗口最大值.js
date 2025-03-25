@@ -21,7 +21,7 @@ let maxSlidingWindow = function (nums, k) {
     while (indexQueue.length && nums[indexQueue[indexQueue.length - 1]] <= nums[i]) {
       indexQueue.pop()
     }
-    // 放如下标，保持单调
+    // 放入下标，保持单调
     indexQueue.push(i)
 
     // 队头离开窗口，
