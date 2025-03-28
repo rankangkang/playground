@@ -7,7 +7,6 @@
 function solution(s1, s2) {
   let carry = 0
   let resultArray = []
-  console.log(s1, s2)
   const maxLen = Math.max(s1.length, s2.length)
   if (s1.length < maxLen) {
     s1 = new Array(maxLen - s1.length).fill('0').join('') + s1
@@ -16,8 +15,10 @@ function solution(s1, s2) {
     s2 = new Array(maxLen - s2.length).fill('0').join('') + s2
   }
 
+  const toNumber = (n) => n - '0'
+
   for (let i = maxLen - 1; i >= 0; i--) {
-    const t = Number(s1[i]) + Number(s2[i]) + carry
+    const t = toNumber(s1[i]) + toNumber(s2[i]) + carry
     carry = Math.floor(t / 10)
     const r = t % 10
     resultArray.unshift(r)
@@ -30,4 +31,4 @@ function solution(s1, s2) {
   return resultArray.join('')
 }
 
-console.log(solution('9133', '0'))
+console.log(solution('9133', '7'))
