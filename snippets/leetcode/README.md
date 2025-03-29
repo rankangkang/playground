@@ -67,3 +67,34 @@ see 👇🏻
 - [每个字符最多出现两次的最长子字符串](./每个字符最多出现两次的最长子字符串.js)
 
 see 👉🏻 <https://leetcode.cn/discuss/post/3578981/ti-dan-hua-dong-chuang-kou-ding-chang-bu-rzz7/>
+
+## 快排 partition
+
+快速排序的精髓是选择信标分组，分组的精髓是 partition 方法。
+非原地的 partition 非常简单，遍历一次，将比信标大的放一个数组，比信标小的放另外一个数组，拼接起来即可。
+原地 partition 就有点难度了，我从来没记住过😂
+
+```js
+function partition(arr, low = 0, high = arr.length - 1) {
+  const pivot = arr[high]
+  // i 永远指向较小区（相对 pivot 的边界）
+  let i = low - 1
+
+  for (let j = low; j < high; j++) {
+    if (arr[j] <= pivot) {
+      // 从左到右扫描，出现比信标小的就放到较小区里去
+      i += (1)[(arr[i], arr[j])] = [arr[j], arr[i]]
+    }
+  }
+
+  // 最后基准归位
+  ;[arr[i + 1], arr[high]] = [arr[hight], arr[i + 1]]
+  return i + 1
+}
+```
+
+关键点：
+
+- i 永远指向较小区最后一个元素的位置
+- 最后一步交换让基准回到正确位置
+- 每次遇到小元素，i 先扩地盘，较小区再把属于自己的元素交换过来
