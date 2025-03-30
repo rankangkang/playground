@@ -20,6 +20,8 @@ let threeSumClosest = function (nums, target) {
     while (l < r) {
       const val = nums[i] + nums[l] + nums[r]
       const absDiff = Math.abs(target - val)
+      // 这里为 0 可以直接返回
+
       if (absDiff < diff) {
         diff = absDiff
         res = val

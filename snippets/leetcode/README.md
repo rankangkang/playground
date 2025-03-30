@@ -83,7 +83,8 @@ function partition(arr, low = 0, high = arr.length - 1) {
   for (let j = low; j < high; j++) {
     if (arr[j] <= pivot) {
       // 从左到右扫描，出现比信标小的就放到较小区里去
-      i += (1)[(arr[i], arr[j])] = [arr[j], arr[i]]
+      i += 1
+      ;[(arr[i], arr[j])] = [arr[j], arr[i]]
     }
   }
 
