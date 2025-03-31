@@ -1,4 +1,10 @@
 /**
+ * tag: 中等
+ * https://leetcode.cn/problems/minimum-size-subarray-sum/description/
+ * 不定长滑窗
+ */
+
+/**
  * 不定长滑窗
  * @param {number} target
  * @param {number[]} nums
