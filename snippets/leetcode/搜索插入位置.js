@@ -26,29 +26,29 @@ let searchInsert = function (nums, target) {
   return doSearch(0, nums.length - 1)
 }
 
-console.log(searchInsert([1, 3, 5, 6], 2))
+console.log(searchInsert([1, 3, 5, 6], 5))
 
 // 迭代的方式，标准二分查找
-function searchInsertIterate(nums, target) {
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+let searchInsert2 = function (nums, target) {
   let l = 0
   let r = nums.length - 1
   while (l <= r) {
-    const mid = Math.floor((l + r) / 2)
-    const midNum = nums[mid]
-    if (midNum === target) {
+    const mid = (l + r) >> 1
+    if (nums[mid] === target) {
       return mid
-    }
-
-    if (midNum > target) {
-      // 在左边
+    } else if (nums[mid] > target) {
       r = mid - 1
     } else {
       l = mid + 1
     }
   }
 
-  // 为什么是 l？针对 l === r 时进行讨论
   return l
 }
 
-console.log(searchInsertIterate([1, 3, 5, 6], 2))
+console.log(searchInsert2([1, 3, 5, 6], 7))

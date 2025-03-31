@@ -11,5 +11,6 @@ module.exports = {
     '@typescript-eslint/no-empty-interface': 'off',
     'no-empty-pattern': 'off',
     '@typescript-eslint/ban-types': 'off',
+    'no-self-assign': 'off',
   },
 }
