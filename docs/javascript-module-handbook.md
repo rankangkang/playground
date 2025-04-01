@@ -3,7 +3,7 @@
 js 的模块化经历了各种历史时期，不同时期产生了不同的模块化方案。
 截至目前，已出现了以下几种模块方案：
 
-- `IIFE`：自执行函数（立即执行函数），一般由`<script>` 标签引入
+- `IIFE`：自执行函数（立即执行函数），一般由`<script>` 标签引入，核心思路是通过闭包实现私有作用域的建立
 - `AMD`：全称为 Asynchronous Module Definition，意为异步模块定义，顾名思义，异步加载模块，RequireJS 是实现范例
 - `CJS`：即 CommonJS，由 Node JS 官方实现，适用于Node及其打包工具
 - `UMD`：全称为 Universal Module Definition，意为通用模块定义，意在抹平 iife、amd 与 cjs 模块方案之间的差异。
@@ -82,7 +82,7 @@ var myBundle = (function (lodash) {
 
 ## AMD
 
-AMD 全称为 _Asynchronous Module Definition_，意为*异步模块定义*，RequireJS 是其最佳实践者，其核心思路是：
+AMD 全称为 _Asynchronous Module Definition_，意为 _异步模块定义_ ，RequireJS 是其最佳实践者，其核心思路是：
 
 - AMD 采用异步方式加载模块，模块的加载不影响其余语句的执行。
 - 所有依赖该模块的的语句，均定义在一个回调函数中，等到模块加载完成之后，回调函数才会运行；模块经由回调的入参传递给依赖语句。
@@ -200,7 +200,7 @@ CJS 有如下优点（特点）：
 
 ## UMD
 
-UMD 全称是 _Universal Module Definition_，意为通*用模块定义*，该模式主要用于解决 AMD 与 CJS 模式不通用的问题，同时支持 IIFE 模式。
+UMD 全称是 _Universal Module Definition_，意为 _通用模块定义_，该模式主要用于解决 AMD 与 CJS 模式不通用的问题，同时支持 IIFE 模式。
 
 UMD 的核心思路如下：
 
