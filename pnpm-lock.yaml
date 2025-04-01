@@ -249,6 +249,8 @@ importers:
         specifier: ^5.0.11
         version: 5.4.14(@types/node@20.17.18)(terser@5.39.0)
 
+  packages/utools/btree: {}
+
   packages/utools/concurrent: {}
 
   packages/utools/event-emitter: {}
@@ -256,6 +258,12 @@ importers:
   packages/utools/retry: {}
 
   packages/utools/schedular: {}
+
+  snippets:
+    dependencies:
+      '@pg/btree':
+        specifier: workspace:*
+        version: link:../packages/utools/btree
 
 packages:
   '@adobe/css-tools@4.4.2':

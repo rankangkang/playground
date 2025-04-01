@@ -13,26 +13,26 @@ class BTNode {
   }
 
   set left(node) {
-    if (!node || node instanceof BTNode) {
+    if (!node || node instanceof TreeNode) {
       this._left = node
     }
   }
 
   set right(node) {
-    if (!node || node instanceof BTNode) {
+    if (!node || node instanceof TreeNode) {
       this._right = node
     }
   }
 
   /**
-   * @returns {BTNode}
+   * @returns {TreeNode}
    */
   get left() {
     return this._left
   }
 
   /**
-   * @returns {BTNode}
+   * @returns {TreeNode}
    */
   get right() {
     return this._right
@@ -48,14 +48,14 @@ class BTNode {
 }
 
 function createBtree(value, left, right) {
-  const btree = new BTNode(value)
+  const btree = new TreeNode(value)
 
   if (typeof left !== 'undefined') {
-    btree.left = new BTNode(left)
+    btree.left = new TreeNode(left)
   }
 
   if (typeof right !== 'undefined') {
-    btree.right = new BTNode(right)
+    btree.right = new TreeNode(right)
   }
 
   return btree
@@ -73,7 +73,7 @@ console.log(btree.toString())
 
 /**
  * 前序遍历
- * @param {BTNode} btree
+ * @param {TreeNode} btree
  * @returns {Array<any>}
  */
 function preorderTraversal(btree) {
@@ -81,10 +81,10 @@ function preorderTraversal(btree) {
 
   /**
    *
-   * @param {BTNode} bt
+   * @param {TreeNode} bt
    */
   const traverse = (bt) => {
-    result.push(bt.value)
+    result.push(bt.val)
     if (bt.left) {
       traverse(bt.left)
     }
@@ -100,7 +100,7 @@ function preorderTraversal(btree) {
 
 /**
  * 中序遍历
- * @param {BTNode} btree
+ * @param {TreeNode} btree
  * @returns {Array<any>}
  */
 function inorderTraversal(btree) {
@@ -108,13 +108,13 @@ function inorderTraversal(btree) {
 
   /**
    *
-   * @param {BTNode} bt
+   * @param {TreeNode} bt
    */
   const traverse = (bt) => {
     if (bt.left) {
       traverse(bt.left)
     }
-    result.push(bt.value)
+    result.push(bt.val)
     if (bt.right) {
       traverse(bt.right)
     }
@@ -127,7 +127,7 @@ function inorderTraversal(btree) {
 
 /**
  * 后遍历
- * @param {BTNode} btree
+ * @param {TreeNode} btree
  * @returns {Array<any>}
  */
 function postorderTraversal(btree) {
@@ -135,7 +135,7 @@ function postorderTraversal(btree) {
 
   /**
    *
-   * @param {BTNode} bt
+   * @param {TreeNode} bt
    */
   const traverse = (bt) => {
     if (bt.left) {
@@ -144,7 +144,7 @@ function postorderTraversal(btree) {
     if (bt.right) {
       traverse(bt.right)
     }
-    result.push(bt.value)
+    result.push(bt.val)
   }
 
   traverse(btree)
