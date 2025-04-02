@@ -7,14 +7,13 @@ function _instanceof(target, c) {
     return false
   }
 
-  let proto = target.__proto__
+  let proto = Object.getPrototypeOf(target)
   while (proto) {
     if (proto === c.prototype) {
       return true
     }
-    proto = proto.__proto__
     // 可使用以下替代
-    // proto = Object.getPrototypeOf(proto)
+    proto = Object.getPrototypeOf(proto)
   }
 
   return false

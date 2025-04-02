@@ -13,5 +13,11 @@ module.exports = {
     '@typescript-eslint/ban-types': 'off',
     'no-self-assign': 'off',
     'no-use-before-define': 'off',
+    'no-extend-native': 'off',
+    'no-throw-literal': 'off',
+    'symbol-description': 'off',
+    '@typescript-eslint/no-empty-function': 'off',
+    'no-new-object': 'off',
+    'no-new-func': 'off',
   },
 }

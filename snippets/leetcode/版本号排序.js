@@ -11,9 +11,23 @@
  * @returns {string[]}
  */
 function versionSort(versions) {
+  const memo = new Map()
+
+  /**
+   * @param {string} version
+   */
+  const getVersionToken = (version) => {
+    if (memo.has(version)) {
+      return memo.get(version)
+    }
+    const tokens = version.split('.')
+    memo.set(version, tokens)
+    return tokens
+  }
+
   return versions.sort((va, vb) => {
-    const ar = va.split('.')
-    const br = vb.split('.')
+    const ar = getVersionToken(va)
+    const br = getVersionToken(vb)
     const len = Math.max(ar.length, br.length)
     for (let i = 0; i < len; i++) {
       const ta = ar[i] ? Number(ar[i]) : 0

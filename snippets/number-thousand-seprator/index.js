@@ -1,4 +1,4 @@
-function numberThounsandSeprate(n) {
+function thousandSeparator(n) {
   const nS = String(n)
   const nA = []
   let idx = nS.length
@@ -17,8 +17,8 @@ function numberThounsandSeprate(n) {
   return nA.join(',')
 }
 
-console.log(numberThounsandSeprate(123456789)) // 123,456,789
-console.log(numberThounsandSeprate(1234567)) // 1,234,567
+console.log(thousandSeparator(123456789)) // 123,456,789
+console.log(thousandSeparator(1234567)) // 1,234,567
 
 function numberThounsandSeprate2(n) {
   const nS = String(n)

@@ -11,4 +11,4 @@ Object._create = function (proto) {
 
 const parent = new Object({ name: 'kk' })
 const child = Object._create(parent)
-console.log(child, child.__proto__)
+console.log(child, Object.getPrototypeOf(child))
