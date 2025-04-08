@@ -16,16 +16,12 @@ function ListNode(val, next) {
  * @return {ListNode}
  */
 let mergeKLists = function (lists) {
-  if (lists.length === 0) {
-    return null
-  }
-
-  if (lists.length === 1) {
-    return lists[0]
+  if (lists.length <= 1) {
+    return lists[0] || null
   }
 
   if (lists.length > 2) {
-    // 开始递归
+    // 分治法
     const mid = lists.length >> 1
     return merge2Lists(mergeKLists(lists.slice(0, mid)), mergeKLists(lists.slice(mid)))
   }
