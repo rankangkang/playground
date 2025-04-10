@@ -11,38 +11,37 @@
  * @return {string}
  */
 let decodeString = function (s) {
-  const repeatStack = []
-  const strStack = []
+  /**
+   * @type {Array<{ repeat: number; snippet: string }>}
+   */
+  const stack = []
+  let repeatStr = ''
+  stack.push({
+    repeat: 1,
+    snippet: '',
+  })
 
-  // 字符片段，存储结果
-  let snippet = ''
-  // 当前的重复次数
-  let repeat = 0
-  const len = s.length
-  for (let i = 0; i < len; i++) {
-    const ch = s.charAt(i)
-    if (ch >= '0' && ch <= '9') {
-      // 是数字
-      repeat = repeat * 10 + Number(ch)
-    } else if (ch === '[') {
-      // 遇到左括号，将数字压入 repeatStack
-      repeatStack.push(repeat)
-      repeat = 0
-      strStack.push(snippet)
-      snippet = ''
-    } else if (ch === ']') {
-      // 遇到右括号，操作与之匹配的左括号之间的字符
-      const repeatTime = repeatStack.pop()
-      // 重复 repeat 遍，追加到 strStack 尾部的内容后
-      let tmp = snippet.repeat(repeatTime)
-      snippet = strStack.pop() + tmp
+  for (let i = 0; i < s.length; i++) {
+    const char = s.charAt(i)
+    if (char === '[') {
+      // 入栈一个新的元素
+      stack.push({
+        repeat: Number(repeatStr) || 1,
+        snippet: '',
+      })
+      repeatStr = ''
+    } else if (char === ']') {
+      const { repeat, snippet } = stack.pop() || {}
+      const str = snippet?.repeat(repeat)
+      stack.at(-1).snippet += str
+    } else if (char >= '0' && char <= '9') {
+      repeatStr += char
     } else {
-      // 是字母，添加到 snippet 之后
-      snippet = snippet + ch
+      stack.at(-1).snippet += char
     }
   }
 
-  return snippet
+  return stack.at(0).snippet
 }
 
 console.log(decodeString('3[a]2[bc]'))
