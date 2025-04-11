@@ -43,19 +43,16 @@ let sortColors = function (nums) {
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 function sortColors2(nums) {
-  const map = new Map()
-  for (const n of nums) {
-    const count = map.get(n) || 0
-    map.set(n, count + 1)
+  const memo = new Array(3).fill(0)
+  for (let i = 0; i < nums.length; i++) {
+    memo[nums[i]] += 1
   }
 
-  let j = 0
-  for (let i = 0; i <= 2; i++) {
-    const count = map.get(i) || 0
-    nums.fill(i, j, j + count)
-    j += count
+  let start = 0
+  for (let i = 0; i < memo.length; i++) {
+    nums.fill(i, start, start + memo[i])
+    start += memo[i]
   }
-
   return nums
 }
 
