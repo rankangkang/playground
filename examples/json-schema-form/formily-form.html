@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formily v2 低代码表单平台</title>
+    <!-- 引入 Formily 和相关依赖 -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@formily/core@2.x/dist/formily.core.umd.development.js"></script>
+    <script src="https://unpkg.com/@formily/react@2.x/dist/formily.react.umd.development.js"></script>
+    <script src="https://unpkg.com/@formily/antd@2.x/dist/formily.antd.umd.development.js"></script>
+    <script src="https://unpkg.com/antd@4/dist/antd.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/antd@4/dist/antd.min.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #f5f5f5;
+      }
+
+      .platform-container {
+        display: flex;
+        height: 100vh;
+      }
+
+      .component-panel {
+        width: 280px;
+        background: white;
+        border-right: 1px solid #e8e8e8;
+        padding: 16px;
+        overflow-y: auto;
+      }
+
+      .editor-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background: white;
+      }
+
+      .preview-panel {
+        width: 400px;
+        background: white;
+        border-left: 1px solid #e8e8e8;
+        padding: 16px;
+        overflow-y: auto;
+      }
+
+      .panel-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: #333;
+      }
+
+      .component-item {
+        padding: 12px;
+        margin-bottom: 8px;
+        background: #fafafa;
+        border: 1px dashed #d9d9d9;
+        border-radius: 4px;
+        cursor: move;
+        transition: all 0.3s;
+      }
+
+      .component-item:hover {
+        border-color: #1890ff;
+        background: #f0f8ff;
+      }
+
+      .design-area {
+        flex: 1;
+        padding: 20px;
+        border: 1px dashed #d9d9d9;
+        margin: 16px;
+        border-radius: 6px;
+        min-height: 500px;
+      }
+
+      .toolbar {
+        padding: 12px 16px;
+        border-bottom: 1px solid #e8e8e8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .schema-editor {
+        height: 300px;
+        border: 1px solid #d9d9d9;
+        border-radius: 4px;
+        margin-top: 16px;
+      }
+
+      .field-properties {
+        margin-top: 16px;
+      }
+
+      .logic-panel {
+        margin-top: 16px;
+      }
+
+      .empty-prompt {
+        text-align: center;
+        color: #999;
+        padding: 40px 0;
+      }
+
+      .component-icon {
+        margin-right: 8px;
+        font-size: 16px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useRef, useEffect } = React
+      const {
+        Form,
+        Input,
+        Select,
+        Button,
+        Switch,
+        Radio,
+        Checkbox,
+        InputNumber,
+        DatePicker,
+        Row,
+        Col,
+        Divider,
+        Card,
+        Collapse,
+        message,
+        Modal,
+        Tabs,
+        Space,
+        Tree,
+      } = antd
+      const { Option } = Select
+      const { Panel } = Collapse
+      const { TabPane } = Tabs
+      const { TreeNode } = Tree
+
+      // Formily 核心
+      const { createForm, onFieldValueChange, onFieldInit, onFieldMount } = FormilyCore
+      const {
+        FormProvider,
+        FormConsumer,
+        Field,
+        useForm,
+        useField,
+        observer,
+        RecursionField,
+        SchemaField,
+      } = FormilyReact
+      const {
+        FormItem,
+        FormLayout,
+        Input: FormilyInput,
+        Select: FormilySelect,
+        Radio: FormilyRadio,
+        Checkbox: FormilyCheckbox,
+        NumberPicker: FormilyNumber,
+        DatePicker: FormilyDate,
+        Switch: FormilySwitch,
+        FormTab,
+        FormCollapse,
+        ArrayCards,
+        ArrayTable,
+      } = FormilyAntd
+
+      // 1. 表单组件库声明
+      const FormComponentLibrary = {
+        // 基础组件
+        Input: {
+          component: FormilyInput,
+          defaultProps: {
+            placeholder: '请输入',
+          },
+          icon: '📝',
+          name: '输入框',
+        },
+        TextArea: {
+          component: FormilyInput,
+          defaultProps: {
+            placeholder: '请输入',
+            type: 'textarea',
+          },
+          icon: '📄',
+          name: '多行文本',
+        },
+        Select: {
+          component: FormilySelect,
+          defaultProps: {
+            placeholder: '请选择',
+          },
+          icon: '🔽',
+          name: '下拉选择',
+        },
+        Radio: {
+          component: FormilyRadio.Group,
+          defaultProps: {},
+          icon: '⭕',
+          name: '单选框组',
+        },
+        Checkbox: {
+          component: FormilyCheckbox.Group,
+          defaultProps: {},
+          icon: '☑️',
+          name: '复选框组',
+        },
+        Number: {
+          component: FormilyNumber,
+          defaultProps: {
+            placeholder: '请输入数字',
+          },
+          icon: '🔢',
+          name: '数字输入',
+        },
+        Date: {
+          component: FormilyDate,
+          defaultProps: {
+            placeholder: '请选择日期',
+          },
+          icon: '📅',
+          name: '日期选择',
+        },
+        Switch: {
+          component: FormilySwitch,
+          defaultProps: {},
+          icon: '🔘',
+          name: '开关',
+        },
+
+        // 布局组件
+        FormLayout: {
+          component: FormLayout,
+          defaultProps: {
+            layout: 'vertical',
+          },
+          icon: '📐',
+          name: '表单布局',
+        },
+        FormItem: {
+          component: FormItem,
+          defaultProps: {},
+          icon: '📦',
+          name: '表单项',
+        },
+      }
+
+      // 2. 表单编辑器组件
+      const FormEditor = () => {
+        const [schema, setSchema] = useState({
+          type: 'object',
+          properties: {},
+        })
+
+        const [selectedField, setSelectedField] = useState(null)
+        const [previewForm] = useState(() => createForm())
+        const [logicModalVisible, setLogicModalVisible] = useState(false)
+
+        // 添加字段到表单
+        const addFieldToSchema = (fieldType, fieldConfig = {}) => {
+          const fieldId = `field_${Date.now()}`
+          const componentConfig = FormComponentLibrary[fieldType]
+
+          const newField = {
+            type: 'string',
+            title: fieldConfig.title || `${componentConfig.name}_${Date.now()}`,
+            'x-component': fieldType,
+            'x-component-props': {
+              ...componentConfig.defaultProps,
+              ...fieldConfig.props,
+            },
+            'x-decorator': 'FormItem',
+            'x-decorator-props': {
+              tooltip: fieldConfig.tooltip,
+            },
+          }
+
+          // 处理选项型组件
+          if (['Select', 'Radio', 'Checkbox'].includes(fieldType)) {
+            newField.enum = fieldConfig.options || [
+              { label: '选项1', value: 'option1' },
+              { label: '选项2', value: 'option2' },
+            ]
+          }
+
+          // 添加联动规则
+          if (fieldConfig.reactions) {
+            newField['x-reactions'] = fieldConfig.reactions
+          }
+
+          const newSchema = {
+            ...schema,
+            properties: {
+              ...schema.properties,
+              [fieldId]: newField,
+            },
+          }
+
+          setSchema(newSchema)
+          setSelectedField(fieldId)
+        }
+
+        // 更新字段属性
+        const updateFieldProperties = (fieldId, updates) => {
+          const newSchema = { ...schema }
+
+          if (newSchema.properties[fieldId]) {
+            Object.keys(updates).forEach((key) => {
+              if (key === 'props') {
+                newSchema.properties[fieldId]['x-component-props'] = {
+                  ...newSchema.properties[fieldId]['x-component-props'],
+                  ...updates[key],
+                }
+              } else if (key === 'decoratorProps') {
+                newSchema.properties[fieldId]['x-decorator-props'] = {
+                  ...newSchema.properties[fieldId]['x-decorator-props'],
+                  ...updates[key],
+                }
+              } else {
+                newSchema.properties[fieldId][key] = updates[key]
+              }
+            })
+
+            setSchema(newSchema)
+          }
+        }
+
+        // 删除字段
+        const deleteField = (fieldId) => {
+          const newSchema = { ...schema }
+          delete newSchema.properties[fieldId]
+          setSchema(newSchema)
+
+          if (selectedField === fieldId) {
+            setSelectedField(null)
+          }
+        }
+
+        // 生成 Markup Schema
+        const generateMarkupSchema = () => {
+          return JSON.stringify(schema, null, 2)
+        }
+
+        // 从 Markup Schema 加载
+        const loadFromMarkupSchema = (markupSchema) => {
+          try {
+            const parsedSchema = JSON.parse(markupSchema)
+            setSchema(parsedSchema)
+            message.success('Schema 加载成功')
+          } catch (error) {
+            message.error('Schema 格式错误')
+          }
+        }
+
+        // 添加联动规则
+        const addReaction = (fieldId, reaction) => {
+          const field = schema.properties[fieldId]
+          if (field) {
+            const existingReactions = field['x-reactions'] || []
+            const newReactions = [...existingReactions, reaction]
+
+            updateFieldProperties(fieldId, {
+              'x-reactions': newReactions,
+            })
+          }
+        }
+
+        return (
+          <div className="platform-container">
+            {/* 左侧组件面板 */}
+            <div className="component-panel">
+              <div className="panel-title">组件库</div>
+              <div>
+                {Object.entries(FormComponentLibrary).map(([key, config]) => (
+                  <div key={key} className="component-item" onClick={() => addFieldToSchema(key)}>
+                    <span className="component-icon">{config.icon}</span>
+                    {config.name}
+                  </div>
+                ))}
+              </div>
+
+              <Divider />
+
+              <div className="panel-title">表单结构</div>
+              <FormTree
+                schema={schema}
+                selectedField={selectedField}
+                onSelectField={setSelectedField}
+              />
+            </div>
+
+            {/* 中间设计区域 */}
+            <div className="editor-panel">
+              <div className="toolbar">
+                <Space>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      const markup = generateMarkupSchema()
+                      console.log('Markup Schema:', markup)
+                      message.success('Schema 已生成到控制台')
+                    }}
+                  >
+                    生成 Markup Schema
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      const markup = prompt('请输入 Markup Schema:')
+                      if (markup) {
+                        loadFromMarkupSchema(markup)
+                      }
+                    }}
+                  >
+                    加载 Markup Schema
+                  </Button>
+                </Space>
+
+                <Button
+                  type="dashed"
+                  onClick={() => setLogicModalVisible(true)}
+                  disabled={!selectedField}
+                >
+                  配置联动逻辑
+                </Button>
+              </div>
+
+              <div className="design-area">
+                {Object.keys(schema.properties).length > 0 ? (
+                  <FormProvider form={previewForm}>
+                    <SchemaField schema={schema} />
+                  </FormProvider>
+                ) : (
+                  <div className="empty-prompt">
+                    <p>从左侧点击组件添加到表单</p>
+                    <p>或加载已有的 Markup Schema</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* 右侧属性面板 */}
+            <div className="preview-panel">
+              <div className="panel-title">
+                {selectedField
+                  ? `属性设置 - ${schema.properties[selectedField]?.title}`
+                  : '属性设置'}
+              </div>
+
+              {selectedField ? (
+                <FieldProperties
+                  field={schema.properties[selectedField]}
+                  fieldId={selectedField}
+                  onUpdate={updateFieldProperties}
+                  onDelete={deleteField}
+                />
+              ) : (
+                <div className="empty-prompt">
+                  <p>请选择表单字段进行配置</p>
+                </div>
+              )}
+
+              <Divider />
+
+              <div className="panel-title">Schema 预览</div>
+              <pre className="schema-editor">{generateMarkupSchema()}</pre>
+            </div>
+
+            {/* 联动逻辑配置模态框 */}
+            <LogicConfigModal
+              visible={logicModalVisible}
+              onCancel={() => setLogicModalVisible(false)}
+              fieldId={selectedField}
+              schema={schema}
+              onAddReaction={addReaction}
+            />
+          </div>
+        )
+      }
+
+      // 表单树组件
+      const FormTree = observer(({ schema, selectedField, onSelectField }) => {
+        const renderTreeNodes = (properties) => {
+          return Object.entries(properties).map(([key, field]) => (
+            <TreeNode
+              key={key}
+              title={
+                <div onClick={() => onSelectField(key)}>
+                  <span
+                    style={{
+                      fontWeight: selectedField === key ? 'bold' : 'normal',
+                      color: selectedField === key ? '#1890ff' : '#333',
+                    }}
+                  >
+                    {field.title || key}
+                  </span>
+                </div>
+              }
+            />
+          ))
+        }
+
+        return (
+          <Tree selectedKeys={[selectedField]} defaultExpandAll>
+            {renderTreeNodes(schema.properties || {})}
+          </Tree>
+        )
+      })
+
+      // 字段属性配置组件
+      const FieldProperties = observer(({ field, fieldId, onUpdate, onDelete }) => {
+        const [form] = Form.useForm()
+
+        useEffect(() => {
+          form.setFieldsValue({
+            title: field.title,
+            placeholder: field['x-component-props']?.placeholder,
+            tooltip: field['x-decorator-props']?.tooltip,
+          })
+        }, [field, form])
+
+        const handleValuesChange = (changedValues, allValues) => {
+          const updates = {}
+
+          if ('title' in changedValues) {
+            updates.title = changedValues.title
+          }
+
+          if ('placeholder' in changedValues) {
+            updates.props = { placeholder: changedValues.placeholder }
+          }
+
+          if ('tooltip' in changedValues) {
+            updates.decoratorProps = { tooltip: changedValues.tooltip }
+          }
+
+          if (Object.keys(updates).length > 0) {
+            onUpdate(fieldId, updates)
+          }
+        }
+
+        return (
+          <div className="field-properties">
+            <Form form={form} layout="vertical" onValuesChange={handleValuesChange}>
+              <Form.Item label="字段标题" name="title">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="占位文本" name="placeholder">
+                <Input />
+              </Form.Item>
+
+              <Form.Item label="提示信息" name="tooltip">
+                <Input />
+              </Form.Item>
+
+              {/* 选项配置 */}
+              {(field['x-component'] === 'Select' ||
+                field['x-component'] === 'Radio' ||
+                field['x-component'] === 'Checkbox') && (
+                <OptionsConfig field={field} fieldId={fieldId} onUpdate={onUpdate} />
+              )}
+
+              <Form.Item>
+                <Button type="primary" danger onClick={() => onDelete(fieldId)} block>
+                  删除字段
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        )
+      })
+
+      // 选项配置组件
+      const OptionsConfig = observer(({ field, fieldId, onUpdate }) => {
+        const [options, setOptions] = useState(field.enum || [])
+
+        const addOption = () => {
+          const newOptions = [
+            ...options,
+            { label: `选项${options.length + 1}`, value: `option${options.length + 1}` },
+          ]
+          setOptions(newOptions)
+          onUpdate(fieldId, { enum: newOptions })
+        }
+
+        const updateOption = (index, key, value) => {
+          const newOptions = [...options]
+          newOptions[index][key] = value
+          setOptions(newOptions)
+          onUpdate(fieldId, { enum: newOptions })
+        }
+
+        const deleteOption = (index) => {
+          const newOptions = options.filter((_, i) => i !== index)
+          setOptions(newOptions)
+          onUpdate(fieldId, { enum: newOptions })
+        }
+
+        return (
+          <div>
+            <Divider>选项配置</Divider>
+            {options.map((option, index) => (
+              <div key={index} style={{ marginBottom: 8 }}>
+                <Row gutter={8}>
+                  <Col span={10}>
+                    <Input
+                      value={option.label}
+                      onChange={(e) => updateOption(index, 'label', e.target.value)}
+                      placeholder="显示文本"
+                    />
+                  </Col>
+                  <Col span={10}>
+                    <Input
+                      value={option.value}
+                      onChange={(e) => updateOption(index, 'value', e.target.value)}
+                      placeholder="值"
+                    />
+                  </Col>
+                  <Col span={4}>
+                    <Button danger size="small" onClick={() => deleteOption(index)}>
+                      删除
+                    </Button>
+                  </Col>
+                </Row>
+              </div>
+            ))}
+            <Button type="dashed" onClick={addOption} block>
+              + 添加选项
+            </Button>
+          </div>
+        )
+      })
+
+      // 联动逻辑配置模态框
+      const LogicConfigModal = observer(({ visible, onCancel, fieldId, schema, onAddReaction }) => {
+        const [form] = Form.useForm()
+        const [triggerType, setTriggerType] = useState('valueChange')
+
+        const handleSubmit = () => {
+          form.validateFields().then((values) => {
+            const reaction = {
+              // 根据触发类型构建不同的联动规则
+              [triggerType === 'valueChange' ? 'when' : 'target']: values.condition,
+              fulfill: {
+                state:
+                  values.action === 'show'
+                    ? {
+                        display: 'visible',
+                      }
+                    : values.action === 'hide'
+                      ? {
+                          display: 'none',
+                        }
+                      : {
+                          value: values.setValue,
+                        },
+              },
+            }
+
+            onAddReaction(fieldId, reaction)
+            message.success('联动规则添加成功')
+            onCancel()
+            form.resetFields()
+          })
+        }
+
+        return (
+          <Modal
+            title="配置联动逻辑"
+            visible={visible}
+            onCancel={onCancel}
+            onOk={handleSubmit}
+            width={600}
+          >
+            <Form form={form} layout="vertical">
+              <Form.Item label="触发类型" name="triggerType" initialValue="valueChange">
+                <Select onChange={setTriggerType}>
+                  <Option value="valueChange">值变化</Option>
+                  <Option value="visible">显示/隐藏</Option>
+                </Select>
+              </Form.Item>
+
+              <Form.Item label="触发条件" name="condition">
+                <Input placeholder="例如: {{$self.value === 'show'}}" />
+              </Form.Item>
+
+              <Form.Item label="执行动作" name="action">
+                <Select>
+                  <Option value="show">显示字段</Option>
+                  <Option value="hide">隐藏字段</Option>
+                  <Option value="setValue">设置值</Option>
+                </Select>
+              </Form.Item>
+
+              <Form.Item
+                label="设置的值"
+                name="setValue"
+                style={{ display: form.getFieldValue('action') === 'setValue' ? 'block' : 'none' }}
+              >
+                <Input placeholder="请输入要设置的值" />
+              </Form.Item>
+            </Form>
+
+            <Divider />
+
+            <div>
+              <h4>联动规则示例:</h4>
+              <pre>{`{
+  "when": "{{$self.value === 'show'}}",
+  "fulfill": {
+    "state": {
+      "display": "visible"
+    }
+  }
+}`}</pre>
+            </div>
+          </Modal>
+        )
+      })
+
+      // 主应用组件
+      const App = () => {
+        return (
+          <div>
+            <div
+              style={{
+                background: '#001529',
+                color: 'white',
+                padding: '16px',
+                textAlign: 'center',
+                fontSize: '18px',
+                fontWeight: 'bold',
+              }}
+            >
+              Formily v2 低代码表单平台
+            </div>
+            <FormEditor />
+          </div>
+        )
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'))
+    </script>
+  </body>
+</html>

@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Schema 表单联动</title>
+    <link rel="stylesheet" href="https://unpkg.com/antd@4/dist/antd.min.css" />
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/antd@4/dist/antd.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      .form-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 20px;
+      }
+
+      .logic-debug {
+        background: #f5f5f5;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 6px;
+        font-family: monospace;
+        font-size: 12px;
+      }
+
+      .hidden-field {
+        opacity: 0.5;
+        background-color: #fafafa;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useEffect, useMemo } = React
+      const { Form, Input, Switch, Select, Button, Card, Divider, Alert } = antd
+      const { Option } = Select
+
+      // JSON Schema 表单渲染器
+      const JSONSchemaForm = ({ schema, uiSchema, logicRules, onChange }) => {
+        const [form] = Form.useForm()
+        const [formData, setFormData] = useState({})
+        const [fieldStates, setFieldStates] = useState({})
+
+        // 初始化字段状态
+        useEffect(() => {
+          const initialStates = {}
+          Object.keys(schema.properties).forEach((key) => {
+            initialStates[key] = {
+              visible: true,
+              disabled: false,
+              required: schema.properties[key].required || false,
+            }
+          })
+          setFieldStates(initialStates)
+        }, [schema])
+
+        // 处理表单值变化
+        const handleValuesChange = (changedValues, allValues) => {
+          const newFormData = { ...allValues }
+          setFormData(newFormData)
+
+          // 执行联动逻辑
+          executeLogicRules(changedValues, newFormData)
+
+          if (onChange) {
+            onChange(newFormData)
+          }
+        }
+
+        // 执行联动规则
+        const executeLogicRules = (changedValues, currentData) => {
+          const changedField = Object.keys(changedValues)[0]
+          if (!changedField) return
+
+          const rules = logicRules.filter((rule) => rule.trigger === changedField)
+
+          rules.forEach((rule) => {
+            rule.conditions.forEach((condition) => {
+              // 使用简单的模板表达式解析
+              const expression = condition.when.replace(
+                '{{value}}',
+                JSON.stringify(changedValues[changedField]),
+              )
+
+              try {
+                // 安全地评估表达式
+                const result = new Function(`return ${expression}`)()
+
+                if (result) {
+                  condition.actions.forEach((action) => {
+                    executeAction(action, currentData)
+                  })
+                }
+              } catch (error) {
+                console.warn('逻辑表达式执行错误:', error)
+              }
+            })
+          })
+        }
+
+        // 执行动作
+        const executeAction = (action, currentData) => {
+          const targets = Array.isArray(action.target) ? action.target : [action.target]
+
+          targets.forEach((target) => {
+            setFieldStates((prev) => {
+              const newStates = { ...prev }
+
+              switch (action.type) {
+                case 'visibility':
+                  newStates[target] = {
+                    ...newStates[target],
+                    visible: action.value,
+                  }
+                  break
+
+                case 'required':
+                  newStates[target] = {
+                    ...newStates[target],
+                    required: action.value,
+                  }
+                  break
+
+                case 'disabled':
+                  newStates[target] = {
+                    ...newStates[target],
+                    disabled: action.value,
+                  }
+                  break
+
+                case 'setValue':
+                  form.setFieldsValue({
+                    [target]: action.value,
+                  })
+                  break
+
+                case 'clearValue':
+                  form.setFieldsValue({
+                    [target]: undefined,
+                  })
+                  break
+
+                default:
+                  console.warn('未知的动作类型:', action.type)
+              }
+
+              return newStates
+            })
+          })
+        }
+
+        // 渲染表单字段
+        const renderFormField = (fieldName, fieldSchema) => {
+          const fieldState = fieldStates[fieldName] || {}
+          if (!fieldState.visible) return null
+
+          const fieldUiSchema = uiSchema[fieldName] || {}
+          const commonProps = {
+            disabled: fieldState.disabled,
+            placeholder: `请输入${fieldSchema.title}`,
+          }
+
+          let fieldElement
+
+          switch (fieldSchema.type) {
+            case 'string':
+              if (fieldSchema.enum) {
+                fieldElement = (
+                  <Select {...commonProps}>
+                    {fieldSchema.enum.map((option) => (
+                      <Option key={option} value={option}>
+                        {option}
+                      </Option>
+                    ))}
+                  </Select>
+                )
+              } else {
+                fieldElement = <Input {...commonProps} />
+              }
+              break
+
+            case 'boolean':
+              fieldElement = <Switch {...commonProps} />
+              break
+
+            case 'number':
+              fieldElement = <Input type="number" {...commonProps} />
+              break
+
+            default:
+              fieldElement = <Input {...commonProps} />
+          }
+
+          return (
+            <Form.Item
+              key={fieldName}
+              name={fieldName}
+              label={fieldSchema.title}
+              rules={[
+                {
+                  required: fieldState.required,
+                  message: `请输入${fieldSchema.title}`,
+                },
+              ]}
+              className={!fieldState.visible ? 'hidden-field' : ''}
+            >
+              {fieldElement}
+            </Form.Item>
+          )
+        }
+
+        return (
+          <div className="form-container">
+            <Card title="JSON Schema 表单联动示例">
+              <Form form={form} layout="vertical" onValuesChange={handleValuesChange}>
+                {Object.entries(schema.properties).map(([fieldName, fieldSchema]) =>
+                  renderFormField(fieldName, fieldSchema),
+                )}
+              </Form>
+
+              <Divider />
+
+              <div className="logic-debug">
+                <h4>表单数据:</h4>
+                <pre>{JSON.stringify(formData, null, 2)}</pre>
+
+                <h4>字段状态:</h4>
+                <pre>{JSON.stringify(fieldStates, null, 2)}</pre>
+              </div>
+            </Card>
+          </div>
+        )
+      }
+
+      // 主应用组件
+      const App = () => {
+        const [formSchema] = useState({
+          type: 'object',
+          properties: {
+            name: {
+              type: 'string',
+              title: '姓名',
+            },
+            isStudent: {
+              type: 'boolean',
+              title: '是否学生',
+            },
+            school: {
+              type: 'string',
+              title: '学校名称',
+            },
+            studentType: {
+              type: 'string',
+              title: '学生类型',
+              enum: ['本科生', '研究生', '博士生'],
+            },
+            company: {
+              type: 'string',
+              title: '工作单位',
+            },
+            jobTitle: {
+              type: 'string',
+              title: '职位',
+            },
+          },
+        })
+
+        const [uiSchema] = useState({
+          isStudent: {
+            'ui:widget': 'switch',
+          },
+        })
+
+        const [logicRules] = useState([
+          {
+            name: '学生信息联动',
+            trigger: 'isStudent',
+            conditions: [
+              {
+                when: '{{value}} === true',
+                actions: [
+                  {
+                    type: 'visibility',
+                    target: ['school', 'studentType'],
+                    value: true,
+                  },
+                  {
+                    type: 'visibility',
+                    target: ['company', 'jobTitle'],
+                    value: false,
+                  },
+                  {
+                    type: 'required',
+                    target: 'school',
+                    value: true,
+                  },
+                ],
+              },
+              {
+                when: '{{value}} === false',
+                actions: [
+                  {
+                    type: 'visibility',
+                    target: ['company', 'jobTitle'],
+                    value: true,
+                  },
+                  {
+                    type: 'visibility',
+                    target: ['school', 'studentType'],
+                    value: false,
+                  },
+                  {
+                    type: 'clearValue',
+                    target: ['school', 'studentType'],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: '学生类型联动',
+            trigger: 'studentType',
+            conditions: [
+              {
+                when: "{{value}} === '研究生'",
+                actions: [
+                  {
+                    type: 'setValue',
+                    target: 'school',
+                    value: '研究生院',
+                  },
+                ],
+              },
+            ],
+          },
+        ])
+
+        const handleFormChange = (formData) => {
+          console.log('表单数据变化:', formData)
+        }
+
+        return (
+          <div>
+            <Alert
+              message="基于 JSON Schema 的表单联动演示"
+              description="切换'是否学生'开关观察表单联动效果"
+              style={{ marginBottom: 20 }}
+            />
+            <JSONSchemaForm
+              schema={formSchema}
+              uiSchema={uiSchema}
+              logicRules={logicRules}
+              onChange={handleFormChange}
+            />
+          </div>
+        )
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'))
+    </script>
+  </body>
+</html>
