@@ -44,11 +44,26 @@ export type AppendArgs<Func, Args extends any[]> = Func extends (...args: infer 
   : never
 // type next = AppendArgs<(a: string) => boolean, [b: boolean]>
 
-export type RequiredProps<T> = keyof T extends infer K
+export type GetRequiredPropName<T> = keyof T extends infer K
   ? K extends keyof T
     ? T[K] extends Required<T>[K]
       ? K
       : never
     : never
   : never
-// type a = RequiredProps<{ a: string; b?: boolean }>
+
+/**
+ * Make all properties of T non-nullable (exclude undefined and null)
+ */
+export type NonNullableProperties<T> = {
+  [P in keyof T]: NonNullable<T[P]>
+}
+
+/**
+ * Deep version: Make all properties of T non-nullable recursively
+ */
+export type DeepNonNullableProperties<T> = {
+  [P in keyof T]: T[P] extends object
+    ? DeepNonNullableProperties<NonNullable<T[P]>>
+    : NonNullable<T[P]>
+}
