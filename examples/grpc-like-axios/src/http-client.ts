@@ -1,5 +1,3 @@
-import { type AxiosInstance } from 'axios'
-
 // 基础类型定义
 export enum HttpMethods {
   GET = 'GET',
@@ -11,49 +9,59 @@ export enum HttpMethods {
   PATCH = 'PATCH',
 }
 
-type Response<T = any> = {
-  data: T
-  status: number
-  statusText: string
-  headers: any
-}
-
-// 类型定义辅助工具
-type ServiceMethodDefinition = {
+export type ServiceMethodDefinition = {
   path: string
   method: HttpMethods
   request?: {
     pathParams?: Record<string, any>
     body?: any
-    params?: Record<string, number | string> | URLSearchParams
+    searchParams?: Record<string, any> | string | string[][] | URLSearchParams
+    headers?: Record<string, string>
   }
   response: any
 }
 
-export type RequestConfigForDefinition<T extends ServiceMethodDefinition> = (T['request'] extends {
-  params: infer P
+export type HttpRequestExecutorConfig = {
+  method: HttpMethods
+  url: string
+  body?: any
+  headers?: Record<string, string>
 }
-  ? { params: P }
+
+// HttpRequestExecutor 接收泛型 TResponse，返回 Promise<TResponse>
+// 这样用户实现时，返回值类型会被约束为具体的 response 类型
+export type HttpRequestExecutor = <TResponse = any>(
+  config: HttpRequestExecutorConfig,
+) => Promise<TResponse>
+
+type RequestConfigForDefinition<T extends ServiceMethodDefinition> = (T['request'] extends {
+  pathParams: infer P
+}
+  ? { pathParams: P }
   : {}) &
   (T['request'] extends { body: infer B } ? { body: B } : {}) &
-  (T['request'] extends { query: infer Q } ? { query: Q } : {}) & {
+  (T['request'] extends { searchParams: infer Q } ? { searchParams: Q } : {}) & {
     headers?: Record<string, string>
   }
 
+// ServiceClient 的每个方法返回 Promise<T[K]['response']>
+// 调用 requestExecutor 时会传入 T[K]['response'] 作为泛型参数
 export type ServiceClient<T extends Record<string, ServiceMethodDefinition>> = {
-  [K in keyof T]: (config: RequestConfigForDefinition<T[K]>) => Promise<Response<T[K]['response']>>
+  [K in keyof T]: (config: RequestConfigForDefinition<T[K]>) => Promise<T[K]['response']>
 }
 
 export function createHttpClient<TService extends Record<string, ServiceMethodDefinition>>(
   serviceDefinition: TService,
-): (instance: AxiosInstance) => ServiceClient<TService> {
-  return (instance) => {
+): (requestExecutor: HttpRequestExecutor) => ServiceClient<TService> {
+  return (requestExecutor) => {
     const client = {} as ServiceClient<TService>
+
     for (const methodName in serviceDefinition) {
       const definition = serviceDefinition[methodName]
 
-      client[methodName] = ((config: any) => {
-        const { pathParams, body, query, headers } = config || {}
+      type ClientMethodType = TService[typeof methodName]
+      client[methodName] = ((config: ClientMethodType['request']) => {
+        const { pathParams, body, searchParams, headers } = config || {}
         let url = definition.path
         if (pathParams) {
           url = url.replace(/{(\w+)}/g, (_, key) => {
@@ -62,11 +70,13 @@ export function createHttpClient<TService extends Record<string, ServiceMethodDe
           })
         }
 
-        return instance.request({
+        const finalUrl = searchParams
+          ? `${url}${url.indexOf('?') === -1 ? '?' : '&'}${new URLSearchParams(searchParams).toString()}`
+          : url
+        return requestExecutor<ClientMethodType['response']>({
           method: definition.method,
-          url,
-          data: body,
-          params: query,
+          url: finalUrl,
+          body,
           headers,
         })
       }) as ServiceClient<TService>[typeof methodName]
@@ -74,3 +84,35 @@ export function createHttpClient<TService extends Record<string, ServiceMethodDe
     return client
   }
 }
+
+const client = createHttpClient({
+  greet: {
+    method: HttpMethods.GET,
+    path: '/greet/{name}',
+    request: {
+      pathParams: {
+        name: '',
+      },
+      body: {
+        message: '',
+      },
+    },
+    response: {} as { code: number; message: string },
+  },
+  sayHello: {
+    method: HttpMethods.POST,
+    path: '/sayHello',
+    request: {
+      body: {
+        name: '',
+      },
+    },
+    response: {} as { data: string },
+  },
+})(async (config) => {
+  console.log(config)
+  return {
+    code: 0,
+    message: 'ok',
+  } as any
+})
